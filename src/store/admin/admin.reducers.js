@@ -1,7 +1,10 @@
 import {
   FETCH_ADMIN_REQUEST,
   FETCH_ADMIN_SUCCESS,
-  FETCH_ADMIN_FAILURE
+  FETCH_ADMIN_FAILURE,
+  CREATE_ADMIN_REQUEST,
+  CREATE_ADMIN_SUCCESS,
+  CREATE_ADMIN_FAILURE
 } from "./admin.types";
 
 const INITIAL_STATE = {
@@ -25,8 +28,25 @@ function reducer(state = INITIAL_STATE, action) {
       };
     case FETCH_ADMIN_FAILURE:
       return {
+        ...state,
         loading: false,
-        listAll: {},
+        error: action.payload
+      };
+    case CREATE_ADMIN_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case CREATE_ADMIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: ""
+      };
+    case CREATE_ADMIN_FAILURE:
+      return {
+        ...state,
+        loading: false,
         error: action.payload
       };
     default:

@@ -91,9 +91,6 @@ const SignIn = ({ createSession, session, sessionError }) => {
                   className="btn-fill btn-block"
                   color="primary"
                   type="submit"
-                  // onClick={evt =>
-                  //   handleSubmitForm(createSession, { email, password }, evt)
-                  // }
                 >
                   Login
                 </Button>
