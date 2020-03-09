@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table as DataTable } from "reactstrap";
-const Table = ({
-  isLoading,
-  columns,
-  data,
-  pageNumber,
-  pageTotal,
-  setPageNumber
-}) => {
+
+import LoadingTable from "../../components/Table/LoadingTable";
+
+const Table = ({ isLoading, columns, data, fetchData, refreshData }) => {
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize] = useState(10);
+  console.log(process.env);
+  useEffect(() => {
+    fetchData({ pageNumber, pageSize });
+  }, [pageNumber, refreshData]);
+
   function handleNextPage() {
-    if (pageNumber < pageTotal) {
+    if (pageNumber < data.pageTotal) {
       setPageNumber(pageNumber + 1);
     }
   }
@@ -23,18 +26,7 @@ const Table = ({
   return (
     <>
       {isLoading ? (
-        <div className="loading-dataTable-container">
-          <div className="lds-roller">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
+        <LoadingTable />
       ) : (
         <>
           <DataTable className="tablesorter" responsive>
@@ -48,8 +40,8 @@ const Table = ({
               </tr>
             </thead>
             <tbody>
-              {data &&
-                data.map((item, index) => (
+              {data.data &&
+                data.data.map((item, index) => (
                   <tr key={index}>
                     {columns &&
                       columns.map((column, index) => (
@@ -76,7 +68,7 @@ const Table = ({
               Anterior
             </button>
             <p style={{ margin: 20 }}>
-              {pageNumber} / {pageTotal}
+              {pageNumber} / {data.pageTotal}
             </p>
             <button
               className="btn-fill btn btn-primary"

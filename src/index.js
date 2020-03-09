@@ -17,6 +17,8 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Switch>
+        <Redirect exact from="/" to="/admin/dashboard" />
+        <Redirect exact from="/admin" to="/admin/dashboard" />
         <Route
           path="/admin"
           render={props => {
@@ -27,7 +29,6 @@ ReactDOM.render(
             );
           }}
         />
-        <Redirect from="/" to="/admin/dashboard" />
         <Route path="/admin/signIn" render={props => <SignIn />} />
       </Switch>
     </Router>

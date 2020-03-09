@@ -8,9 +8,11 @@ import {
 } from "./admin.types";
 
 const INITIAL_STATE = {
-  loading: false,
   listAll: [],
-  error: ""
+  loading: false,
+  error: "",
+  createAdminLoading: false,
+  createAdminError: ""
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -22,6 +24,7 @@ function reducer(state = INITIAL_STATE, action) {
       };
     case FETCH_ADMIN_SUCCESS:
       return {
+        ...state,
         loading: false,
         listAll: action.payload,
         error: ""
@@ -35,19 +38,19 @@ function reducer(state = INITIAL_STATE, action) {
     case CREATE_ADMIN_REQUEST:
       return {
         ...state,
-        loading: true
+        createAdminLoading: true
       };
     case CREATE_ADMIN_SUCCESS:
       return {
         ...state,
-        loading: false,
-        error: ""
+        createAdminLoading: false,
+        createAdminError: ""
       };
     case CREATE_ADMIN_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: action.payload
+        createAdminLoading: false,
+        createAdminError: action.payload
       };
     default:
       return state;

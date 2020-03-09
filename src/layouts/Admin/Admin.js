@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Route, Switch } from "react-router-dom";
-import PerfectScrollbar from "perfect-scrollbar";
-
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
-import Footer from "components/Footer/Footer.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
-import Modal from "components/Modal";
-
+import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
+import Sidebar from "components/Sidebar/Sidebar.jsx";
+import React, { useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 
 const Admin = props => {

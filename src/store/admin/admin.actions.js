@@ -1,6 +1,5 @@
-import axios from "axios";
+import axios from "../../axios";
 
-import { API_URL } from "../../constants";
 import {
   FETCH_ADMIN_REQUEST,
   FETCH_ADMIN_SUCCESS,
@@ -17,14 +16,9 @@ import {
 
 export const adminListAllAction = ({ pageNumber, pageSize }) => {
   return function(dispatch) {
-    const token = localStorage.getItem("user-token");
     dispatch(fetchRequest(FETCH_ADMIN_REQUEST));
     axios
-      .get(`${API_URL}/admins?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      .get(`/admins?pageNumber=${pageNumber}&pageSize=${pageSize}`)
       .then(respose => {
         dispatch(fetchSuccess(FETCH_ADMIN_SUCCESS, respose.data));
       })
@@ -36,14 +30,9 @@ export const adminListAllAction = ({ pageNumber, pageSize }) => {
 
 export const createAdminAction = payload => {
   return function(dispatch) {
-    const token = localStorage.getItem("user-token");
     dispatch(fetchRequest(CREATE_ADMIN_REQUEST));
     axios
-      .post(`${API_URL}/admins`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      .post(`/admins`, payload)
       .then(respose => {
         dispatch(fetchSuccess(CREATE_ADMIN_SUCCESS, respose.data));
       })

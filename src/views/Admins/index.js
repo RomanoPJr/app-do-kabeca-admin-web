@@ -24,37 +24,53 @@ const Admins = ({
   admins,
   createAdmin,
   adminsIsLoading,
-  adminsError
+  createAdminIsLoading,
+  createAdminError
 }) => {
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [modalOpened, setModalOpened] = useState(true);
-  const [alertIsOpen, setAlertIsOpen] = useState(false);
-  const [alertText, setAlertText] = useState("Erro");
+  const [refreshData, setRefreshData] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
+  const [alertConfig, setAlertConfig] = useState({
+    type: "",
+    message: "",
+    opened: false
+  });
 
   useEffect(() => {
-    fetchAdmins({ pageNumber, pageSize });
-  }, [pageNumber]);
-
-  useEffect(() => {
-    if (adminsError !== "") {
-      setAlertText("Email ou Telefone já existem.");
-      setAlertIsOpen(true);
-      setTimeout(() => {
-        setAlertIsOpen(false);
-      }, 5000);
+    if (!createAdminIsLoading && createAdminError === "" && modalOpened) {
+      setModalOpened(false);
+      setRefreshData(!refreshData);
+      showAlert({
+        type: "success",
+        message: "Registro salvo com sucesso!"
+      });
+    } else if (!createAdminIsLoading && createAdminError !== "") {
+      showAlert({
+        type: "danger",
+        message: "Email ou Telefone já existem, ou os dados são incompatíveis."
+      });
     }
-  }, [adminsError]);
+  }, [createAdminIsLoading, createAdminError]);
+
+  function showAlert({ type, message }) {
+    setAlertConfig({
+      type,
+      message,
+      opened: true
+    });
+    setTimeout(() => {
+      setAlertConfig({ ...alertConfig, opened: false });
+    }, 5000);
+  }
 
   return (
     <>
       <Alert
-        isOpen={alertIsOpen}
-        color="warning"
+        isOpen={alertConfig.opened}
+        color={alertConfig.type}
         fade
-        style={{ position: "absolute", right: 20, top: 20 }}
+        style={{ position: "absolute", right: 20, top: 20, zIndex: 99999 }}
       >
-        {alertText}
+        {alertConfig.message}
       </Alert>
       <div className="content">
         <Row>
@@ -72,6 +88,10 @@ const Admins = ({
               </CardHeader>
               <CardBody>
                 <Table
+                  data={{
+                    data: admins.data,
+                    total: admins.pageTotal
+                  }}
                   isLoading={adminsIsLoading}
                   columns={[
                     { name: "Nome", attribute: "firstname" },
@@ -79,12 +99,7 @@ const Admins = ({
                     { name: "E-mail", attribute: "email" },
                     { name: "Telefone", attribute: "phone" }
                   ]}
-                  data={admins.data}
-                  pageNumber={pageNumber}
-                  pageTotal={admins.pageTotal}
-                  pageSize={pageNumber}
-                  setPageNumber={setPageNumber}
-                  setPageSize={setPageSize}
+                  fetchData={fetchAdmins}
                 />
               </CardBody>
             </Card>
@@ -103,7 +118,9 @@ const Admins = ({
 const mapStateToProps = state => ({
   admins: state.admin.listAll,
   adminsError: state.admin.error,
-  adminsIsLoading: state.admin.loading
+  adminsIsLoading: state.admin.loading,
+  createAdminIsLoading: state.admin.createAdminLoading,
+  createAdminError: state.admin.createAdminError
 });
 
 const mapDispatchToProps = dispatch => ({
