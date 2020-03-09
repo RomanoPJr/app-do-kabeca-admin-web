@@ -14,7 +14,7 @@ import {
 export const createSessionAction = payload => {
   return function(dispatch) {
     dispatch(request(FETCH_SESSION_REQUEST));
-    axios
+    axios()
       .post(`/sessions`, payload)
       .then(respose => {
         localStorage.setItem("user-token", respose.data.token);

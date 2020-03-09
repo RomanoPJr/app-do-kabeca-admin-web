@@ -128,7 +128,6 @@ const Admins = ({
         modalOpened={modalOpened}
         setModalOpened={setModalOpened}
         saveAction={createAdmin}
-        // admin={{ firstname: "CAIO" }}
       />
       <ModalDelete
         modalOpened={modalDeleteOpened}

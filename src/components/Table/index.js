@@ -58,7 +58,7 @@ const Table = ({
                       ))}
                     <td className="text-center action-column">
                       <button
-                        class="btn btn-danger btn-fab btn-icon btn-round btn-table-action"
+                        className="btn btn-danger btn-fab btn-icon btn-round btn-table-action"
                         onClick={() => {
                           setModalData(item);
                           setModalOpened(true);
@@ -67,7 +67,7 @@ const Table = ({
                         <FaTrashAlt />
                       </button>
                       <button
-                        class="btn btn-default btn-fab btn-icon btn-round btn-table-action"
+                        className="btn btn-default btn-fab btn-icon btn-round btn-table-action"
                         // onClick={() => updateAction(item["id"])}
                       >
                         <FaEdit />

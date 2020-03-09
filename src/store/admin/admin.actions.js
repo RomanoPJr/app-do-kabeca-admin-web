@@ -23,7 +23,7 @@ import {
 export const fetchAdminsAction = ({ pageNumber, pageSize }) => {
   return function(dispatch) {
     dispatch(request(FETCH_ADMIN_REQUEST));
-    axios
+    axios()
       .get(`/admins?pageNumber=${pageNumber}&pageSize=${pageSize}`)
       .then(respose => {
         dispatch(requestSuccess(FETCH_ADMIN_SUCCESS, respose.data));
@@ -37,7 +37,7 @@ export const fetchAdminsAction = ({ pageNumber, pageSize }) => {
 export const createAdminAction = payload => {
   return function(dispatch) {
     dispatch(request(CREATE_ADMIN_REQUEST));
-    axios
+    axios()
       .post(`/admins`, payload)
       .then(respose => {
         dispatch(requestSuccess(CREATE_ADMIN_SUCCESS, respose.data));
@@ -51,7 +51,7 @@ export const createAdminAction = payload => {
 export const deleteAdminAction = payload => {
   return function(dispatch) {
     dispatch(request(DELETE_ADMIN_REQUEST));
-    axios
+    axios()
       .delete(`/admins/${payload}`)
       .then(respose => {
         dispatch(requestSuccess(DELETE_ADMIN_SUCCESS));
@@ -65,7 +65,7 @@ export const deleteAdminAction = payload => {
 export const updateAdminAction = payload => {
   return function(dispatch) {
     dispatch(request(UPDATE_ADMIN_REQUEST));
-    axios
+    axios()
       .put(`/admins/${payload.id}`, payload)
       .then(respose => {
         dispatch(requestSuccess(UPDATE_ADMIN_SUCCESS));
