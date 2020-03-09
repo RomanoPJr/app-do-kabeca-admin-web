@@ -1,6 +1,5 @@
-import axios from "axios";
+import axios from "../../axios";
 
-import { API_URL } from "../../constants";
 import {
   FETCH_SESSION_REQUEST,
   FETCH_SESSION_SUCCESS,
@@ -16,7 +15,7 @@ export const createSessionAction = payload => {
   return function(dispatch) {
     dispatch(request(FETCH_SESSION_REQUEST));
     axios
-      .post(`${API_URL}/sessions`, payload)
+      .post(`/sessions`, payload)
       .then(respose => {
         localStorage.setItem("user-token", respose.data.token);
         dispatch(requestSuccess(FETCH_SESSION_SUCCESS, respose.data.admin));
