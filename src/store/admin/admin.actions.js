@@ -6,38 +6,72 @@ import {
   FETCH_ADMIN_FAILURE,
   CREATE_ADMIN_REQUEST,
   CREATE_ADMIN_SUCCESS,
-  CREATE_ADMIN_FAILURE
+  CREATE_ADMIN_FAILURE,
+  DELETE_ADMIN_REQUEST,
+  DELETE_ADMIN_SUCCESS,
+  DELETE_ADMIN_FAILURE,
+  UPDATE_ADMIN_REQUEST,
+  UPDATE_ADMIN_SUCCESS,
+  UPDATE_ADMIN_FAILURE
 } from "./admin.types";
 import {
-  fetchRequest,
-  fetchSuccess,
-  fetchFailure
+  request,
+  requestSuccess,
+  requestFailure
 } from "../async/async.actions";
 
-export const adminListAllAction = ({ pageNumber, pageSize }) => {
+export const fetchAdminsAction = ({ pageNumber, pageSize }) => {
   return function(dispatch) {
-    dispatch(fetchRequest(FETCH_ADMIN_REQUEST));
+    dispatch(request(FETCH_ADMIN_REQUEST));
     axios
       .get(`/admins?pageNumber=${pageNumber}&pageSize=${pageSize}`)
       .then(respose => {
-        dispatch(fetchSuccess(FETCH_ADMIN_SUCCESS, respose.data));
+        dispatch(requestSuccess(FETCH_ADMIN_SUCCESS, respose.data));
       })
       .catch(error => {
-        dispatch(fetchFailure(FETCH_ADMIN_FAILURE, error.message));
+        dispatch(requestFailure(FETCH_ADMIN_FAILURE, error.message));
       });
   };
 };
 
 export const createAdminAction = payload => {
   return function(dispatch) {
-    dispatch(fetchRequest(CREATE_ADMIN_REQUEST));
+    dispatch(request(CREATE_ADMIN_REQUEST));
     axios
       .post(`/admins`, payload)
       .then(respose => {
-        dispatch(fetchSuccess(CREATE_ADMIN_SUCCESS, respose.data));
+        dispatch(requestSuccess(CREATE_ADMIN_SUCCESS, respose.data));
       })
       .catch(error => {
-        dispatch(fetchFailure(CREATE_ADMIN_FAILURE, error.message));
+        dispatch(requestFailure(CREATE_ADMIN_FAILURE, error.message));
+      });
+  };
+};
+
+export const deleteAdminAction = payload => {
+  return function(dispatch) {
+    dispatch(request(DELETE_ADMIN_REQUEST));
+    axios
+      .delete(`/admins/${payload}`)
+      .then(respose => {
+        dispatch(requestSuccess(DELETE_ADMIN_SUCCESS));
+      })
+      .catch(error => {
+        dispatch(requestFailure(DELETE_ADMIN_FAILURE, error.message));
+      });
+  };
+};
+
+export const updateAdminAction = payload => {
+  return function(dispatch) {
+    dispatch(request(UPDATE_ADMIN_REQUEST));
+    axios
+      .put(`/admins/${payload.id}`, payload)
+      .then(respose => {
+        dispatch(requestSuccess(UPDATE_ADMIN_SUCCESS));
+      })
+      .catch(error => {
+        dispatch(requestFailure(UPDATE_ADMIN_FAILURE, error.message));
       });
   };
 };

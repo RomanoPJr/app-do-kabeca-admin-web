@@ -119,3 +119,15 @@
   color: black;
   margin-bottom: 10px;
 }
+
+.action-column {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.btn-table-action {
+  align-items: center;
+  justify-content: center;
+}

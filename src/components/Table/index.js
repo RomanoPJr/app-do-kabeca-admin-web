@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Table as DataTable } from "reactstrap";
-
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import LoadingTable from "../../components/Table/LoadingTable";
 
-const Table = ({ isLoading, columns, data, fetchData, refreshData }) => {
+const Table = ({
+  isLoading,
+  columns,
+  data,
+  fetchAction,
+  updateAction,
+  refreshData,
+  setModalOpened,
+  setModalData
+}) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize] = useState(10);
-  console.log(data);
+
   useEffect(() => {
-    fetchData({ pageNumber, pageSize });
+    fetchAction({ pageNumber, pageSize });
   }, [pageNumber, refreshData]);
 
   function handleNextPage() {
@@ -47,7 +56,23 @@ const Table = ({ isLoading, columns, data, fetchData, refreshData }) => {
                       columns.map((column, index) => (
                         <td key={index}>{item[column.attribute]}</td>
                       ))}
-                    <td className="text-center">ACTION</td>
+                    <td className="text-center action-column">
+                      <button
+                        class="btn btn-danger btn-fab btn-icon btn-round btn-table-action"
+                        onClick={() => {
+                          setModalData(item);
+                          setModalOpened(true);
+                        }}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                      <button
+                        class="btn btn-default btn-fab btn-icon btn-round btn-table-action"
+                        // onClick={() => updateAction(item["id"])}
+                      >
+                        <FaEdit />
+                      </button>
+                    </td>
                   </tr>
                 ))}
             </tbody>

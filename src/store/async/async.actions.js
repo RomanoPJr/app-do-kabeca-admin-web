@@ -1,15 +1,15 @@
-export const fetchRequest = type => {
+export const request = type => {
   return {
     type
   };
 };
-export const fetchSuccess = (type, payload = {}) => {
+export const requestSuccess = (type, payload = {}) => {
   return {
     type,
     payload
   };
 };
-export const fetchFailure = (type, error) => {
+export const requestFailure = (type, error) => {
   return {
     type,
     payload: error

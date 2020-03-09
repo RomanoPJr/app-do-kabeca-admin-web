@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 import Modal from "../../components/Modal";
 
-const ModalNewAdmin = ({ modalOpened, setModalOpened, createAdmin }) => {
-  const [firstname, setFirstname] = useState();
-  const [lastname, setLastname] = useState();
-  const [phone, setPhone] = useState();
-  const [email, setEmail] = useState();
+const ModalNewAdmin = ({ modalOpened, setModalOpened, saveAction, admin }) => {
+  const [firstname, setFirstname] = useState(admin ? admin.firstname : "");
+  const [lastname, setLastname] = useState(admin ? admin.lastname : "");
+  const [phone, setPhone] = useState(admin ? admin.phone : "");
+  const [email, setEmail] = useState(admin ? admin.email : "");
   const [password, setPassword] = useState();
 
   return (
@@ -17,7 +17,7 @@ const ModalNewAdmin = ({ modalOpened, setModalOpened, createAdmin }) => {
     >
       <Form
         onSubmit={evt => {
-          createAdmin({ firstname, lastname, phone, email, password });
+          saveAction({ firstname, lastname, phone, email, password });
           evt.preventDefault();
         }}
       >
@@ -29,6 +29,7 @@ const ModalNewAdmin = ({ modalOpened, setModalOpened, createAdmin }) => {
               placeholder="Informe o nome"
               type="text"
               onChange={event => setFirstname(event.target.value)}
+              value={firstname}
             />
           </Col>
           <Col md="12">

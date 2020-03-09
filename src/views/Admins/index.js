@@ -12,29 +12,43 @@ import {
   Button
 } from "reactstrap";
 
+import ModalDelete from "./ModalDelete";
 import ModalNewAdmin from "./ModalNewAdmin";
 import Table from "../../components/Table";
 import {
-  adminListAllAction,
-  createAdminAction
+  fetchAdminsAction,
+  createAdminAction,
+  deleteAdminAction,
+  updateAdminAction
 } from "../../store/admin/admin.actions";
 
 const Admins = ({
   fetchAdmins,
-  admins,
   createAdmin,
+  deleteAdmin,
+  updateAdmin,
+  admins,
   adminsIsLoading,
   createAdminIsLoading,
+  deleteAdminLoading,
   createAdminError
 }) => {
   const [refreshData, setRefreshData] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
+  const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
+  const [modalAdmin, setModalAdmin] = useState({});
   const [alertConfig, setAlertConfig] = useState({
     type: "",
     message: "",
     opened: false
   });
 
+  useEffect(() => {
+    if (!deleteAdminLoading) {
+      setRefreshData(!refreshData);
+      setModalDeleteOpened(false);
+    }
+  }, [deleteAdminLoading]);
   useEffect(() => {
     if (!createAdminIsLoading && createAdminError === "" && modalOpened) {
       setModalOpened(false);
@@ -99,8 +113,11 @@ const Admins = ({
                     { name: "E-mail", attribute: "email" },
                     { name: "Telefone", attribute: "phone" }
                   ]}
-                  fetchData={fetchAdmins}
+                  fetchAction={fetchAdmins}
+                  updateAction={updateAdmin}
                   refreshData={refreshData}
+                  setModalOpened={setModalDeleteOpened}
+                  setModalData={setModalAdmin}
                 />
               </CardBody>
             </Card>
@@ -110,7 +127,13 @@ const Admins = ({
       <ModalNewAdmin
         modalOpened={modalOpened}
         setModalOpened={setModalOpened}
-        createAdmin={createAdmin}
+        saveAction={createAdmin}
+        // admin={{ firstname: "CAIO" }}
+      />
+      <ModalDelete
+        modalOpened={modalDeleteOpened}
+        setModalOpened={setModalDeleteOpened}
+        action={() => deleteAdmin(modalAdmin.id)}
       />
     </>
   );
@@ -121,11 +144,14 @@ const mapStateToProps = state => ({
   adminsError: state.admin.error,
   adminsIsLoading: state.admin.loading,
   createAdminIsLoading: state.admin.createAdminLoading,
+  deleteAdminLoading: state.admin.deleteAdminLoading,
   createAdminError: state.admin.createAdminError
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAdmins: payload => dispatch(adminListAllAction(payload)),
+  fetchAdmins: payload => dispatch(fetchAdminsAction(payload)),
+  deleteAdmin: payload => dispatch(deleteAdminAction(payload)),
+  updateAdmin: payload => dispatch(updateAdminAction(payload)),
   createAdmin: payload => dispatch(createAdminAction(payload))
 });
 
