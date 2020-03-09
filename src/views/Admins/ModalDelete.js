@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Col, Form, Input, Row } from "reactstrap";
+import React from "react";
+import { Button } from "reactstrap";
 import Modal from "../../components/Modal";
 
 const ModalDelete = ({ modalOpened, setModalOpened, action, admin }) => {

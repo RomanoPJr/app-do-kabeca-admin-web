@@ -1,6 +1,6 @@
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
+import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.js";
+import AdminNavbar from "../../components/Navbars/AdminNavbar.js";
+import Sidebar from "../../components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import routes from "routes.js";

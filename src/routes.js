@@ -1,6 +1,6 @@
 import React from "react";
 import Admins from "./views/Admins";
-import Dashboard from "views/Dashboard.jsx";
+import Dashboard from "./views/Dashboard";
 import { FaUserShield, FaTachometerAlt } from "react-icons/fa";
 var routes = [
   {

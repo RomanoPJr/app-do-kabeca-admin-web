@@ -1,23 +1,20 @@
-import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
-
+import React from "react";
 // reactstrap components
 import {
-  Button,
   Collapse,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Input,
-  InputGroup,
-  NavbarBrand,
-  Navbar,
-  NavLink,
-  Nav,
   Container,
-  Modal
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Modal,
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavLink,
+  UncontrolledDropdown
 } from "reactstrap";
 
 class AdminNavbar extends React.Component {

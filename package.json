@@ -1,8 +1,6 @@
 {
-  "name": "black-dashboard-react",
+  "name": "app-do-kabeca-admin-web",
   "version": "1.0.0",
-  "private": true,
-  "homepage": "https://creativetimofficial.github.io/black-dashboard-react/#/dashboard",
   "dependencies": {
     "@types/react": "16.4.16",
     "axios": "^0.19.2",
@@ -20,7 +18,7 @@
     "react-icons": "^3.9.0",
     "react-notification-alert": "0.0.8",
     "react-redux": "^7.2.0",
-    "react-router-dom": "4.3.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "2.0.4",
     "reactstrap": "6.5.0",
     "redux": "^4.0.5",
