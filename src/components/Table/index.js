@@ -6,13 +6,13 @@ import LoadingTable from "../../components/Table/LoadingTable";
 const Table = ({ isLoading, columns, data, fetchData, refreshData }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize] = useState(10);
-  console.log(process.env);
+  console.log(data);
   useEffect(() => {
     fetchData({ pageNumber, pageSize });
   }, [pageNumber, refreshData]);
 
   function handleNextPage() {
-    if (pageNumber < data.pageTotal) {
+    if (pageNumber < data.total) {
       setPageNumber(pageNumber + 1);
     }
   }
@@ -68,7 +68,7 @@ const Table = ({ isLoading, columns, data, fetchData, refreshData }) => {
               Anterior
             </button>
             <p style={{ margin: 20 }}>
-              {pageNumber} / {data.pageTotal}
+              {pageNumber} / {data.total}
             </p>
             <button
               className="btn-fill btn btn-primary"

@@ -100,6 +100,7 @@ const Admins = ({
                     { name: "Telefone", attribute: "phone" }
                   ]}
                   fetchData={fetchAdmins}
+                  refreshData={refreshData}
                 />
               </CardBody>
             </Card>
