@@ -14,10 +14,10 @@ const devTools =
     ? window.__REDUX_DEVTOOLS_EXTENSION__ &&
       window.__REDUX_DEVTOOLS_EXTENSION__()
     : null;
-// const store = createStore(rootReducer, applyMiddleware(thunk));
-const store = createStore(
-  rootReducer,
-  compose(applyMiddleware(thunk), devTools)
-);
+const store = createStore(rootReducer, applyMiddleware(thunk));
+// const store = createStore(
+//   rootReducer,
+//   compose(applyMiddleware(thunk), devTools)
+// );
 
 export default store;
