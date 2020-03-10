@@ -10,8 +10,7 @@ const Table = ({
   fetchAction,
   updateAction,
   refreshData,
-  setModalOpened,
-  setModalData
+  deleteAction
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize] = useState(10);
@@ -59,16 +58,13 @@ const Table = ({
                     <td className="text-center action-column">
                       <button
                         className="btn btn-danger btn-fab btn-icon btn-round btn-table-action"
-                        onClick={() => {
-                          setModalData(item);
-                          setModalOpened(true);
-                        }}
+                        onClick={() => deleteAction(item)}
                       >
                         <FaTrashAlt />
                       </button>
                       <button
                         className="btn btn-default btn-fab btn-icon btn-round btn-table-action"
-                        // onClick={() => updateAction(item["id"])}
+                        onClick={() => updateAction(item)}
                       >
                         <FaEdit />
                       </button>

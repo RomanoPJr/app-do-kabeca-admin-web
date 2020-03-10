@@ -1,9 +1,9 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 
-const ModalComponent = ({ title, modalOpened, setModalOpened, children }) => {
+const ModalComponent = ({ title, opened, setOpened, children }) => {
   return (
-    <Modal isOpen={modalOpened} toggle={() => setModalOpened(!modalOpened)}>
+    <Modal isOpen={opened} toggle={() => setOpened(!opened)}>
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">
           {title}
@@ -13,7 +13,7 @@ const ModalComponent = ({ title, modalOpened, setModalOpened, children }) => {
           className="close"
           data-dismiss="modal"
           aria-hidden="true"
-          onClick={() => setModalOpened(!modalOpened)}
+          onClick={() => setOpened(!opened)}
         >
           <i className="tim-icons icon-simple-remove" />
         </button>

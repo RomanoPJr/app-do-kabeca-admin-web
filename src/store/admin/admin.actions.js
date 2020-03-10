@@ -66,7 +66,7 @@ export const updateAdminAction = payload => {
   return function(dispatch) {
     dispatch(request(UPDATE_ADMIN_REQUEST));
     axios()
-      .put(`/admins/${payload.id}`, payload)
+      .put(`/admins`, payload)
       .then(respose => {
         dispatch(requestSuccess(UPDATE_ADMIN_SUCCESS));
       })

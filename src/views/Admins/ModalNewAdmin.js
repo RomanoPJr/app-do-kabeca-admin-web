@@ -2,22 +2,29 @@ import React, { useState } from "react";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 import Modal from "../../components/Modal";
 
-const ModalNewAdmin = ({ modalOpened, setModalOpened, saveAction, admin }) => {
-  const [firstname, setFirstname] = useState(admin ? admin.firstname : "");
-  const [lastname, setLastname] = useState(admin ? admin.lastname : "");
-  const [phone, setPhone] = useState(admin ? admin.phone : "");
-  const [email, setEmail] = useState(admin ? admin.email : "");
+const ModalNewAdmin = ({
+  data,
+  opened,
+  setOpened,
+  saveAction,
+  updateAction
+}) => {
+  const [id] = useState(data ? data.id : "");
+  const [firstname, setFirstname] = useState(data ? data.firstname : "");
+  const [lastname, setLastname] = useState(data ? data.lastname : "");
+  const [phone, setPhone] = useState(data ? data.phone : "");
+  const [email, setEmail] = useState(data ? data.email : "");
   const [password, setPassword] = useState();
 
   return (
-    <Modal
-      title="Novo Usuário"
-      modalOpened={modalOpened}
-      setModalOpened={setModalOpened}
-    >
+    <Modal title="Novo Usuário" opened={opened} setOpened={setOpened}>
       <Form
         onSubmit={evt => {
-          saveAction({ firstname, lastname, phone, email, password });
+          if (!id) {
+            saveAction({ firstname, lastname, phone, email, password });
+          } else {
+            updateAction({ id, firstname, lastname, phone, email, password });
+          }
           evt.preventDefault();
         }}
       >
@@ -38,7 +45,10 @@ const ModalNewAdmin = ({ modalOpened, setModalOpened, saveAction, admin }) => {
               required={true}
               placeholder="Informe o sobrenome"
               type="text"
-              onChange={event => setLastname(event.target.value)}
+              onChange={event => {
+                setLastname(event.target.value);
+              }}
+              value={lastname}
             />
           </Col>
           <Col md="6">
@@ -48,6 +58,7 @@ const ModalNewAdmin = ({ modalOpened, setModalOpened, saveAction, admin }) => {
               placeholder="Informe o E-mail"
               type="email"
               onChange={event => setEmail(event.target.value)}
+              value={email}
             />
           </Col>
           <Col md="6">
@@ -57,23 +68,23 @@ const ModalNewAdmin = ({ modalOpened, setModalOpened, saveAction, admin }) => {
               placeholder="Informe o Telefone"
               type="phone"
               onChange={event => setPhone(event.target.value)}
+              value={phone}
             />
           </Col>
-          <Col md="12">
-            <label>Senha</label>
-            <Input
-              required
-              placeholder="Informe a senha"
-              type="password"
-              onChange={event => setPassword(event.target.value)}
-            />
-          </Col>
+          {!id && (
+            <Col md="12">
+              <label>Senha</label>
+              <Input
+                required
+                placeholder="Informe a senha"
+                type="password"
+                onChange={event => setPassword(event.target.value)}
+              />
+            </Col>
+          )}
         </Row>
         <div className="custom-modal-footer">
-          <Button
-            color="secondary"
-            onClick={() => setModalOpened(!modalOpened)}
-          >
+          <Button color="secondary" onClick={() => setOpened(!opened)}>
             Fechar
           </Button>
           <Button type="submit" color="primary">

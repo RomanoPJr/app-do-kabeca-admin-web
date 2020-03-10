@@ -24,19 +24,21 @@ import {
 
 const Admins = ({
   fetchAdmins,
-  createAdmin,
-  deleteAdmin,
-  updateAdmin,
   admins,
   adminsIsLoading,
-  createAdminIsLoading,
-  deleteAdminLoading,
-  createAdminError
+  createAdmin,
+  createAdminLoading,
+  createAdminError,
+  updateAdmin,
+  updateAdminError,
+  updateAdminLoading,
+  deleteAdmin,
+  deleteAdminLoading
 }) => {
   const [refreshData, setRefreshData] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
-  const [modalAdmin, setModalAdmin] = useState({});
+  const [modalData, setModalData] = useState({});
   const [alertConfig, setAlertConfig] = useState({
     type: "",
     message: "",
@@ -49,21 +51,31 @@ const Admins = ({
       setModalDeleteOpened(false);
     }
   }, [deleteAdminLoading]);
+
   useEffect(() => {
-    if (!createAdminIsLoading && createAdminError === "" && modalOpened) {
+    if (
+      !createAdminLoading &&
+      !updateAdminLoading &&
+      modalOpened &&
+      createAdminError === "" &&
+      updateAdminError === ""
+    ) {
       setModalOpened(false);
       setRefreshData(!refreshData);
       showAlert({
         type: "success",
         message: "Registro salvo com sucesso!"
       });
-    } else if (!createAdminIsLoading && createAdminError !== "") {
+    } else if (
+      (!createAdminLoading || !updateAdminLoading) &&
+      (createAdminError !== "" || updateAdminError !== "")
+    ) {
       showAlert({
         type: "danger",
         message: "Email ou Telefone já existem, ou os dados são incompatíveis."
       });
     }
-  }, [createAdminIsLoading, createAdminError]);
+  }, [createAdminLoading, updateAdminLoading]);
 
   function showAlert({ type, message }) {
     setAlertConfig({
@@ -74,6 +86,21 @@ const Admins = ({
     setTimeout(() => {
       setAlertConfig({ ...alertConfig, opened: false });
     }, 5000);
+  }
+
+  function handleOpenCreateModal() {
+    setModalData({});
+    setModalOpened(true);
+  }
+
+  function handleOpenUpdateModal(data) {
+    setModalData(data);
+    setModalOpened(true);
+  }
+
+  function handleOpenDeleteModal(data) {
+    setModalData(data);
+    setModalDeleteOpened(true);
   }
 
   return (
@@ -94,7 +121,7 @@ const Admins = ({
                 <CardTitle tag="h4">Administradores</CardTitle>
                 <Button
                   className="btn-fill btn btn-primary"
-                  onClick={() => setModalOpened(true)}
+                  onClick={() => handleOpenCreateModal(true)}
                 >
                   <FaPlus />
                   {` Novo`}
@@ -113,26 +140,29 @@ const Admins = ({
                     { name: "E-mail", attribute: "email" },
                     { name: "Telefone", attribute: "phone" }
                   ]}
-                  fetchAction={fetchAdmins}
-                  updateAction={updateAdmin}
                   refreshData={refreshData}
-                  setModalOpened={setModalDeleteOpened}
-                  setModalData={setModalAdmin}
+                  fetchAction={fetchAdmins}
+                  updateAction={handleOpenUpdateModal}
+                  deleteAction={handleOpenDeleteModal}
                 />
               </CardBody>
             </Card>
           </Col>
         </Row>
       </div>
-      <ModalNewAdmin
-        modalOpened={modalOpened}
-        setModalOpened={setModalOpened}
-        saveAction={createAdmin}
-      />
+      {modalOpened && (
+        <ModalNewAdmin
+          data={modalData}
+          opened={modalOpened}
+          setOpened={setModalOpened}
+          saveAction={createAdmin}
+          updateAction={updateAdmin}
+        />
+      )}
       <ModalDelete
         modalOpened={modalDeleteOpened}
         setModalOpened={setModalDeleteOpened}
-        action={() => deleteAdmin(modalAdmin.id)}
+        action={() => deleteAdmin(modalData.id)}
       />
     </>
   );
@@ -142,9 +172,11 @@ const mapStateToProps = state => ({
   admins: state.admin.listAll,
   adminsError: state.admin.error,
   adminsIsLoading: state.admin.loading,
-  createAdminIsLoading: state.admin.createAdminLoading,
-  deleteAdminLoading: state.admin.deleteAdminLoading,
-  createAdminError: state.admin.createAdminError
+  createAdminError: state.admin.createAdminError,
+  createAdminLoading: state.admin.createAdminLoading,
+  updateAdminError: state.admin.updateAdminError,
+  updateAdminLoading: state.admin.updateAdminLoading,
+  deleteAdminLoading: state.admin.deleteAdminLoading
 });
 
 const mapDispatchToProps = dispatch => ({
