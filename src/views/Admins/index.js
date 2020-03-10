@@ -160,9 +160,10 @@ const Admins = ({
         />
       )}
       <ModalDelete
-        modalOpened={modalDeleteOpened}
-        setModalOpened={setModalDeleteOpened}
-        action={() => deleteAdmin(modalData.id)}
+        data={modalData}
+        opened={modalDeleteOpened}
+        setOpened={setModalDeleteOpened}
+        action={deleteAdmin}
       />
     </>
   );

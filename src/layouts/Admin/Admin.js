@@ -1,4 +1,3 @@
-import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.js";
 import AdminNavbar from "../../components/Navbars/AdminNavbar.js";
 import Sidebar from "../../components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
@@ -6,7 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import routes from "routes.js";
 
 const Admin = props => {
-  const [backgroundColor, setBackgroundColor] = useState();
+  const [backgroundColor] = useState();
   const [sidebarOpened, setSidebarOpened] = useState();
 
   function toggleSidebar() {
@@ -28,10 +27,6 @@ const Admin = props => {
         return null;
       }
     });
-  }
-
-  function handleBgClick(color) {
-    setBackgroundColor(color);
   }
 
   function getBrandText(path) {
@@ -65,7 +60,6 @@ const Admin = props => {
           <Switch>{getRoutes(routes)}</Switch>
         </div>
       </div>
-      <FixedPlugin bgColor={backgroundColor} handleBgClick={handleBgClick} />
     </>
   );
 };
