@@ -1,9 +1,21 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 
-const ModalComponent = ({ title, opened, setOpened, children }) => {
+const ModalComponent = ({
+  title,
+  opened,
+  setOpened,
+  children,
+  unmountOnClose,
+  size = "md"
+}) => {
   return (
-    <Modal isOpen={opened} toggle={() => setOpened(!opened)}>
+    <Modal
+      isOpen={opened}
+      toggle={() => setOpened(!opened)}
+      // unmountOnClose={unmountOnClose}
+      size={size}
+    >
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">
           {title}

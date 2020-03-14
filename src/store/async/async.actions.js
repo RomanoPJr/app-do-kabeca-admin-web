@@ -1,23 +1,33 @@
-export const request = type => {
+const send = type => {
   return {
     type
   };
 };
-export const requestSuccess = (type, payload = {}) => {
+
+const success = (type, payload = {}) => {
   return {
     type,
     payload
   };
 };
-export const requestFailure = (type, error) => {
+
+const failure = (type, error) => {
   return {
     type,
     payload: error
   };
 };
-export const setState = (type, payload) => {
+
+const setState = (type, payload) => {
   return {
     type,
     payload
   };
+};
+
+export default {
+  send,
+  success,
+  failure,
+  setState
 };
