@@ -20,7 +20,7 @@ const EmptyState = ({
             {` Deletar`}
           </Button>
           <Button
-            className="btn-fill btn btn-primary"
+            className="btn-fill btn btn-info"
             onClick={() => setModalCreateOpened(true)}
           >
             <FaRegEdit />

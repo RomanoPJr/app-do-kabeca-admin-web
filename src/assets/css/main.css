@@ -131,3 +131,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.modal-body .custom-modal-footer .btn-primary {
+  background: #3358f4;
+}

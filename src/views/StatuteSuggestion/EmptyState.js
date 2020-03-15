@@ -10,7 +10,7 @@ const EmptyState = ({ handleCreate, setModalCreateOpened }) => {
         nova?
       </h4>
       <Button
-        className="btn-fill btn btn-primary empty-button-new"
+        className="btn-fill btn btn-info empty-button-new"
         onClick={() => setModalCreateOpened(true)}
       >
         <FaPlus />

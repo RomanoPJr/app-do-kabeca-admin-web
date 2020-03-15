@@ -120,7 +120,7 @@ const Admins = ({
               <CardHeader className="card-header-with-button">
                 <CardTitle tag="h4">Administradores</CardTitle>
                 <Button
-                  className="btn-fill btn btn-primary"
+                  className="btn-fill btn btn-info"
                   onClick={() => handleOpenCreateModal(true)}
                 >
                   <FaPlus />

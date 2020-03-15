@@ -1,0 +1,8 @@
+.table .action-column {
+  /* max-width: 30px; */
+  justify-content: flex-end;
+}
+
+.table .action-column .delete-button {
+  margin-right: 10px;
+}

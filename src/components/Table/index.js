@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Table as DataTable } from "reactstrap";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
+
+import "./styles.css";
 import LoadingTable from "../../components/Table/LoadingTable";
 
 const Table = ({
@@ -37,14 +39,14 @@ const Table = ({
         <LoadingTable />
       ) : (
         <>
-          <DataTable className="tablesorter" responsive>
+          <DataTable className="tablesorter table" responsive>
             <thead className="text-primary">
               <tr>
                 {columns &&
                   columns.map((column, index) => (
                     <th key={index}>{column.name}</th>
                   ))}
-                <th className="text-center">Actions</th>
+                <th className="text-center action-column">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -57,7 +59,7 @@ const Table = ({
                       ))}
                     <td className="text-center action-column">
                       <button
-                        className="btn btn-danger btn-fab btn-icon btn-round btn-table-action"
+                        className="btn btn-danger btn-fab btn-icon btn-round delete-button"
                         onClick={() => deleteAction(item)}
                       >
                         <FaTrashAlt />
@@ -83,7 +85,7 @@ const Table = ({
             }}
           >
             <button
-              className="btn-fill btn btn-primary"
+              className="btn-fill btn btn-info"
               onClick={() => handlePreviousPage()}
             >
               Anterior
@@ -92,7 +94,7 @@ const Table = ({
               {pageNumber} / {data.total}
             </p>
             <button
-              className="btn-fill btn btn-primary"
+              className="btn-fill btn btn-info"
               onClick={() => handleNextPage()}
             >
               Próximo
