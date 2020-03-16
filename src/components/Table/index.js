@@ -11,7 +11,6 @@ const Table = ({
   data,
   fetchAction,
   updateAction,
-  refreshData,
   deleteAction
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -19,7 +18,7 @@ const Table = ({
 
   useEffect(() => {
     fetchAction({ pageNumber, pageSize });
-  }, [pageNumber, refreshData]);
+  }, [pageNumber]);
 
   function handleNextPage() {
     if (pageNumber < data.total) {

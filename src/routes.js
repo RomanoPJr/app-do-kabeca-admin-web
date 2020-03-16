@@ -3,11 +3,13 @@ import {
   FaUserShield,
   FaTachometerAlt,
   FaBook,
-  FaRegFlag
+  FaRegFlag,
+  FaUsers
 } from "react-icons/fa";
 
 import Admins from "./views/Admins";
 import Dashboard from "./views/Dashboard";
+import Organizer from "./views/Organizer";
 import EventSuggestion from "./views/EventSuggestion";
 import StatuteSuggestion from "./views/StatuteSuggestion";
 
@@ -17,6 +19,13 @@ var routes = [
     name: "Dashboard",
     icon: <FaTachometerAlt size={18} />,
     component: Dashboard,
+    layout: "/admin"
+  },
+  {
+    path: "/organizer",
+    name: "Organizadores",
+    icon: <FaUsers size={18} />,
+    component: Organizer,
     layout: "/admin"
   },
   {

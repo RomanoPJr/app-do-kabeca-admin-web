@@ -3,14 +3,16 @@ import thunk from "redux-thunk";
 
 import admin from "../store/admin/admin.reducers";
 import session from "../store/session/session.reducers";
-import statuteSuggestion from "../store/statuteSuggestion/statuteSuggestion.reducers";
+import organizer from "../store/organizer/organizer.reducers";
 import eventSuggestion from "../store/eventSuggestion/eventSuggestion.reducers";
+import statuteSuggestion from "../store/statuteSuggestion/statuteSuggestion.reducers";
 
 const rootReducer = combineReducers({
   admin,
   session,
-  statuteSuggestion,
-  eventSuggestion
+  organizer,
+  eventSuggestion,
+  statuteSuggestion
 });
 
 // const store = createStore(rootReducer, applyMiddleware(thunk));

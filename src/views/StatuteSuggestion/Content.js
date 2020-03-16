@@ -1,5 +1,3 @@
-import { convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import React from "react";
 const Content = ({ list }) => {
   return (
