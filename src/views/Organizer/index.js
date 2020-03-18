@@ -112,16 +112,11 @@ const Organizer = ({
                   { name: "Nome", attribute: "name" },
                   { name: "Telefone", attribute: "phone" },
                   { name: "E-mail", attribute: "email" },
+                  { name: "Status", attribute: "status" },
                   {
-                    name: "Acões",
+                    name: <b className="action-column">Acões</b>,
                     render: ({ data }) => (
                       <>
-                        <DeleteButton
-                          onClick={() => {
-                            setCurrentData(data);
-                            setModalDeleteOpened(true);
-                          }}
-                        />
                         <EditButton
                           onClick={() => {
                             setCurrentData(data);

@@ -107,7 +107,7 @@ const EventSuggestion = ({
                   { name: "Descrição", attribute: "description" },
                   { name: "Valor", attribute: "value" },
                   {
-                    name: "Acões",
+                    name: <b className="action-column">Acões</b>,
                     render: ({ data }) => (
                       <>
                         <DeleteButton

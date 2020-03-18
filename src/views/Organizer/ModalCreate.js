@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Button, Col, Form, Row, Input } from "reactstrap";
+import { Button, Col, Form, Row, Input, Select } from "reactstrap";
 import Modal from "../../components/Modal";
 
 const ModalCreate = ({
@@ -14,13 +14,14 @@ const ModalCreate = ({
   const [name, setName] = useState(data ? data.name : "");
   const [phone, setPhone] = useState(data ? data.phone : "");
   const [email, setEmail] = useState(data ? data.email : "");
+  const [status, setStatus] = useState(data ? data.status : "");
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   function handleSubmitForm(evt) {
     if (!id) {
-      createAction({ name, phone, email, password });
+      createAction({ name, phone, email, password, status });
     } else {
       updateAction({
         id,
@@ -29,7 +30,8 @@ const ModalCreate = ({
         email,
         password,
         oldPassword,
-        confirmPassword
+        confirmPassword,
+        status
       });
     }
     evt.preventDefault();
@@ -39,7 +41,7 @@ const ModalCreate = ({
     <>
       {opened && (
         <Modal
-          class="modal fade bd-example-modal-lg"
+          className="modal fade bd-example-modal-lg"
           title="Evento"
           opened={opened}
           setOpened={setOpened}
@@ -119,6 +121,19 @@ const ModalCreate = ({
                   />
                 </Col>
               )}
+              <Col md="12">
+                <label>Confirmar Senha</label>
+                <select
+                  name="select"
+                  className="form-control"
+                  onChange={event => setStatus(event.target.value)}
+                  value={status}
+                >
+                  <option value="Ativo">Ativo</option>
+                  <option value="Inativo">Inativo</option>
+                  <option value="Tester">Tester</option>
+                </select>
+              </Col>
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>

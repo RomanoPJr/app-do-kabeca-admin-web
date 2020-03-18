@@ -132,7 +132,7 @@ const Admins = ({
                     { name: "E-mail", attribute: "email" },
                     { name: "Telefone", attribute: "phone" },
                     {
-                      name: "Acões",
+                      name: <b className="action-column">Acões</b>,
                       render: ({ data }) => {
                         return (
                           <>
