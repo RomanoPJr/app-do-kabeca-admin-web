@@ -11,10 +11,10 @@ const ModalCreate = ({
   updateAction
 }) => {
   const [id] = useState(data ? data.id : "");
-  const [name, setName] = useState(data ? data.name : "");
-  const [phone, setPhone] = useState(data ? data.phone : "");
-  const [email, setEmail] = useState(data ? data.email : "");
-  const [status, setStatus] = useState(data ? data.status : "");
+  const [name, setName] = useState(data.name ? data.name : "");
+  const [phone, setPhone] = useState(data.phone ? data.phone : "");
+  const [email, setEmail] = useState(data.email ? data.email : "");
+  const [status, setStatus] = useState(data.status ? data.status : "Tester");
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -46,7 +46,7 @@ const ModalCreate = ({
           opened={opened}
           setOpened={setOpened}
         >
-          <Form onSubmit={evt => handleSubmitForm(evt)}>
+          <Form onSubmit={evt => handleSubmitForm(evt)} autocomplete="off">
             <Row>
               <Col md="12">
                 <label>Nome</label>
@@ -72,8 +72,9 @@ const ModalCreate = ({
                 <label>Telefone</label>
                 <Input
                   required={true}
+                  autocomplete="off"
                   placeholder="Informe o Telefone"
-                  type="phone"
+                  type="text"
                   onChange={event => setPhone(event.target.value)}
                   value={phone}
                 />
@@ -122,7 +123,7 @@ const ModalCreate = ({
                 </Col>
               )}
               <Col md="12">
-                <label>Confirmar Senha</label>
+                <label>Status</label>
                 <select
                   name="select"
                   className="form-control"
