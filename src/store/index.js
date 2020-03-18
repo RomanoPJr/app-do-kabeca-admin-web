@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
 
 var store;
 
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === "development") {
   store = createStore(
     rootReducer,
