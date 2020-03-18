@@ -15,6 +15,8 @@ import {
 import ModalDelete from "./ModalDelete";
 import ModalNewAdmin from "./ModalNewAdmin";
 import Table from "../../components/Table";
+import DeleteButton from "../../components/ActionButtons/DeleteButton";
+import EditButton from "../../components/ActionButtons/EditButton";
 import {
   fetchAdminsAction,
   createAdminAction,
@@ -36,9 +38,9 @@ const Admins = ({
   deleteAdminLoading
 }) => {
   const [refreshData, setRefreshData] = useState(false);
-  const [modalOpened, setModalOpened] = useState(false);
+  const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
-  const [modalData, setModalData] = useState({});
+  const [currentData, setCurrentData] = useState({});
   const [alertConfig, setAlertConfig] = useState({
     type: "",
     message: "",
@@ -56,11 +58,11 @@ const Admins = ({
     if (
       !createAdminLoading &&
       !updateAdminLoading &&
-      modalOpened &&
+      modalCreateOpened &&
       createAdminError === "" &&
       updateAdminError === ""
     ) {
-      setModalOpened(false);
+      setModalCreateOpened(false);
       setRefreshData(!refreshData);
       showAlert({
         type: "success",
@@ -89,18 +91,8 @@ const Admins = ({
   }
 
   function handleOpenCreateModal() {
-    setModalData({});
-    setModalOpened(true);
-  }
-
-  function handleOpenUpdateModal(data) {
-    setModalData(data);
-    setModalOpened(true);
-  }
-
-  function handleOpenDeleteModal(data) {
-    setModalData(data);
-    setModalDeleteOpened(true);
+    setCurrentData({});
+    setModalCreateOpened(true);
   }
 
   return (
@@ -138,29 +130,48 @@ const Admins = ({
                     { name: "Nome", attribute: "firstname" },
                     { name: "Sobrenome", attribute: "lastname" },
                     { name: "E-mail", attribute: "email" },
-                    { name: "Telefone", attribute: "phone" }
+                    { name: "Telefone", attribute: "phone" },
+                    {
+                      name: "Acões",
+                      render: ({ data }) => {
+                        return (
+                          <>
+                            <DeleteButton
+                              onClick={() => {
+                                setCurrentData(data);
+                                setModalDeleteOpened(true);
+                              }}
+                            />
+                            <EditButton
+                              onClick={() => {
+                                setCurrentData(data);
+                                setModalCreateOpened(true);
+                              }}
+                            />
+                          </>
+                        );
+                      }
+                    }
                   ]}
                   refreshData={refreshData}
                   fetchAction={fetchAdmins}
-                  updateAction={handleOpenUpdateModal}
-                  deleteAction={handleOpenDeleteModal}
                 />
               </CardBody>
             </Card>
           </Col>
         </Row>
       </div>
-      {modalOpened && (
+      {modalCreateOpened && (
         <ModalNewAdmin
-          data={modalData}
-          opened={modalOpened}
-          setOpened={setModalOpened}
+          data={currentData}
+          opened={modalCreateOpened}
+          setOpened={setModalCreateOpened}
           saveAction={createAdmin}
           updateAction={updateAdmin}
         />
       )}
       <ModalDelete
-        data={modalData}
+        data={currentData}
         opened={modalDeleteOpened}
         setOpened={setModalDeleteOpened}
         action={deleteAdmin}

@@ -7,6 +7,8 @@ import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../components/Table";
 import organizerActions from "../../store/organizer/organizer.actions";
+import DeleteButton from "../../components/ActionButtons/DeleteButton";
+import EditButton from "../../components/ActionButtons/EditButton";
 
 const Organizer = ({
   list,
@@ -35,16 +37,6 @@ const Organizer = ({
     setTimeout(() => {
       setAlertConfig({ ...alertConfig, opened: false });
     }, 5000);
-  }
-
-  function handleOpenUpdateModal(currentData) {
-    setCurrentData(currentData);
-    setModalCreateOpened(true);
-  }
-
-  function handleOpenDeleteModal(currentData) {
-    setCurrentData(currentData);
-    setModalDeleteOpened(true);
   }
 
   useEffect(() => {
@@ -112,8 +104,6 @@ const Organizer = ({
               <Table
                 isLoading={loading}
                 fetchAction={fetchAction}
-                updateAction={handleOpenUpdateModal}
-                deleteAction={handleOpenDeleteModal}
                 data={{
                   data: list.data,
                   total: list.pageTotal
@@ -121,7 +111,26 @@ const Organizer = ({
                 columns={[
                   { name: "Nome", attribute: "name" },
                   { name: "Telefone", attribute: "phone" },
-                  { name: "E-mail", attribute: "email" }
+                  { name: "E-mail", attribute: "email" },
+                  {
+                    name: "Acões",
+                    render: ({ data }) => (
+                      <>
+                        <DeleteButton
+                          onClick={() => {
+                            setCurrentData(data);
+                            setModalDeleteOpened(true);
+                          }}
+                        />
+                        <EditButton
+                          onClick={() => {
+                            setCurrentData(data);
+                            setModalCreateOpened(true);
+                          }}
+                        />
+                      </>
+                    )
+                  }
                 ]}
               />
             </CardBody>

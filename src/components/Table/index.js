@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Table as DataTable } from "reactstrap";
-import { FaTrashAlt, FaEdit } from "react-icons/fa";
 
 import "./styles.css";
 import LoadingTable from "../../components/Table/LoadingTable";
 
-const Table = ({
-  isLoading,
-  columns,
-  data,
-  fetchAction,
-  updateAction,
-  deleteAction
-}) => {
+const Table = ({ isLoading, columns, data, fetchAction }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize] = useState(10);
 
@@ -45,7 +37,6 @@ const Table = ({
                   columns.map((column, index) => (
                     <th key={index}>{column.name}</th>
                   ))}
-                <th className="text-center action-column">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -53,23 +44,17 @@ const Table = ({
                 data.data.map((item, index) => (
                   <tr key={index}>
                     {columns &&
-                      columns.map((column, index) => (
-                        <td key={index}>{item[column.attribute]}</td>
-                      ))}
-                    <td className="text-center action-column">
-                      <button
-                        className="btn btn-danger btn-fab btn-icon btn-round delete-button"
-                        onClick={() => deleteAction(item)}
-                      >
-                        <FaTrashAlt />
-                      </button>
-                      <button
-                        className="btn btn-default btn-fab btn-icon btn-round btn-table-action"
-                        onClick={() => updateAction(item)}
-                      >
-                        <FaEdit />
-                      </button>
-                    </td>
+                      columns.map((column, index) => {
+                        if (column.render) {
+                          return (
+                            <td className="text-center action-column">
+                              {column.render({ data: item })}
+                            </td>
+                          );
+                        } else {
+                          return <td key={index}>{item[column.attribute]}</td>;
+                        }
+                      })}
                   </tr>
                 ))}
             </tbody>

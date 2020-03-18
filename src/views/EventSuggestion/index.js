@@ -7,6 +7,8 @@ import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../components/Table";
 import eventSuggestionActions from "../../store/eventSuggestion/eventSuggestion.actions";
+import DeleteButton from "../../components/ActionButtons/DeleteButton";
+import EditButton from "../../components/ActionButtons/EditButton";
 
 const EventSuggestion = ({
   fetchAction,
@@ -35,16 +37,6 @@ const EventSuggestion = ({
     setTimeout(() => {
       setAlertConfig({ ...alertConfig, opened: false });
     }, 5000);
-  }
-
-  function handleOpenUpdateModal(currentData) {
-    setCurrentData(currentData);
-    setModalCreateOpened(true);
-  }
-
-  function handleOpenDeleteModal(currentData) {
-    setCurrentData(currentData);
-    setModalDeleteOpened(true);
   }
 
   useEffect(() => {
@@ -107,15 +99,32 @@ const EventSuggestion = ({
               <Table
                 isLoading={loading}
                 fetchAction={fetchAction}
-                updateAction={handleOpenUpdateModal}
-                deleteAction={handleOpenDeleteModal}
                 data={{
                   data: list.data,
                   total: list.pageTotal
                 }}
                 columns={[
                   { name: "Descrição", attribute: "description" },
-                  { name: "Valor", attribute: "value" }
+                  { name: "Valor", attribute: "value" },
+                  {
+                    name: "Acões",
+                    render: ({ data }) => (
+                      <>
+                        <DeleteButton
+                          onClick={() => {
+                            setCurrentData(data);
+                            setModalDeleteOpened(true);
+                          }}
+                        />
+                        <EditButton
+                          onClick={() => {
+                            setCurrentData(data);
+                            setModalCreateOpened(true);
+                          }}
+                        />
+                      </>
+                    )
+                  }
                 ]}
               />
             </CardBody>
