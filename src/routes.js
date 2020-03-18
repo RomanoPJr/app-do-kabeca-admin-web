@@ -1,38 +1,23 @@
 import React from "react";
-import {
-  FaUserShield,
-  FaTachometerAlt,
-  FaBook,
-  FaRegFlag,
-  FaUsers
-} from "react-icons/fa";
-
+import { FaBook, FaRegFlag, FaUsers, FaUserShield } from "react-icons/fa";
 import Admins from "./views/Admins";
-import Dashboard from "./views/Dashboard";
-import Organizer from "./views/Organizer";
 import EventSuggestion from "./views/EventSuggestion";
+import Organizer from "./views/Organizer";
 import StatuteSuggestion from "./views/StatuteSuggestion";
 
 var routes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: <FaTachometerAlt size={18} />,
-    component: Dashboard,
-    layout: "/admin"
-  },
-  {
-    path: "/organizer",
-    name: "Organizadores",
-    icon: <FaUsers size={18} />,
-    component: Organizer,
-    layout: "/admin"
-  },
   {
     path: "/admins",
     name: "Administradores",
     icon: <FaUserShield size={18} />,
     component: Admins,
+    layout: "/admin"
+  },
+  {
+    path: "/organizers",
+    name: "Organizadores",
+    icon: <FaUsers size={18} />,
+    component: Organizer,
     layout: "/admin"
   },
   {
@@ -43,7 +28,7 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/event_suggestion",
+    path: "/event_suggestions",
     name: "Sugestões de Eventos",
     icon: <FaRegFlag size={18} />,
     component: EventSuggestion,

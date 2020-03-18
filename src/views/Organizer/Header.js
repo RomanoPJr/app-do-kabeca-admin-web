@@ -9,7 +9,7 @@ const EmptyState = ({
 }) => {
   return (
     <CardHeader className="card-header-with-button">
-      <CardTitle tag="h4">Sugestões de Eventos</CardTitle>
+      <CardTitle tag="h4">Organizadores</CardTitle>
       <div>
         <Button
           className="btn-fill btn btn-info"

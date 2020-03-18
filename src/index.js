@@ -17,10 +17,10 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Switch>
+        <Redirect exact from="/" to="/admin/organizers" />
+        <Redirect exact from="/admin" to="/admin/organizers" />
         <Route path="/admin" render={props => <AdminLayout {...props} />} />
         <Route path="/signIn" render={() => <SignIn />} />
-        <Redirect exact from="/" to="/admin/dashboard" />
-        <Redirect exact from="/admin" to="/admin/dashboard" />
       </Switch>
     </Router>
   </Provider>,

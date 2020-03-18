@@ -30,7 +30,7 @@ const SignIn = ({ createSession, session, sessionError }) => {
 
   useEffect(() => {
     if (session.id && localStorage.getItem("user-token")) {
-      history.push("/admin/dashboard");
+      history.push("/");
     } else if (sessionError !== "") {
       setAlertText("Email ou senha inválidos.");
       setAlertIsOpen(true);
