@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Alert, Card, CardBody, Col, Row } from "reactstrap";
-
+import EditButton from "../../components/ActionButtons/EditButton";
+import Table from "../../components/Table";
+import organizerActions from "../../store/organizer/organizer.actions";
 import Header from "./Header";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
-import Table from "../../components/Table";
-import organizerActions from "../../store/organizer/organizer.actions";
-import DeleteButton from "../../components/ActionButtons/DeleteButton";
-import EditButton from "../../components/ActionButtons/EditButton";
 
 const Organizer = ({
   list,

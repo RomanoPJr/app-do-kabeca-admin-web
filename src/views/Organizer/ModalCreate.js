@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Button, Col, Form, Row, Input, Select } from "reactstrap";
+import { Button, Col, Form, Input, Row } from "reactstrap";
 import Modal from "../../components/Modal";
 
 const ModalCreate = ({
