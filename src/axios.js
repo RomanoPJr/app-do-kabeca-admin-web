@@ -1,4 +1,5 @@
 import axios from "axios";
+import history from "./history";
 
 const axiosInstance = () =>
   axios.create({
@@ -6,6 +7,14 @@ const axiosInstance = () =>
     timeout: 1000,
     headers: {
       Authorization: `Bearer ${localStorage.getItem("user-token")}`
+    },
+    validateStatus: status => {
+      if (status && status === 401) {
+        localStorage.removeItem("user-token");
+        history.replace("/signIn");
+        return false;
+      }
+      return true;
     }
   });
 

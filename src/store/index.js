@@ -15,13 +15,19 @@ const rootReducer = combineReducers({
   statuteSuggestion
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
-// const store = createStore(
-//   rootReducer,
-//   compose(
-//     applyMiddleware(thunk),
-//     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-//   )
-// );
+var store;
+
+if (process.env.NODE_ENV === "development") {
+  store = createStore(
+    rootReducer,
+    compose(
+      applyMiddleware(thunk),
+      window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
+  );
+} else {
+  store = createStore(rootReducer, applyMiddleware(thunk));
+}
 
 export default store;

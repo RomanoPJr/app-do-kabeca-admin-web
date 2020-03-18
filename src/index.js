@@ -17,19 +17,10 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Switch>
+        <Route path="/admin" render={props => <AdminLayout {...props} />} />
+        <Route path="/signIn" render={() => <SignIn />} />
         <Redirect exact from="/" to="/admin/dashboard" />
         <Redirect exact from="/admin" to="/admin/dashboard" />
-        <Route
-          path="/admin"
-          render={props => {
-            return localStorage.getItem("user-token") ? (
-              <AdminLayout {...props} />
-            ) : (
-              <SignIn />
-            );
-          }}
-        />
-        <Route path="/admin/signIn" render={props => <SignIn />} />
       </Switch>
     </Router>
   </Provider>,
