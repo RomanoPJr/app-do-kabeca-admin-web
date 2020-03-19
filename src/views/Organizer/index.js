@@ -97,18 +97,14 @@ const Organizer = ({
         <Col md="12">
           <Card>
             <Header
-              listLength={list.length}
               setModalCreateOpened={setModalCreateOpened}
               setModalDeleteOpened={setModalDeleteOpened}
             />
             <CardBody>
               <Table
-                pageSize={pageSize}
-                pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
                 isLoading={loading}
-                fetchAction={fetchAction}
-                data={{ ...list }}
+                data={list}
                 columns={[
                   { name: "Nome", attribute: "name" },
                   { name: "Telefone", attribute: "phone" },

@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 import Modal from "../../components/Modal";
 
-const ModalNewAdmin = ({
-  data,
-  opened,
-  setOpened,
-  saveAction,
-  updateAction
-}) => {
+const ModalCreate = ({ data, opened, setOpened, saveAction, updateAction }) => {
   const [id] = useState(data ? data.id : "");
   const [firstname, setFirstname] = useState(data ? data.firstname : "");
   const [lastname, setLastname] = useState(data ? data.lastname : "");
@@ -96,4 +90,4 @@ const ModalNewAdmin = ({
   );
 };
 
-export default ModalNewAdmin;
+export default ModalCreate;

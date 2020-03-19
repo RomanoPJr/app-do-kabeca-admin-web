@@ -1,102 +1,98 @@
 import {
-  FETCH_ADMIN_REQUEST,
-  FETCH_ADMIN_SUCCESS,
-  FETCH_ADMIN_FAILURE,
-  CREATE_ADMIN_REQUEST,
-  CREATE_ADMIN_SUCCESS,
-  CREATE_ADMIN_FAILURE,
-  DELETE_ADMIN_REQUEST,
-  DELETE_ADMIN_SUCCESS,
-  DELETE_ADMIN_FAILURE,
-  UPDATE_ADMIN_REQUEST,
-  UPDATE_ADMIN_SUCCESS,
-  UPDATE_ADMIN_FAILURE
+  FETCH_REQUEST,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
+  CREATE_REQUEST,
+  CREATE_SUCCESS,
+  CREATE_FAILURE,
+  DELETE_REQUEST,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
+  UPDATE_REQUEST,
+  UPDATE_SUCCESS,
+  UPDATE_FAILURE
 } from "./admin.types";
 
 const INITIAL_STATE = {
-  listAll: [],
   loading: false,
-  error: "",
-  createAdminError: "",
-  deleteAdminError: "",
-  updateAdminError: "",
-  createAdminLoading: false,
-  deleteAdminLoading: false,
-  updateAdminLoading: false
+  list: [],
+  error: ""
 };
 
 function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_ADMIN_REQUEST:
+    case FETCH_REQUEST:
       return {
         ...state,
         loading: true
       };
-    case FETCH_ADMIN_SUCCESS:
+    case FETCH_SUCCESS:
       return {
         ...state,
         loading: false,
-        listAll: action.payload,
+        list: action.payload,
         error: ""
       };
-    case FETCH_ADMIN_FAILURE:
+    case FETCH_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload
       };
-    case CREATE_ADMIN_REQUEST:
+    case CREATE_REQUEST:
       return {
         ...state,
-        createAdminLoading: true
+        loading: true
       };
-    case CREATE_ADMIN_SUCCESS:
+    case CREATE_SUCCESS:
       return {
         ...state,
-        createAdminLoading: false,
-        createAdminError: ""
+        loading: false,
+        list: [action.payload],
+        error: ""
       };
-    case CREATE_ADMIN_FAILURE:
+    case CREATE_FAILURE:
       return {
         ...state,
-        createAdminLoading: false,
-        createAdminError: action.payload
+        loading: false,
+        error: action.payload
       };
-    case DELETE_ADMIN_REQUEST:
+    case DELETE_REQUEST:
       return {
         ...state,
-        deleteAdminLoading: true
+        loading: true
       };
-    case DELETE_ADMIN_SUCCESS:
+    case DELETE_SUCCESS:
       return {
         ...state,
-        deleteAdminLoading: false,
-        deleteAdminError: ""
+        loading: false,
+        list: [],
+        error: ""
       };
-    case DELETE_ADMIN_FAILURE:
+    case DELETE_FAILURE:
       return {
         ...state,
-        deleteAdminLoading: false,
-        deleteAdminError: action.payload
+        loading: false,
+        error: action.payload
       };
-    case UPDATE_ADMIN_REQUEST:
+    case UPDATE_REQUEST:
       return {
         ...state,
-        updateAdminLoading: true
+        loading: true,
+        error: ""
       };
-    case UPDATE_ADMIN_SUCCESS:
+    case UPDATE_SUCCESS:
       return {
         ...state,
-        updateAdminLoading: false,
-        updateAdminError: ""
+        loading: false,
+        error: ""
       };
-    case UPDATE_ADMIN_FAILURE:
+    case UPDATE_FAILURE:
       return {
         ...state,
-        updateAdminLoading: false,
-        updateAdminError: action.payload
+        loading: false,
+        error: action.payload
       };
-
     default:
       return state;
   }

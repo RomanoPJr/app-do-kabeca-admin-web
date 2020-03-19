@@ -1,43 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { FaPlus } from "react-icons/fa";
-import {
-  Alert,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Row,
-  Col,
-  Button
-} from "reactstrap";
+import { Alert, Card, CardBody, Col, Row } from "reactstrap";
 
+import Header from "./Header";
+import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
-import ModalNewAdmin from "./ModalNewAdmin";
 import Table from "../../components/Table";
-import DeleteButton from "../../components/ActionButtons/DeleteButton";
+import adminActions from "../../store/admin/admin.actions";
 import EditButton from "../../components/ActionButtons/EditButton";
-import {
-  fetchAdminsAction,
-  createAdminAction,
-  deleteAdminAction,
-  updateAdminAction
-} from "../../store/admin/admin.actions";
+import DeleteButton from "../../components/ActionButtons/DeleteButton";
 
 const Admins = ({
-  fetchAdmins,
-  admins,
-  adminsIsLoading,
-  createAdmin,
-  createAdminLoading,
-  createAdminError,
-  updateAdmin,
-  updateAdminError,
-  updateAdminLoading,
-  deleteAdmin,
-  deleteAdminLoading
+  list,
+  error,
+  loading,
+  fetchAction,
+  createAction,
+  updateAction,
+  deleteAction
 }) => {
-  const [refreshData, setRefreshData] = useState(false);
+  const [pageSize] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
   const [currentData, setCurrentData] = useState({});
@@ -46,38 +29,6 @@ const Admins = ({
     message: "",
     opened: false
   });
-
-  useEffect(() => {
-    if (!deleteAdminLoading) {
-      setRefreshData(!refreshData);
-      setModalDeleteOpened(false);
-    }
-  }, [deleteAdminLoading]);
-
-  useEffect(() => {
-    if (
-      !createAdminLoading &&
-      !updateAdminLoading &&
-      modalCreateOpened &&
-      createAdminError === "" &&
-      updateAdminError === ""
-    ) {
-      setModalCreateOpened(false);
-      setRefreshData(!refreshData);
-      showAlert({
-        type: "success",
-        message: "Registro salvo com sucesso!"
-      });
-    } else if (
-      (!createAdminLoading || !updateAdminLoading) &&
-      (createAdminError !== "" || updateAdminError !== "")
-    ) {
-      showAlert({
-        type: "danger",
-        message: "Email ou Telefone já existem, ou os dados são incompatíveis."
-      });
-    }
-  }, [createAdminLoading, updateAdminLoading]);
 
   function showAlert({ type, message }) {
     setAlertConfig({
@@ -90,42 +41,72 @@ const Admins = ({
     }, 5000);
   }
 
-  function handleOpenCreateModal() {
-    setCurrentData({});
-    setModalCreateOpened(true);
-  }
+  useEffect(() => {
+    fetchAction({ pageNumber, pageSize });
+  }, [pageNumber]);
+
+  useEffect(() => {
+    if (!loading && error === "") {
+      if (modalCreateOpened) {
+        fetchAction({ pageNumber, pageSize });
+        setModalCreateOpened(false);
+        if (currentData.id) {
+          showAlert({
+            type: "success",
+            message: "Registro Alterado com Sucesso"
+          });
+        } else {
+          showAlert({
+            type: "success",
+            message: "Registro Salvo com Sucesso"
+          });
+        }
+      } else if (modalDeleteOpened) {
+        fetchAction({ pageNumber, pageSize });
+        setModalDeleteOpened(false);
+        showAlert({
+          type: "success",
+          message: "Registro Excluído com Sucesso"
+        });
+      }
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (error !== "" && !loading && modalCreateOpened) {
+      showAlert({
+        type: "danger",
+        message: error
+      });
+    } else if (error !== "" && !loading && modalDeleteOpened) {
+      showAlert({
+        type: "danger",
+        message: "Erro ao deletar o registro"
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (!modalCreateOpened && !modalDeleteOpened) {
+      setCurrentData({});
+    }
+  }, [modalCreateOpened, modalDeleteOpened]);
 
   return (
     <>
-      <Alert
-        isOpen={alertConfig.opened}
-        color={alertConfig.type}
-        fade
-        style={{ position: "absolute", right: 20, top: 20, zIndex: 99999 }}
-      >
-        {alertConfig.message}
-      </Alert>
       <div className="content">
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader className="card-header-with-button">
-                <CardTitle tag="h4">Administradores</CardTitle>
-                <Button
-                  className="btn-fill btn btn-info"
-                  onClick={() => handleOpenCreateModal(true)}
-                >
-                  <FaPlus />
-                  {` Novo`}
-                </Button>
-              </CardHeader>
+              <Header
+                setModalCreateOpened={setModalCreateOpened}
+                setModalDeleteOpened={setModalDeleteOpened}
+              />
               <CardBody>
                 <Table
-                  data={{
-                    data: admins.data,
-                    total: admins.pageTotal
-                  }}
-                  isLoading={adminsIsLoading}
+                  setPageNumber={setPageNumber}
+                  isLoading={loading}
+                  data={list}
                   columns={[
                     { name: "Nome", attribute: "firstname" },
                     { name: "Sobrenome", attribute: "lastname" },
@@ -153,49 +134,50 @@ const Admins = ({
                       }
                     }
                   ]}
-                  refreshData={refreshData}
-                  fetchAction={fetchAdmins}
                 />
               </CardBody>
             </Card>
           </Col>
         </Row>
       </div>
+      <Alert
+        isOpen={alertConfig.opened}
+        color={alertConfig.type}
+        fade
+        style={{ position: "absolute", right: 20, top: 20, zIndex: 99999 }}
+      >
+        {alertConfig.message}
+      </Alert>
       {modalCreateOpened && (
-        <ModalNewAdmin
+        <ModalCreate
           data={currentData}
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
-          saveAction={createAdmin}
-          updateAction={updateAdmin}
+          saveAction={createAction}
+          updateAction={updateAction}
         />
       )}
       <ModalDelete
         data={currentData}
         opened={modalDeleteOpened}
         setOpened={setModalDeleteOpened}
-        action={deleteAdmin}
+        action={deleteAction}
       />
     </>
   );
 };
 
 const mapStateToProps = state => ({
-  admins: state.admin.listAll,
-  adminsError: state.admin.error,
-  adminsIsLoading: state.admin.loading,
-  createAdminError: state.admin.createAdminError,
-  createAdminLoading: state.admin.createAdminLoading,
-  updateAdminError: state.admin.updateAdminError,
-  updateAdminLoading: state.admin.updateAdminLoading,
-  deleteAdminLoading: state.admin.deleteAdminLoading
+  list: state.admin.list,
+  error: state.admin.error,
+  loading: state.admin.loading
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAdmins: payload => dispatch(fetchAdminsAction(payload)),
-  deleteAdmin: payload => dispatch(deleteAdminAction(payload)),
-  updateAdmin: payload => dispatch(updateAdminAction(payload)),
-  createAdmin: payload => dispatch(createAdminAction(payload))
+  fetchAction: payload => dispatch(adminActions.fetch(payload)),
+  createAction: payload => dispatch(adminActions.create(payload)),
+  updateAction: payload => dispatch(adminActions.update(payload)),
+  deleteAction: payload => dispatch(adminActions.remove(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admins);

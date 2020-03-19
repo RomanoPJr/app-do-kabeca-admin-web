@@ -5,7 +5,7 @@ import { Button, CardHeader, CardTitle } from "reactstrap";
 const EmptyState = ({ setModalCreateOpened, setModalDeleteOpened }) => {
   return (
     <CardHeader className="card-header-with-button">
-      <CardTitle tag="h4">Organizadores</CardTitle>
+      <CardTitle tag="h4">Administradores</CardTitle>
       <div>
         <Button
           className="btn-fill btn btn-info"

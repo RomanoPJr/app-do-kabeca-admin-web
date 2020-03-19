@@ -16,11 +16,13 @@ import {
 } from "./eventSuggestion.types";
 import requests from "../async/async.actions";
 
-const fetch = () => {
+const fetch = payload => {
   return function(dispatch) {
     dispatch(requests.send(FETCH_REQUEST));
     axios()
-      .get(`/event_suggestion`)
+      .get(
+        `/event_suggestion?pageNumber=${payload.pageNumber}&pageSize=${payload.pageSize}`
+      )
       .then(response => {
         const payload = response.data || [];
         dispatch(requests.success(FETCH_SUCCESS, payload));

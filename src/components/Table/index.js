@@ -3,7 +3,7 @@ import { Table as DataTable } from "reactstrap";
 import LoadingTable from "../../components/Table/LoadingTable";
 import "./styles.css";
 
-const Table = ({ isLoading, columns, data, pageNumber, setPageNumber }) => {
+const Table = ({ isLoading, columns, data, setPageNumber }) => {
   function handleNextPage() {
     if (data.pageNumber < data.pageTotal) {
       setPageNumber(parseInt(data.pageNumber) + 1);

@@ -6,19 +6,21 @@ import Header from "./Header";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../components/Table";
-import eventSuggestionActions from "../../store/eventSuggestion/eventSuggestion.actions";
-import DeleteButton from "../../components/ActionButtons/DeleteButton";
 import EditButton from "../../components/ActionButtons/EditButton";
+import DeleteButton from "../../components/ActionButtons/DeleteButton";
+import eventSuggestionActions from "../../store/eventSuggestion/eventSuggestion.actions";
 
 const EventSuggestion = ({
+  list,
+  error,
+  loading,
   fetchAction,
   createAction,
   updateAction,
-  removeAction,
-  list,
-  error,
-  loading
+  removeAction
 }) => {
+  const [pageSize] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
   const [modalCreateOpened, setModalCreateOpened] = useState();
   const [modalDeleteOpened, setModalDeleteOpened] = useState();
   const [currentData, setCurrentData] = useState({});
@@ -40,13 +42,13 @@ const EventSuggestion = ({
   }
 
   useEffect(() => {
-    fetchAction();
-  }, []);
+    fetchAction({ pageNumber, pageSize });
+  }, [pageNumber]);
 
   useEffect(() => {
     if (!loading && error === "") {
       if (modalCreateOpened) {
-        fetchAction();
+        fetchAction({ pageNumber, pageSize });
         setModalCreateOpened(false);
         if (currentData.id) {
           showAlert({
@@ -60,7 +62,7 @@ const EventSuggestion = ({
           });
         }
       } else if (modalDeleteOpened) {
-        fetchAction();
+        fetchAction({ pageNumber, pageSize });
         setModalDeleteOpened(false);
         setCurrentData({});
         showAlert({
@@ -97,12 +99,9 @@ const EventSuggestion = ({
             />
             <CardBody>
               <Table
+                setPageNumber={setPageNumber}
                 isLoading={loading}
-                fetchAction={fetchAction}
-                data={{
-                  data: list.data,
-                  total: list.pageTotal
-                }}
+                data={list}
                 columns={[
                   { name: "Descrição", attribute: "description" },
                   { name: "Valor", attribute: "value" },
