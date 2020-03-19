@@ -42,7 +42,10 @@ const create = payload => {
         dispatch(requests.success(CREATE_SUCCESS, response.data));
       })
       .catch(error => {
-        const msgError = error.response.data.message || error.message;
+        const msgError =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
         dispatch(requests.failure(CREATE_FAILURE, msgError));
       });
   };
@@ -57,17 +60,11 @@ const update = payload => {
         dispatch(requests.success(UPDATE_SUCCESS, response.data));
       })
       .catch(error => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) {
-          dispatch(
-            requests.failure(UPDATE_FAILURE, error.response.data.message)
-          );
-        } else {
-          dispatch(requests.failure(UPDATE_FAILURE, error.message));
-        }
+        const msgError =
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+        dispatch(requests.failure(CREATE_FAILURE, msgError));
       });
   };
 };

@@ -58,7 +58,7 @@ const update = payload => {
       })
       .catch(error => {
         const msgError = error.response.data.message || error.message;
-        dispatch(requests.failure(CREATE_FAILURE, msgError));
+        dispatch(requests.failure(UPDATE_FAILURE, msgError));
       });
   };
 };
