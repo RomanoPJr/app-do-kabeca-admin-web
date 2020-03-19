@@ -16,13 +16,15 @@ import {
   UPDATE_FAILURE
 } from "./organizer.types";
 
-const fetch = () => {
+const fetch = payload => {
   return function(dispatch) {
     dispatch(requests.send(FETCH_REQUEST));
     axios()
-      .get(`/organizer`)
-      .then(respose => {
-        const payload = respose.data || [];
+      .get(
+        `/organizer?pageNumber=${payload.pageNumber}&pageSize=${payload.pageSize}`
+      )
+      .then(response => {
+        const payload = response.data || [];
         dispatch(requests.success(FETCH_SUCCESS, payload));
       })
       .catch(error => {
@@ -36,11 +38,12 @@ const create = payload => {
     dispatch(requests.send(CREATE_REQUEST));
     axios()
       .post(`/organizer`, payload)
-      .then(respose => {
-        dispatch(requests.success(CREATE_SUCCESS, respose.data));
+      .then(response => {
+        dispatch(requests.success(CREATE_SUCCESS, response.data));
       })
       .catch(error => {
-        dispatch(requests.failure(CREATE_FAILURE, error.message));
+        const msgError = error.response.data.message || error.message;
+        dispatch(requests.failure(CREATE_FAILURE, msgError));
       });
   };
 };
@@ -74,7 +77,7 @@ const remove = payload => {
     dispatch(requests.send(DELETE_REQUEST));
     axios()
       .delete(`/organizer/${payload}`)
-      .then(respose => {
+      .then(response => {
         dispatch(requests.success(DELETE_SUCCESS));
       })
       .catch(error => {

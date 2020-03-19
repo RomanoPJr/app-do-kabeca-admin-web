@@ -21,8 +21,8 @@ export const fetchAdminsAction = ({ pageNumber, pageSize }) => {
     dispatch(requests.send(FETCH_ADMIN_REQUEST));
     axios()
       .get(`/admins?pageNumber=${pageNumber}&pageSize=${pageSize}`)
-      .then(respose => {
-        dispatch(requests.success(FETCH_ADMIN_SUCCESS, respose.data));
+      .then(response => {
+        dispatch(requests.success(FETCH_ADMIN_SUCCESS, response.data));
       })
       .catch(error => {
         dispatch(requests.failure(FETCH_ADMIN_FAILURE, error.message));
@@ -35,8 +35,8 @@ export const createAdminAction = payload => {
     dispatch(requests.send(CREATE_ADMIN_REQUEST));
     axios()
       .post(`/admins`, payload)
-      .then(respose => {
-        dispatch(requests.success(CREATE_ADMIN_SUCCESS, respose.data));
+      .then(response => {
+        dispatch(requests.success(CREATE_ADMIN_SUCCESS, response.data));
       })
       .catch(error => {
         dispatch(requests.failure(CREATE_ADMIN_FAILURE, error.message));
@@ -49,7 +49,7 @@ export const deleteAdminAction = payload => {
     dispatch(requests.send(DELETE_ADMIN_REQUEST));
     axios()
       .delete(`/admins/${payload}`)
-      .then(respose => {
+      .then(response => {
         dispatch(requests.success(DELETE_ADMIN_SUCCESS));
       })
       .catch(error => {
@@ -63,7 +63,7 @@ export const updateAdminAction = payload => {
     dispatch(requests.send(UPDATE_ADMIN_REQUEST));
     axios()
       .put(`/admins`, payload)
-      .then(respose => {
+      .then(response => {
         dispatch(requests.success(UPDATE_ADMIN_SUCCESS));
       })
       .catch(error => {

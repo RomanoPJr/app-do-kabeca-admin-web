@@ -12,9 +12,9 @@ export const createSessionAction = payload => {
     dispatch(requests.send(FETCH_SESSION_REQUEST));
     axios()
       .post(`/sessions`, payload)
-      .then(respose => {
-        localStorage.setItem("user-token", respose.data.token);
-        dispatch(requests.success(FETCH_SESSION_SUCCESS, respose.data.admin));
+      .then(response => {
+        localStorage.setItem("user-token", response.data.token);
+        dispatch(requests.success(FETCH_SESSION_SUCCESS, response.data.admin));
       })
       .catch(error => {
         dispatch(requests.failure(FETCH_SESSION_FAILURE, error.message));

@@ -54,6 +54,7 @@ const ModalCreate = ({
                     setValue(event.target.value);
                   }}
                   value={value}
+                  step="0.01"
                 />
               </Col>
             </Row>

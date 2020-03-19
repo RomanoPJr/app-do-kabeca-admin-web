@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Alert, Card, CardBody, Col, Row } from "reactstrap";
-import EditButton from "../../components/ActionButtons/EditButton";
-import Table from "../../components/Table";
-import organizerActions from "../../store/organizer/organizer.actions";
+
 import Header from "./Header";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
+import Table from "../../components/Table";
+import EditButton from "../../components/ActionButtons/EditButton";
+import organizerActions from "../../store/organizer/organizer.actions";
 
 const Organizer = ({
   list,
@@ -17,6 +18,8 @@ const Organizer = ({
   updateAction,
   removeAction
 }) => {
+  const [pageSize] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
   const [modalCreateOpened, setModalCreateOpened] = useState();
   const [modalDeleteOpened, setModalDeleteOpened] = useState();
   const [currentData, setCurrentData] = useState({});
@@ -38,13 +41,13 @@ const Organizer = ({
   }
 
   useEffect(() => {
-    fetchAction();
-  }, []);
+    fetchAction({ pageNumber, pageSize });
+  }, [pageNumber]);
 
   useEffect(() => {
     if (!loading && error === "") {
       if (modalCreateOpened) {
-        fetchAction();
+        fetchAction({ pageNumber, pageSize });
         setModalCreateOpened(false);
         if (currentData.id) {
           showAlert({
@@ -58,7 +61,7 @@ const Organizer = ({
           });
         }
       } else if (modalDeleteOpened) {
-        fetchAction();
+        fetchAction({ pageNumber, pageSize });
         setModalDeleteOpened(false);
         showAlert({
           type: "success",
@@ -100,12 +103,12 @@ const Organizer = ({
             />
             <CardBody>
               <Table
+                pageSize={pageSize}
+                pageNumber={pageNumber}
+                setPageNumber={setPageNumber}
                 isLoading={loading}
                 fetchAction={fetchAction}
-                data={{
-                  data: list.data,
-                  total: list.pageTotal
-                }}
+                data={{ ...list }}
                 columns={[
                   { name: "Nome", attribute: "name" },
                   { name: "Telefone", attribute: "phone" },

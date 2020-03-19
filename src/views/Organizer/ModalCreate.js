@@ -46,7 +46,7 @@ const ModalCreate = ({
           opened={opened}
           setOpened={setOpened}
         >
-          <Form onSubmit={evt => handleSubmitForm(evt)} autocomplete="off">
+          <Form onSubmit={evt => handleSubmitForm(evt)} autoComplete="off">
             <Row>
               <Col md="12">
                 <label>Nome</label>
@@ -72,7 +72,7 @@ const ModalCreate = ({
                 <label>Telefone</label>
                 <Input
                   required={true}
-                  autocomplete="off"
+                  autoComplete="off"
                   placeholder="Informe o Telefone"
                   type="text"
                   onChange={event => setPhone(event.target.value)}
@@ -132,7 +132,7 @@ const ModalCreate = ({
                 >
                   <option value="Ativo">Ativo</option>
                   <option value="Inativo">Inativo</option>
-                  <option value="Tester">Tester</option>
+                  <option value="Tester">Teste</option>
                 </select>
               </Col>
             </Row>

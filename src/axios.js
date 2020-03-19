@@ -12,9 +12,8 @@ const axiosInstance = () =>
       if (status && status === 401) {
         localStorage.removeItem("user-token");
         history.replace("/signIn");
-        return false;
       }
-      return true;
+      return status >= 200 && status < 300;
     }
   });
 

@@ -1,26 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Table as DataTable } from "reactstrap";
-
-import "./styles.css";
 import LoadingTable from "../../components/Table/LoadingTable";
+import "./styles.css";
 
-const Table = ({ isLoading, columns, data, fetchAction }) => {
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize] = useState(10);
-
-  useEffect(() => {
-    fetchAction({ pageNumber, pageSize });
-  }, [pageNumber]);
-
+const Table = ({ isLoading, columns, data, pageNumber, setPageNumber }) => {
   function handleNextPage() {
-    if (pageNumber < data.total) {
-      setPageNumber(pageNumber + 1);
+    if (data.pageNumber < data.pageTotal) {
+      setPageNumber(parseInt(data.pageNumber) + 1);
     }
   }
 
   function handlePreviousPage() {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
+    if (data.pageNumber > 1) {
+      setPageNumber(parseInt(data.pageNumber) - 1);
     }
   }
 
@@ -47,7 +39,10 @@ const Table = ({ isLoading, columns, data, fetchAction }) => {
                       columns.map((column, index) => {
                         if (column.render) {
                           return (
-                            <td className="text-center action-column">
+                            <td
+                              key={index}
+                              className="text-center action-column"
+                            >
                               {column.render({ data: item })}
                             </td>
                           );
@@ -75,7 +70,7 @@ const Table = ({ isLoading, columns, data, fetchAction }) => {
               Anterior
             </button>
             <p style={{ margin: 20 }}>
-              {pageNumber} / {data.total}
+              {data.pageNumber} / {data.pageTotal}
             </p>
             <button
               className="btn-fill btn btn-info"

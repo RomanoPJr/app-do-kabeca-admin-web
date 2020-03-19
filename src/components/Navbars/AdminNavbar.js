@@ -132,7 +132,6 @@ class AdminNavbar extends React.Component {
                         onClick={() => {
                           localStorage.removeItem("user-token");
                           history.push("/");
-                          console.log("Teste");
                         }}
                       >
                         Sair
