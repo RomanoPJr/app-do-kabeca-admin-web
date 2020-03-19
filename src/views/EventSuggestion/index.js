@@ -77,7 +77,7 @@ const EventSuggestion = ({
     if (error !== "" && !loading && modalCreateOpened) {
       showAlert({
         type: "danger",
-        message: "Erro ao alterar o registro"
+        message: error
       });
     } else if (error !== "" && !loading && modalDeleteOpened) {
       showAlert({
@@ -86,6 +86,12 @@ const EventSuggestion = ({
       });
     }
   }, [error]);
+
+  useEffect(() => {
+    if (!modalCreateOpened && !modalDeleteOpened) {
+      setCurrentData({});
+    }
+  }, [modalCreateOpened, modalDeleteOpened]);
 
   return (
     <div className="content event_suggestion">
