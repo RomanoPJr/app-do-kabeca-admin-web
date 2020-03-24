@@ -11,7 +11,7 @@ const ModalCreate = ({ data, opened, setOpened, saveAction, updateAction }) => {
   const [password, setPassword] = useState();
 
   return (
-    <Modal title="Novo Usuário" opened={opened} setOpened={setOpened}>
+    <Modal title="Administrador" opened={opened} setOpened={setOpened}>
       <Form
         onSubmit={evt => {
           if (!id) {

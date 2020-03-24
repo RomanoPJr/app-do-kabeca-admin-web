@@ -127,6 +127,22 @@
 }
 
 .modal select {
+  text-transform: uppercase;
+}
+
+.modal input[type="email"] {
+  text-transform: uppercase;
+}
+
+.modal input[type="number"] {
+  text-transform: uppercase;
+}
+
+.modal input[type="text"] {
+  text-transform: uppercase;
+}
+
+.modal select {
   border-color: rgb(196, 196, 196);
   color: rgb(83, 83, 83);
   margin-bottom: 10px;

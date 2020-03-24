@@ -42,7 +42,7 @@ const ModalCreate = ({
       {opened && (
         <Modal
           className="modal fade bd-example-modal-lg"
-          title="Evento"
+          title="Organizador"
           opened={opened}
           setOpened={setOpened}
         >
@@ -130,9 +130,9 @@ const ModalCreate = ({
                   onChange={event => setStatus(event.target.value)}
                   value={status}
                 >
-                  <option value="Ativo">Ativo</option>
-                  <option value="Inativo">Inativo</option>
-                  <option value="Tester">Teste</option>
+                  <option value="Ativo">ATIVO</option>
+                  <option value="Inativo">INATIVO</option>
+                  <option value="Tester">TESTE</option>
                 </select>
               </Col>
             </Row>
