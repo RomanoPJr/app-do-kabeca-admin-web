@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 
 import history from "../../history";
-import { createSessionAction } from "../../store/session/session.actions.js";
+import SessionActions from "../../store/session/session.actions.js";
 
 const handleSubmitForm = (createSession, form, evt) => {
   createSession(form);
@@ -29,7 +29,7 @@ const SignIn = ({ createSession, session, sessionError }) => {
   const [alertText, setAlertText] = useState("Erro");
 
   useEffect(() => {
-    if (session.id && localStorage.getItem("user-token")) {
+    if (session && session.name && localStorage.getItem("user-token")) {
       history.push("/");
     } else if (sessionError !== "") {
       setAlertText("Email ou senha inválidos.");
@@ -39,6 +39,7 @@ const SignIn = ({ createSession, session, sessionError }) => {
       }, 5000);
     }
   }, [session]);
+
   return (
     <div className="content">
       <Alert
@@ -108,7 +109,7 @@ const mapStateToProps = state => ({
   sessionError: state.session.error
 });
 const mapDispatchToProps = dispatch => ({
-  createSession: payload => dispatch(createSessionAction(payload))
+  createSession: payload => dispatch(SessionActions.create(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

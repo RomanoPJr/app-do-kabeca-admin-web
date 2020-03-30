@@ -11,11 +11,11 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE
-} from "./admin.types";
+} from "./user.types";
 
 const INITIAL_STATE = {
   loading: false,
-  list: [],
+  list: {},
   error: ""
 };
 

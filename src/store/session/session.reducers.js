@@ -1,32 +1,54 @@
 import {
-  FETCH_SESSION_REQUEST,
-  FETCH_SESSION_SUCCESS,
-  FETCH_SESSION_FAILURE
+  FETCH_REQUEST,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
+  CREATE_REQUEST,
+  CREATE_SUCCESS,
+  CREATE_FAILURE
 } from "./session.types";
 
 const INITIAL_STATE = {
   loading: false,
-  data: {},
+  data: null,
   error: ""
 };
 
 function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_SESSION_REQUEST:
+    case FETCH_REQUEST:
       return {
-        ...state,
-        loading: true
+        loading: true,
+        data: null,
+        error: ""
       };
-    case FETCH_SESSION_SUCCESS:
+    case FETCH_SUCCESS:
       return {
         loading: false,
         data: action.payload,
         error: ""
       };
-    case FETCH_SESSION_FAILURE:
+    case FETCH_FAILURE:
       return {
         loading: false,
-        data: {},
+        data: null,
+        error: action.payload
+      };
+    case CREATE_REQUEST:
+      return {
+        loading: true,
+        data: null,
+        error: ""
+      };
+    case CREATE_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        error: ""
+      };
+    case CREATE_FAILURE:
+      return {
+        loading: false,
+        data: null,
         error: action.payload
       };
     default:

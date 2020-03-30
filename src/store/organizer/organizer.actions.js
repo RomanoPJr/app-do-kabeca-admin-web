@@ -64,7 +64,7 @@ const update = payload => {
           error.response && error.response.data.message
             ? error.response.data.message
             : error.message;
-        dispatch(requests.failure(CREATE_FAILURE, msgError));
+        dispatch(requests.failure(UPDATE_FAILURE, msgError));
       });
   };
 };

@@ -1,13 +1,26 @@
-import AdminNavbar from "../../components/Navbars/AdminNavbar.js";
-import Sidebar from "../../components/Sidebar/Sidebar.js";
-import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import routes from "routes.js";
+import React, { useState, useEffect } from "react";
 
-const Admin = props => {
+import routes from "routes.js";
+import history from "../../history";
+import Sidebar from "../../components/Sidebar/Sidebar.js";
+import AdminNavbar from "../../components/Navbars/AdminNavbar.js";
+import SessionActions from "../../store/session/session.actions";
+
+const Admin = ({ fetchSession, ...props }) => {
   const [backgroundColor] = useState();
   const [sidebarOpened, setSidebarOpened] = useState();
 
+  useEffect(() => {
+    const token = localStorage.getItem("user-token");
+
+    if (!token) {
+      return history.replace("/signIn");
+    }
+
+    fetchSession();
+  }, []);
   function toggleSidebar() {
     document.documentElement.classList.toggle("nav-open");
     setSidebarOpened(!sidebarOpened);
@@ -64,4 +77,10 @@ const Admin = props => {
   );
 };
 
-export default Admin;
+const mapDispatchToProps = dispatch => ({
+  fetchSession: () => dispatch(SessionActions.fetch(dispatch))
+});
+
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

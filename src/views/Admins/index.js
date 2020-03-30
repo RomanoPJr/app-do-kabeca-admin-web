@@ -6,7 +6,7 @@ import Header from "./Header";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../components/Table";
-import adminActions from "../../store/admin/admin.actions";
+import userActions from "../../store/user/user.actions";
 import EditButton from "../../components/ActionButtons/EditButton";
 import DeleteButton from "../../components/ActionButtons/DeleteButton";
 
@@ -21,9 +21,9 @@ const Admins = ({
 }) => {
   const [pageSize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
+  const [currentData, setCurrentData] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
-  const [currentData, setCurrentData] = useState({});
   const [alertConfig, setAlertConfig] = useState({
     type: "",
     message: "",
@@ -42,13 +42,13 @@ const Admins = ({
   }
 
   useEffect(() => {
-    fetchAction({ pageNumber, pageSize });
+    fetchAction({ type: "ADMIN", pageNumber, pageSize });
   }, [pageNumber]);
 
   useEffect(() => {
     if (!loading && error === "") {
       if (modalCreateOpened) {
-        fetchAction({ pageNumber, pageSize });
+        fetchAction({ type: "ADMIN", pageNumber, pageSize });
         setModalCreateOpened(false);
         if (currentData.id) {
           showAlert({
@@ -62,7 +62,7 @@ const Admins = ({
           });
         }
       } else if (modalDeleteOpened) {
-        fetchAction({ pageNumber, pageSize });
+        fetchAction({ type: "ADMIN", pageNumber, pageSize });
         setModalDeleteOpened(false);
         showAlert({
           type: "success",
@@ -76,7 +76,7 @@ const Admins = ({
     if (error !== "" && !loading && modalCreateOpened) {
       showAlert({
         type: "danger",
-        message: error
+        message: error.message
       });
     } else if (error !== "" && !loading && modalDeleteOpened) {
       showAlert({
@@ -108,12 +108,31 @@ const Admins = ({
                   isLoading={loading}
                   data={list}
                   columns={[
-                    { name: "Nome", attribute: "firstname" },
-                    { name: "Sobrenome", attribute: "lastname" },
+                    { name: "Nome", attribute: "name" },
                     { name: "E-mail", attribute: "email" },
                     { name: "Telefone", attribute: "phone" },
                     {
-                      name: <b className="action-column">Acões</b>,
+                      name: "Status",
+                      render: ({ data }) => {
+                        var status = "";
+                        switch (data.status) {
+                          case "ACTIVE":
+                            status = "ATIVO";
+                            break;
+                          case "INACTIVE":
+                            status = "INATIVO";
+                            break;
+                          case "TESTER":
+                            status = "TESTE";
+                            break;
+                          default:
+                            break;
+                        }
+                        return status;
+                      }
+                    },
+                    {
+                      name: "Acões",
                       render: ({ data }) => {
                         return (
                           <>
@@ -153,7 +172,7 @@ const Admins = ({
           data={currentData}
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
-          saveAction={createAction}
+          createAction={createAction}
           updateAction={updateAction}
         />
       )}
@@ -168,16 +187,16 @@ const Admins = ({
 };
 
 const mapStateToProps = state => ({
-  list: state.admin.list,
-  error: state.admin.error,
-  loading: state.admin.loading
+  list: state.user.list,
+  error: state.user.error,
+  loading: state.user.loading
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAction: payload => dispatch(adminActions.fetch(payload)),
-  createAction: payload => dispatch(adminActions.create(payload)),
-  updateAction: payload => dispatch(adminActions.update(payload)),
-  deleteAction: payload => dispatch(adminActions.remove(payload))
+  fetchAction: payload => dispatch(userActions.fetch(payload)),
+  createAction: payload => dispatch(userActions.create(payload)),
+  updateAction: payload => dispatch(userActions.update(payload)),
+  deleteAction: payload => dispatch(userActions.remove(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admins);

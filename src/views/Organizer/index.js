@@ -7,7 +7,7 @@ import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../components/Table";
 import EditButton from "../../components/ActionButtons/EditButton";
-import organizerActions from "../../store/organizer/organizer.actions";
+import UserActions from "../../store/user/user.actions";
 
 const Organizer = ({
   list,
@@ -41,13 +41,13 @@ const Organizer = ({
   }
 
   useEffect(() => {
-    fetchAction({ pageNumber, pageSize });
+    fetchAction({ type: "ORGANIZER", pageNumber, pageSize });
   }, [pageNumber]);
 
   useEffect(() => {
     if (!loading && error === "") {
       if (modalCreateOpened) {
-        fetchAction({ pageNumber, pageSize });
+        fetchAction({ type: "ORGANIZER", pageNumber, pageSize });
         setModalCreateOpened(false);
         if (currentData.id) {
           showAlert({
@@ -61,7 +61,7 @@ const Organizer = ({
           });
         }
       } else if (modalDeleteOpened) {
-        fetchAction({ pageNumber, pageSize });
+        fetchAction({ type: "ORGANIZER", pageNumber, pageSize });
         setModalDeleteOpened(false);
         showAlert({
           type: "success",
@@ -109,9 +109,28 @@ const Organizer = ({
                   { name: "Nome", attribute: "name" },
                   { name: "Telefone", attribute: "phone" },
                   { name: "E-mail", attribute: "email" },
-                  { name: "Status", attribute: "status" },
                   {
-                    name: <b className="action-column">Acões</b>,
+                    name: "Status",
+                    render: ({ data }) => {
+                      var status = "";
+                      switch (data.status) {
+                        case "ACTIVE":
+                          status = "ATIVO";
+                          break;
+                        case "INACTIVE":
+                          status = "INATIVO";
+                          break;
+                        case "TESTER":
+                          status = "TESTE";
+                          break;
+                        default:
+                          break;
+                      }
+                      return status;
+                    }
+                  },
+                  {
+                    name: "Acões",
                     render: ({ data }) => (
                       <>
                         <EditButton
@@ -159,16 +178,16 @@ const Organizer = ({
 };
 
 const mapStateToProps = state => ({
-  list: state.organizer.list,
-  error: state.organizer.error,
-  loading: state.organizer.loading
+  list: state.user.list,
+  error: state.user.error,
+  loading: state.user.loading
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAction: payload => dispatch(organizerActions.fetch(payload)),
-  createAction: payload => dispatch(organizerActions.create(payload)),
-  updateAction: payload => dispatch(organizerActions.update(payload)),
-  removeAction: payload => dispatch(organizerActions.remove(payload))
+  fetchAction: payload => dispatch(UserActions.fetch(payload)),
+  createAction: payload => dispatch(UserActions.create(payload)),
+  updateAction: payload => dispatch(UserActions.update(payload)),
+  removeAction: payload => dispatch(UserActions.remove(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Organizer);

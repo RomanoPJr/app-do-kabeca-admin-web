@@ -1,9 +1,6 @@
-// nodejs library that concatenates classes
 import classNames from "classnames";
 import React from "react";
-import history from "../../history";
-
-// reactstrap components
+import { connect } from "react-redux";
 import {
   Collapse,
   Container,
@@ -18,6 +15,8 @@ import {
   NavLink,
   UncontrolledDropdown
 } from "reactstrap";
+
+import history from "../../history";
 
 class AdminNavbar extends React.Component {
   constructor(props) {
@@ -67,7 +66,9 @@ class AdminNavbar extends React.Component {
       modalSearch: !this.state.modalSearch
     });
   };
+
   render() {
+    const { session } = this.props;
     return (
       <>
         <Navbar
@@ -110,7 +111,8 @@ class AdminNavbar extends React.Component {
               <span className="navbar-toggler-bar navbar-kebab" />
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
-              <Nav className="ml-auto" navbar>
+              <Nav className="ml-auto" navbar style={{ alignItems: "center" }}>
+                <p>Olá, {session && session.name}</p>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
@@ -167,4 +169,10 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const mapDispatchToProps = dispatch => ({});
+
+const mapStateToProps = state => ({
+  session: state.session.data
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

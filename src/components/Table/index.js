@@ -39,12 +39,7 @@ const Table = ({ isLoading, columns, data, setPageNumber }) => {
                       columns.map((column, index) => {
                         if (column.render) {
                           return (
-                            <td
-                              key={index}
-                              className="text-center action-column"
-                            >
-                              {column.render({ data: item })}
-                            </td>
+                            <td key={index}>{column.render({ data: item })}</td>
                           );
                         } else {
                           return <td key={index}>{item[column.attribute]}</td>;
