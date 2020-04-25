@@ -1,27 +1,13 @@
 import React, { useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Row, Input } from "reactstrap";
-import Modal from "../../components/Modal";
 
-const ModalCreate = ({
-  data,
-  opened,
-  setOpened,
-  createAction,
-  updateAction
-}) => {
-  const [id] = useState(data ? data.id : "");
-  const [description, setDescription] = useState(data ? data.description : "");
+import Modal from "../../../components/Modal";
+
+const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
+  const [id] = useState(data ? data.id : null);
   const [value, setValue] = useState(data ? data.value : "");
-
-  function handleSubmitForm(evt) {
-    if (!id) {
-      createAction({ description, value });
-    } else {
-      updateAction({ id, description, value });
-    }
-    evt.preventDefault();
-  }
+  const [description, setDescription] = useState(data ? data.description : "");
 
   return (
     <>
@@ -32,7 +18,11 @@ const ModalCreate = ({
           opened={opened}
           setOpened={setOpened}
         >
-          <Form onSubmit={evt => handleSubmitForm(evt)}>
+          <Form
+            onSubmit={(evt) =>
+              handleSubmitForm(evt, { id, description, value })
+            }
+          >
             <Row>
               <Col md="12">
                 <label>Descrição</label>
@@ -40,7 +30,9 @@ const ModalCreate = ({
                   required={true}
                   placeholder="Informe o nome do evento"
                   type="text"
-                  onChange={event => setDescription(event.target.value)}
+                  onChange={(event) =>
+                    setDescription(event.target.value.toUpperCase())
+                  }
                   value={description}
                 />
               </Col>
@@ -50,8 +42,8 @@ const ModalCreate = ({
                   required={true}
                   type="number"
                   placeholder="Informe o valor do evento"
-                  onChange={event => {
-                    setValue(event.target.value);
+                  onChange={(event) => {
+                    setValue(event.target.value.toUpperCase());
                   }}
                   value={value}
                   step="0.01"

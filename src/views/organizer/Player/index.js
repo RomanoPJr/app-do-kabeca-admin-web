@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 import { Card, CardBody, Col, Row } from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
 import { formatPhone } from "../../../utils/Phone";
 import CardHeader from "../../../components/CardHeader";
+import UserAction from "../../../store/user/user.actions";
+import PlayerActions from "../../../store/player/player.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
-import OrganizerActions from "../../../store/organizer/organizer.actions";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
-const Organizer = ({
-  organizer,
+const Player = ({
+  user,
+  player,
+  clearAction,
   fetchAction,
   createAction,
   updateAction,
   removeAction,
+  fetchOneUser,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -25,8 +29,14 @@ const Organizer = ({
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
 
   useEffect(() => {
-    fetchAction({ type: "ADMIN", pageNumber });
+    fetchAction({ pageNumber });
   }, [pageNumber]);
+
+  useEffect(() => {
+    return () => {
+      clearAction();
+    };
+  }, []);
 
   useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
@@ -35,66 +45,53 @@ const Organizer = ({
   }, [modalCreateOpened, modalDeleteOpened]);
 
   useEffect(() => {
-    if (!organizer.loading && modalCreateOpened && organizer.error === "") {
+    if (!player.loading && modalCreateOpened && player.error === "") {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
-    } else if (
-      !organizer.loading &&
-      modalCreateOpened &&
-      organizer.error !== ""
-    ) {
-      toast.error(organizer.error);
-    } else if (
-      !organizer.loading &&
-      modalDeleteOpened &&
-      organizer.error === ""
-    ) {
+    } else if (!player.loading && player.error !== "") {
+      toast.error(player.error);
+    } else if (!player.loading && modalDeleteOpened && player.error === "") {
       setModalDeleteOpened(false);
       toast.success("Registro deletado com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
     }
-  }, [organizer.loading]);
+  }, [player.loading]);
 
-  function handleSubmitForm(evt, formData) {
-    if (!formData.id) {
-      createAction(formData);
+  function handleSubmitForm(evt, data) {
+    if (!data.id) {
+      createAction(data);
     } else {
-      updateAction(formData);
+      updateAction(data);
     }
     evt.preventDefault();
   }
 
-  useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
-      setCurrentData({});
-    }
-  }, [modalCreateOpened, modalDeleteOpened]);
-
   return (
-    <div className="content event_suggestion">
+    <div className="content">
       <Row>
         <Col md="12">
           <Card>
             <CardHeader
               setModalCreateOpened={setModalCreateOpened}
-              title="Organizadores"
+              title="Jogadores (Cadastre até 60 Jogadores)"
             />
             <CardBody>
               <Table
                 setPageNumber={setPageNumber}
-                isLoading={organizer.loading}
-                data={organizer.data}
+                isLoading={player.loading}
+                data={player.data}
                 columns={[
-                  { name: "Nome", attribute: "name" },
+                  { name: "Nome", attribute: "User.name" },
                   {
                     name: "Telefone",
-                    render: ({ data }) => formatPhone(data.phone),
+                    render: ({ data }) => formatPhone(data.User.phone),
                   },
-                  { name: "E-mail", attribute: "email" },
-                  { name: "Status", attribute: "status" },
+                  { name: "Posição", attribute: "position" },
+                  { name: "Tipo", attribute: "type" },
+                  { name: "Status do Convite", attribute: "invite" },
                   {
                     name: <b className="action-column">Acões</b>,
                     render: ({ data }) => (
@@ -115,17 +112,22 @@ const Organizer = ({
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
+          user={user.findOne}
+          loading={player.loading}
+          userLoading={user.loading}
           opened={modalCreateOpened}
+          fetchOneUser={fetchOneUser}
           setOpened={setModalCreateOpened}
-          handleSubmitForm={handleSubmitForm}
+          confirmAction={handleSubmitForm}
         />
       )}
       {modalDeleteOpened && (
         <ModalDelete
           data={currentData}
+          loading={player.loading}
           opened={modalDeleteOpened}
+          confirmAction={removeAction}
           setOpened={setModalDeleteOpened}
-          removeAction={removeAction}
         />
       )}
       <ToastContainer />
@@ -156,14 +158,17 @@ const ActionColumn = ({
 );
 
 const mapStateToProps = (state) => ({
-  organizer: state.organizer,
+  user: state.user,
+  player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchAction: (payload) => dispatch(OrganizerActions.fetch(payload)),
-  createAction: (payload) => dispatch(OrganizerActions.create(payload)),
-  updateAction: (payload) => dispatch(OrganizerActions.update(payload)),
-  removeAction: (payload) => dispatch(OrganizerActions.remove(payload)),
+  clearAction: () => dispatch(PlayerActions.clear()),
+  fetchAction: (payload) => dispatch(PlayerActions.fetch(payload)),
+  createAction: (payload) => dispatch(PlayerActions.create(payload)),
+  updateAction: (payload) => dispatch(PlayerActions.update(payload)),
+  removeAction: (payload) => dispatch(PlayerActions.remove(payload)),
+  fetchOneUser: (payload) => dispatch(UserAction.fetchOne(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Organizer);
+export default connect(mapStateToProps, mapDispatchToProps)(Player);

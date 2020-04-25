@@ -1,62 +1,45 @@
 import React, { useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Input, Row } from "reactstrap";
-import Modal from "../../components/Modal";
 
-const ModalCreate = ({
-  data,
-  opened,
-  setOpened,
-  createAction,
-  updateAction
-}) => {
-  const [id] = useState(data ? data.id : "");
+import Modal from "../../../components/Modal";
+import { formatPhone, clearPhone } from "../../../utils/Phone";
+
+const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
+  const [id] = useState(data.id ? data.id : null);
   const [password, setPassword] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
-  const [type] = useState(data.email ? data.type : "ADMIN");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState(data.name ? data.name : "");
-  const [phone, setPhone] = useState(data.phone ? data.phone : "");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState(data.email ? data.email : "");
-  const [status, setStatus] = useState(data.status ? data.status : "ACTIVE");
-
-  function handleSubmitForm(evt) {
-    if (!id) {
-      createAction({
-        name,
-        phone,
-        email,
-        password,
-        confirmPassword,
-        status,
-        type
-      });
-    } else {
-      updateAction({
-        id,
-        name,
-        type,
-        phone,
-        email,
-        status,
-        password,
-        oldPassword,
-        confirmPassword
-      });
-    }
-    evt.preventDefault();
-  }
+  const [status, setStatus] = useState(data.status ? data.status : "ATIVO");
+  const [phone, setPhone] = useState(data.phone ? formatPhone(data.phone) : "");
+  const [birth_date, setBirthDate] = useState(
+    data.birth_date ? data.birth_date : ""
+  );
 
   return (
     <>
       {opened && (
         <Modal
           className="modal fade bd-example-modal-lg"
-          title="Organizador"
+          title="Administrador"
           opened={opened}
           setOpened={setOpened}
         >
-          <Form onSubmit={evt => handleSubmitForm(evt)} autoComplete="off">
+          <Form
+            onSubmit={(evt) =>
+              handleSubmitForm(evt, {
+                id,
+                name,
+                phone: clearPhone(phone),
+                email,
+                status,
+                password,
+                birth_date,
+                confirmPassword,
+              })
+            }
+            autoComplete="off"
+          >
             <Row>
               <Col md="12">
                 <label>Nome</label>
@@ -64,7 +47,9 @@ const ModalCreate = ({
                   required={true}
                   placeholder="Informe o nome"
                   type="text"
-                  onChange={event => setName(event.target.value)}
+                  onChange={(event) =>
+                    setName(event.target.value.toUpperCase())
+                  }
                   value={name}
                 />
               </Col>
@@ -74,8 +59,22 @@ const ModalCreate = ({
                   required={true}
                   placeholder="Informe o E-mail"
                   type="email"
-                  onChange={event => setEmail(event.target.value)}
+                  onChange={(event) =>
+                    setEmail(event.target.value.toUpperCase())
+                  }
                   value={email}
+                />
+              </Col>
+              <Col md="6">
+                <label>Data de Nascimento</label>
+                <Input
+                  type="date"
+                  required={true}
+                  value={birth_date || ""}
+                  placeholder="Informe a data de nascimento"
+                  onChange={(event) => {
+                    setBirthDate(event.target.value.toUpperCase());
+                  }}
                 />
               </Col>
               <Col md="6">
@@ -85,61 +84,53 @@ const ModalCreate = ({
                   autoComplete="off"
                   placeholder="Informe o Telefone"
                   type="text"
-                  onChange={event => setPhone(event.target.value)}
+                  onChange={(event) =>
+                    setPhone(formatPhone(event.target.value))
+                  }
                   value={phone}
                 />
               </Col>
-              <Col md="12">
+              <Col md="6">
                 <label>Status</label>
                 <select
                   name="select"
                   className="form-control"
-                  onChange={event => setStatus(event.target.value)}
+                  onChange={(event) =>
+                    setStatus(event.target.value.toUpperCase())
+                  }
                   value={status}
                 >
-                  <option value="ACTIVE">ATIVO</option>
-                  <option value="INACTIVE">INATIVO</option>
+                  <option value="ATIVO">ATIVO</option>
+                  <option value="INATIVO">INATIVO</option>
                 </select>
               </Col>
-              {id && (
-                <Col md="12">
-                  <label>Senha Anterior</label>
-                  <Input
-                    required={password !== "" || confirmPassword !== ""}
-                    placeholder={
-                      !id
-                        ? "Informe a senha"
-                        : "Preencha apenas se desejar alterar a senha"
-                    }
-                    type="password"
-                    onChange={event => setOldPassword(event.target.value)}
-                  />
-                </Col>
-              )}
-              <Col md={!id ? 12 : 6}>
-                <label>{!id ? "Senha" : "Nova Senha"}</label>
+              <Col md="6">
+                <label>Senha</label>
                 <Input
-                  required={!id || oldPassword !== "" || confirmPassword !== ""}
                   placeholder={
-                    !id
-                      ? "Informe a senha"
-                      : "Preencha apenas se desejar alterar a senha"
+                    id
+                      ? "Preencha apenas se desejar alterar a senha"
+                      : "Informe a senha"
                   }
                   type="password"
-                  onChange={event => setPassword(event.target.value)}
+                  onChange={(event) =>
+                    setPassword(event.target.value.toUpperCase())
+                  }
                 />
               </Col>
-              <Col md={!id ? 12 : 6}>
+              <Col md="6">
                 <label>Confirmar Senha</label>
                 <Input
-                  required={password !== "" || oldPassword !== ""}
+                  required={password !== ""}
                   placeholder={
-                    !id
-                      ? "Informe a senha"
-                      : "Preencha apenas se desejar alterar a senha"
+                    id
+                      ? "Preencha apenas se desejar alterar a senha"
+                      : "Informe a senha"
                   }
                   type="password"
-                  onChange={event => setConfirmPassword(event.target.value)}
+                  onChange={(event) =>
+                    setConfirmPassword(event.target.value.toUpperCase())
+                  }
                 />
               </Col>
             </Row>

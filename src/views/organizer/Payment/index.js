@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import moment from "moment";
 import { Card, CardBody, Col, Row } from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
-import { formatPhone } from "../../../utils/Phone";
 import CardHeader from "../../../components/CardHeader";
+import PlayerActions from "../../../store/player/player.actions";
+import PaymentActions from "../../../store/payment/payment.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
-import OrganizerActions from "../../../store/organizer/organizer.actions";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
-const Organizer = ({
-  organizer,
+const Payment = ({
+  player,
+  payment,
+  clearAction,
   fetchAction,
   createAction,
   updateAction,
   removeAction,
+  fetchPlayer,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -25,8 +29,14 @@ const Organizer = ({
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
 
   useEffect(() => {
-    fetchAction({ type: "ADMIN", pageNumber });
+    fetchAction({ pageNumber });
   }, [pageNumber]);
+
+  useEffect(() => {
+    return () => {
+      clearAction();
+    };
+  }, []);
 
   useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
@@ -35,76 +45,54 @@ const Organizer = ({
   }, [modalCreateOpened, modalDeleteOpened]);
 
   useEffect(() => {
-    if (!organizer.loading && modalCreateOpened && organizer.error === "") {
+    if (!payment.loading && modalCreateOpened && payment.error === "") {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
-    } else if (
-      !organizer.loading &&
-      modalCreateOpened &&
-      organizer.error !== ""
-    ) {
-      toast.error(organizer.error);
-    } else if (
-      !organizer.loading &&
-      modalDeleteOpened &&
-      organizer.error === ""
-    ) {
+    } else if (!payment.loading && payment.error !== "") {
+      toast.error(payment.error);
+    } else if (!payment.loading && modalDeleteOpened && payment.error === "") {
       setModalDeleteOpened(false);
       toast.success("Registro deletado com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
     }
-  }, [organizer.loading]);
+  }, [payment.loading]);
 
-  function handleSubmitForm(evt, formData) {
-    if (!formData.id) {
-      createAction(formData);
+  function handleSubmitForm(evt, data) {
+    if (!data.id) {
+      createAction(data);
     } else {
-      updateAction(formData);
+      updateAction(data);
     }
     evt.preventDefault();
   }
 
-  useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
-      setCurrentData({});
-    }
-  }, [modalCreateOpened, modalDeleteOpened]);
-
   return (
-    <div className="content event_suggestion">
+    <div className="content">
       <Row>
         <Col md="12">
           <Card>
             <CardHeader
               setModalCreateOpened={setModalCreateOpened}
-              title="Organizadores"
+              title="Mensalidades"
             />
             <CardBody>
               <Table
                 setPageNumber={setPageNumber}
-                isLoading={organizer.loading}
-                data={organizer.data}
+                isLoading={payment.loading}
+                data={payment.data}
                 columns={[
-                  { name: "Nome", attribute: "name" },
+                  { name: "Nome", attribute: "User.name" },
                   {
-                    name: "Telefone",
-                    render: ({ data }) => formatPhone(data.phone),
+                    name: "Valor",
+                    render: ({ data }) => `R$ ${data.value}`,
                   },
-                  { name: "E-mail", attribute: "email" },
-                  { name: "Status", attribute: "status" },
                   {
-                    name: <b className="action-column">Acões</b>,
-                    render: ({ data }) => (
-                      <ActionColumn
-                        data={data}
-                        setCurrentData={setCurrentData}
-                        setModalDeleteOpened={setModalDeleteOpened}
-                        setModalCreateOpened={setModalCreateOpened}
-                      />
-                    ),
+                    name: "Referente",
+                    render: ({ data }) =>
+                      moment(data.referent).format("DD/MM/YYYY"),
                   },
                 ]}
               />
@@ -115,17 +103,21 @@ const Organizer = ({
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
+          playerList={player.data.data}
+          playerLoading={player.loading}
           opened={modalCreateOpened}
+          fetchPlayer={fetchPlayer}
           setOpened={setModalCreateOpened}
-          handleSubmitForm={handleSubmitForm}
+          confirmAction={handleSubmitForm}
         />
       )}
       {modalDeleteOpened && (
         <ModalDelete
           data={currentData}
+          loading={payment.loading}
           opened={modalDeleteOpened}
+          confirmAction={removeAction}
           setOpened={setModalDeleteOpened}
-          removeAction={removeAction}
         />
       )}
       <ToastContainer />
@@ -156,14 +148,17 @@ const ActionColumn = ({
 );
 
 const mapStateToProps = (state) => ({
-  organizer: state.organizer,
+  player: state.player,
+  payment: state.payment,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchAction: (payload) => dispatch(OrganizerActions.fetch(payload)),
-  createAction: (payload) => dispatch(OrganizerActions.create(payload)),
-  updateAction: (payload) => dispatch(OrganizerActions.update(payload)),
-  removeAction: (payload) => dispatch(OrganizerActions.remove(payload)),
+  clearAction: () => dispatch(PaymentActions.clear()),
+  fetchAction: (payload) => dispatch(PaymentActions.fetch(payload)),
+  createAction: (payload) => dispatch(PaymentActions.create(payload)),
+  updateAction: (payload) => dispatch(PaymentActions.update(payload)),
+  removeAction: (payload) => dispatch(PaymentActions.remove(payload)),
+  fetchPlayer: (payload) => dispatch(PlayerActions.fetch(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Organizer);
+export default connect(mapStateToProps, mapDispatchToProps)(Payment);

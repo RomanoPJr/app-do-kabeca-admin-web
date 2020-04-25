@@ -1,99 +1,84 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 import { Card, CardBody, Col, Row } from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
-import { formatPhone } from "../../../utils/Phone";
 import CardHeader from "../../../components/CardHeader";
+import SponsorActions from "../../../store/sponsor/sponsor.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
-import OrganizerActions from "../../../store/organizer/organizer.actions";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
-const Organizer = ({
-  organizer,
+const Sponsor = ({
+  sponsor,
   fetchAction,
   createAction,
   updateAction,
   removeAction,
+  clearAction,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
-  const [modalCreateOpened, setModalCreateOpened] = useState(false);
-  const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
+  const [modalCreateOpened, setModalCreateOpened] = useState();
+  const [modalDeleteOpened, setModalDeleteOpened] = useState();
 
   useEffect(() => {
-    fetchAction({ type: "ADMIN", pageNumber });
+    fetchAction({ pageNumber });
   }, [pageNumber]);
 
   useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
-      setCurrentData({});
-    }
-  }, [modalCreateOpened, modalDeleteOpened]);
-
-  useEffect(() => {
-    if (!organizer.loading && modalCreateOpened && organizer.error === "") {
+    if (!sponsor.loading && modalCreateOpened && sponsor.error === "") {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
-    } else if (
-      !organizer.loading &&
-      modalCreateOpened &&
-      organizer.error !== ""
-    ) {
-      toast.error(organizer.error);
-    } else if (
-      !organizer.loading &&
-      modalDeleteOpened &&
-      organizer.error === ""
-    ) {
+    } else if (!sponsor.loading && sponsor.error !== "") {
+      toast.error(sponsor.error);
+    } else if (!sponsor.loading && modalDeleteOpened && sponsor.error === "") {
       setModalDeleteOpened(false);
       toast.success("Registro deletado com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
     }
-  }, [organizer.loading]);
+  }, [sponsor.loading]);
 
-  function handleSubmitForm(evt, formData) {
-    if (!formData.id) {
-      createAction(formData);
+  useEffect(() => {
+    return () => {
+      clearAction();
+    };
+  }, []);
+
+  function handleSubmitForm(evt, data) {
+    if (!data.id) {
+      createAction(data);
     } else {
-      updateAction(formData);
+      updateAction(data);
     }
     evt.preventDefault();
   }
 
-  useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
-      setCurrentData({});
-    }
-  }, [modalCreateOpened, modalDeleteOpened]);
-
   return (
-    <div className="content event_suggestion">
+    <div className="content">
       <Row>
         <Col md="12">
           <Card>
             <CardHeader
               setModalCreateOpened={setModalCreateOpened}
-              title="Organizadores"
+              title="Patrocinadores (Cadastre até 6 patrocinadores)"
             />
             <CardBody>
               <Table
                 setPageNumber={setPageNumber}
-                isLoading={organizer.loading}
-                data={organizer.data}
+                isLoading={sponsor.loading}
+                data={sponsor.data}
                 columns={[
-                  { name: "Nome", attribute: "name" },
+                  { name: "Patrocinador", attribute: "name" },
                   {
-                    name: "Telefone",
-                    render: ({ data }) => formatPhone(data.phone),
+                    name: "Valor",
+                    render: ({ data }) => <p>R$ {data.value}</p>,
                   },
-                  { name: "E-mail", attribute: "email" },
                   { name: "Status", attribute: "status" },
                   {
                     name: <b className="action-column">Acões</b>,
@@ -115,17 +100,19 @@ const Organizer = ({
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
+          loading={sponsor.loading}
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
-          handleSubmitForm={handleSubmitForm}
+          confirmAction={handleSubmitForm}
         />
       )}
       {modalDeleteOpened && (
         <ModalDelete
           data={currentData}
+          loading={sponsor.loading}
           opened={modalDeleteOpened}
+          confirmAction={removeAction}
           setOpened={setModalDeleteOpened}
-          removeAction={removeAction}
         />
       )}
       <ToastContainer />
@@ -156,14 +143,15 @@ const ActionColumn = ({
 );
 
 const mapStateToProps = (state) => ({
-  organizer: state.organizer,
+  sponsor: state.sponsor,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchAction: (payload) => dispatch(OrganizerActions.fetch(payload)),
-  createAction: (payload) => dispatch(OrganizerActions.create(payload)),
-  updateAction: (payload) => dispatch(OrganizerActions.update(payload)),
-  removeAction: (payload) => dispatch(OrganizerActions.remove(payload)),
+  clearAction: () => dispatch(SponsorActions.clear()),
+  fetchAction: (payload) => dispatch(SponsorActions.fetch(payload)),
+  createAction: (payload) => dispatch(SponsorActions.create(payload)),
+  updateAction: (payload) => dispatch(SponsorActions.update(payload)),
+  removeAction: (payload) => dispatch(SponsorActions.remove(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Organizer);
+export default connect(mapStateToProps, mapDispatchToProps)(Sponsor);

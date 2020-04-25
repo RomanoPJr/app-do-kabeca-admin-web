@@ -1,0 +1,36 @@
+#react-select-2-input {
+  text-transform: uppercase;
+  margin: 0 !important;
+}
+
+.css-yk16xz-control {
+  border-radius: 0.4285rem !important;
+}
+
+.css-b8ldur-Input {
+  padding: 0px !important;
+  margin: 0px !important;
+  font-size: 0.75rem !important;
+}
+
+.css-2b097c-container {
+  height: calc(2.25rem + 2px);
+  min-height: 0px !important;
+}
+
+.select__control {
+  height: calc(2.25rem + 2px);
+  min-height: 0px !important;
+}
+
+.css-g1d714-ValueContainer {
+  /* margin: 0 !important; */
+  padding: 0rem 0.7rem !important;
+}
+
+.css-1wa3eu0-placeholder {
+  font-size: 0.75rem;
+}
+.css-1uccc91-singleValue {
+  font-size: 0.75rem;
+}

@@ -1,20 +1,26 @@
 import React from "react";
 import { Button } from "reactstrap";
-import Modal from "../../../components/Modal";
 
-const ModalDelete = ({ opened, setOpened, removeAction, data }) => {
+import Modal from "../../../components/Modal";
+import LoadingSpinner from "../../../components/LoadingSpinner";
+
+const ModalDelete = ({ opened, setOpened, confirmAction, data, loading }) => {
   return (
     <Modal title="Atenção!" opened={opened} setOpened={setOpened}>
       <h4 style={{ color: "#000" }}>
-        Atenção! Ao deletar um organizador, você estará deletando
-        automaticamente todos os dados e estatísticas do seu clube. Esta ação
-        não poderá ser revertida, deseja continuar?
+        Atenção! Ao deletar um registro, esta ação não poderá ser desfeita,
+        deseja mesmo excluir?
       </h4>
       <div className="custom-modal-footer">
         <Button color="success" onClick={() => setOpened(!opened)}>
           Cancelar
         </Button>
-        <Button color="danger" onClick={() => removeAction(data.id)}>
+        <Button
+          color="danger"
+          onClick={() => confirmAction(data.id)}
+          disabled={loading}
+        >
+          {loading && <LoadingSpinner />}
           Excluir
         </Button>
       </div>

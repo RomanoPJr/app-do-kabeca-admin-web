@@ -6,14 +6,13 @@ import { ToastContainer, toast } from "react-toastify";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
-import { formatPhone } from "../../../utils/Phone";
 import CardHeader from "../../../components/CardHeader";
-import AdminActions from "../../../store/admin/admin.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
+import SuggestionEventActions from "../../../store/suggestion_event/suggestion_event.actions";
 
-const Admins = ({
-  admin,
+const SuggestionEvent = ({
+  suggestion_event,
   fetchAction,
   createAction,
   updateAction,
@@ -25,7 +24,7 @@ const Admins = ({
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
 
   useEffect(() => {
-    fetchAction({ pageNumber });
+    fetchAction(pageNumber);
   }, [pageNumber]);
 
   useEffect(() => {
@@ -35,20 +34,32 @@ const Admins = ({
   }, [modalCreateOpened, modalDeleteOpened]);
 
   useEffect(() => {
-    if (!admin.loading && modalCreateOpened && admin.error === "") {
+    if (
+      !suggestion_event.loading &&
+      modalCreateOpened &&
+      suggestion_event.error === ""
+    ) {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
-      fetchAction({ pageNumber });
+      fetchAction(pageNumber);
       setCurrentData(null);
-    } else if (!admin.loading && modalCreateOpened && admin.error !== "") {
-      toast.error(admin.error);
-    } else if (!admin.loading && modalDeleteOpened && admin.error === "") {
+    } else if (
+      !suggestion_event.loading &&
+      modalCreateOpened &&
+      suggestion_event.error !== ""
+    ) {
+      toast.error(suggestion_event.error);
+    } else if (
+      !suggestion_event.loading &&
+      modalDeleteOpened &&
+      suggestion_event.error === ""
+    ) {
       setModalDeleteOpened(false);
       toast.success("Registro deletado com sucesso!");
-      fetchAction({ pageNumber });
+      fetchAction(pageNumber);
       setCurrentData(null);
     }
-  }, [admin.loading]);
+  }, [suggestion_event.loading]);
 
   function handleSubmitForm(evt, formData) {
     if (!formData.id) {
@@ -58,7 +69,6 @@ const Admins = ({
     }
     evt.preventDefault();
   }
-
   return (
     <>
       <div className="content">
@@ -67,21 +77,16 @@ const Admins = ({
             <Card>
               <CardHeader
                 setModalCreateOpened={setModalCreateOpened}
-                title="Administradores"
+                title="Sugestões de Eventos"
               />
               <CardBody>
                 <Table
+                  data={suggestion_event.data}
                   setPageNumber={setPageNumber}
-                  isLoading={admin.loading}
-                  data={admin.data}
+                  isLoading={suggestion_event.loading}
                   columns={[
-                    { name: "Nome", attribute: "name" },
-                    { name: "E-mail", attribute: "email" },
-                    {
-                      name: "Telefone",
-                      render: ({ data }) => formatPhone(data.phone),
-                    },
-                    { name: "Status", attribute: "status" },
+                    { name: "Descrição", attribute: "description" },
+                    { name: "Valor", attribute: "value" },
                     {
                       name: <b className="action-column">Acões</b>,
                       render: ({ data }) => (
@@ -142,14 +147,14 @@ const ActionColumn = ({
 );
 
 const mapStateToProps = (state) => ({
-  admin: state.admin,
+  suggestion_event: state.suggestion_event,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchAction: (payload) => dispatch(AdminActions.fetch(payload)),
-  createAction: (payload) => dispatch(AdminActions.create(payload)),
-  updateAction: (payload) => dispatch(AdminActions.update(payload)),
-  removeAction: (payload) => dispatch(AdminActions.remove(payload)),
+  fetchAction: (payload) => dispatch(SuggestionEventActions.fetch(payload)),
+  createAction: (payload) => dispatch(SuggestionEventActions.create(payload)),
+  updateAction: (payload) => dispatch(SuggestionEventActions.update(payload)),
+  removeAction: (payload) => dispatch(SuggestionEventActions.remove(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Admins);
+export default connect(mapStateToProps, mapDispatchToProps)(SuggestionEvent);

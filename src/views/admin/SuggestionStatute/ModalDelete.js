@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "reactstrap";
-import Modal from "../../components/Modal";
+import Modal from "../../../components/Modal";
 
 const ModalDelete = ({ opened, setOpened, removeAction, data }) => {
   return (

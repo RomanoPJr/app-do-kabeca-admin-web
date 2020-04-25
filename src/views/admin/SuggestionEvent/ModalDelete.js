@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "reactstrap";
-import Modal from "../../components/Modal";
+import Modal from "../../../components/Modal";
 
-const ModalDelete = ({ opened, setOpened, removeAction, data }) => {
+const ModalDelete = ({ opened, setOpened, action, data }) => {
   return (
     <Modal
       title="Deseja Excluir este registro?"
@@ -14,7 +14,7 @@ const ModalDelete = ({ opened, setOpened, removeAction, data }) => {
         <Button color="success" onClick={() => setOpened(!opened)}>
           Cancelar
         </Button>
-        <Button color="danger" onClick={() => removeAction(data.id)}>
+        <Button color="danger" onClick={() => action(data.id)}>
           Excluir
         </Button>
       </div>

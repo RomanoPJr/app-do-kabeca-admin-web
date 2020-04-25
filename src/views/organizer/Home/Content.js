@@ -1,8 +1,8 @@
 import React from "react";
 const Content = ({ list }) => {
   return (
-    <div className="statute-suggestion-container">
-      <div className="statute-suggestion-content">
+    <div className="">
+      <div className="">
         {list && <div dangerouslySetInnerHTML={{ __html: list }} />}
       </div>
     </div>

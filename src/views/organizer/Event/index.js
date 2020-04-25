@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 import { Card, CardBody, Col, Row } from "reactstrap";
+import { ToastContainer, toast } from "react-toastify";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
-import { formatPhone } from "../../../utils/Phone";
 import CardHeader from "../../../components/CardHeader";
+import EventActions from "../../../store/event/event.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
-import OrganizerActions from "../../../store/organizer/organizer.actions";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
+import SuggestionEventActions from "../../../store/suggestion_event/suggestion_event.actions";
 
-const Organizer = ({
-  organizer,
+const Event = ({
+  event,
+  clearAction,
   fetchAction,
   createAction,
   updateAction,
   removeAction,
+  suggestion_event,
+  fetchSuggestionEvent,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
-  const [modalCreateOpened, setModalCreateOpened] = useState(false);
-  const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
+  const [modalCreateOpened, setModalCreateOpened] = useState();
+  const [modalDeleteOpened, setModalDeleteOpened] = useState();
 
   useEffect(() => {
-    fetchAction({ type: "ADMIN", pageNumber });
+    fetchSuggestionEvent();
+  }, []);
+
+  useEffect(() => {
+    fetchAction({ pageNumber });
   }, [pageNumber]);
+
+  useEffect(() => {
+    return () => {
+      clearAction();
+    };
+  }, []);
 
   useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
@@ -35,66 +48,49 @@ const Organizer = ({
   }, [modalCreateOpened, modalDeleteOpened]);
 
   useEffect(() => {
-    if (!organizer.loading && modalCreateOpened && organizer.error === "") {
+    if (!event.loading && modalCreateOpened && event.error === "") {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
-    } else if (
-      !organizer.loading &&
-      modalCreateOpened &&
-      organizer.error !== ""
-    ) {
-      toast.error(organizer.error);
-    } else if (
-      !organizer.loading &&
-      modalDeleteOpened &&
-      organizer.error === ""
-    ) {
+    } else if (!event.loading && event.error !== "") {
+      toast.error(event.error);
+    } else if (!suggestion_event.loading && event.error !== "") {
+      toast.error(event.error);
+    } else if (!event.loading && modalDeleteOpened && event.error === "") {
       setModalDeleteOpened(false);
       toast.success("Registro deletado com sucesso!");
       fetchAction({ pageNumber });
       setCurrentData(null);
     }
-  }, [organizer.loading]);
+  }, [event.loading]);
 
-  function handleSubmitForm(evt, formData) {
-    if (!formData.id) {
-      createAction(formData);
+  function handleSubmitForm(evt, data) {
+    if (!data.id) {
+      createAction(data);
     } else {
-      updateAction(formData);
+      updateAction(data);
     }
     evt.preventDefault();
   }
 
-  useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
-      setCurrentData({});
-    }
-  }, [modalCreateOpened, modalDeleteOpened]);
-
   return (
-    <div className="content event_suggestion">
+    <div className="content">
       <Row>
         <Col md="12">
           <Card>
             <CardHeader
               setModalCreateOpened={setModalCreateOpened}
-              title="Organizadores"
+              title="Eventos de Partida (Crie até 10 eventos)"
             />
             <CardBody>
               <Table
                 setPageNumber={setPageNumber}
-                isLoading={organizer.loading}
-                data={organizer.data}
+                isLoading={event.loading}
+                data={event.data}
                 columns={[
-                  { name: "Nome", attribute: "name" },
-                  {
-                    name: "Telefone",
-                    render: ({ data }) => formatPhone(data.phone),
-                  },
-                  { name: "E-mail", attribute: "email" },
-                  { name: "Status", attribute: "status" },
+                  { name: "Evento", attribute: "description" },
+                  { name: "Valor", attribute: "value" },
                   {
                     name: <b className="action-column">Acões</b>,
                     render: ({ data }) => (
@@ -118,14 +114,15 @@ const Organizer = ({
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
           handleSubmitForm={handleSubmitForm}
+          suggestion_event={suggestion_event.data}
         />
       )}
       {modalDeleteOpened && (
         <ModalDelete
           data={currentData}
           opened={modalDeleteOpened}
-          setOpened={setModalDeleteOpened}
           removeAction={removeAction}
+          setOpened={setModalDeleteOpened}
         />
       )}
       <ToastContainer />
@@ -156,14 +153,18 @@ const ActionColumn = ({
 );
 
 const mapStateToProps = (state) => ({
-  organizer: state.organizer,
+  event: state.event,
+  suggestion_event: state.suggestion_event,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchAction: (payload) => dispatch(OrganizerActions.fetch(payload)),
-  createAction: (payload) => dispatch(OrganizerActions.create(payload)),
-  updateAction: (payload) => dispatch(OrganizerActions.update(payload)),
-  removeAction: (payload) => dispatch(OrganizerActions.remove(payload)),
+  clearAction: () => dispatch(EventActions.clear()),
+  fetchAction: (payload) => dispatch(EventActions.fetch(payload)),
+  createAction: (payload) => dispatch(EventActions.create(payload)),
+  updateAction: (payload) => dispatch(EventActions.update(payload)),
+  removeAction: (payload) => dispatch(EventActions.remove(payload)),
+  fetchSuggestionEvent: (payload) =>
+    dispatch(SuggestionEventActions.all(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Organizer);
+export default connect(mapStateToProps, mapDispatchToProps)(Event);
