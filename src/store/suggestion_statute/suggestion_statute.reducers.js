@@ -11,16 +11,12 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-  FETCH_ONE_REQUEST,
-  FETCH_ONE_SUCCESS,
-  FETCH_ONE_FAILURE,
-} from "./user.types";
+} from "./suggestion_statute.types";
 
 const INITIAL_STATE = {
   loading: false,
-  data: [],
+  data: {},
   error: "",
-  findOne: null,
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -28,14 +24,15 @@ function reducer(state = INITIAL_STATE, action) {
     case FETCH_REQUEST:
       return {
         ...state,
+        error: "",
         loading: true,
       };
     case FETCH_SUCCESS:
       return {
         ...state,
+        error: "",
         loading: false,
         data: action.payload,
-        error: "",
       };
     case FETCH_FAILURE:
       return {
@@ -46,14 +43,15 @@ function reducer(state = INITIAL_STATE, action) {
     case CREATE_REQUEST:
       return {
         ...state,
+        error: "",
         loading: true,
       };
     case CREATE_SUCCESS:
       return {
         ...state,
-        loading: false,
-        data: [action.payload],
         error: "",
+        loading: false,
+        data: action.payload,
       };
     case CREATE_FAILURE:
       return {
@@ -69,9 +67,9 @@ function reducer(state = INITIAL_STATE, action) {
     case DELETE_SUCCESS:
       return {
         ...state,
-        loading: false,
-        data: [],
+        data: {},
         error: "",
+        loading: false,
       };
     case DELETE_FAILURE:
       return {
@@ -82,35 +80,17 @@ function reducer(state = INITIAL_STATE, action) {
     case UPDATE_REQUEST:
       return {
         ...state,
-        loading: true,
         error: "",
+        loading: true,
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
-        loading: false,
         error: "",
+        loading: false,
+        data: action.payload,
       };
     case UPDATE_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case FETCH_ONE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case FETCH_ONE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: "",
-        findOne: action.payload,
-      };
-    case FETCH_ONE_FAILURE:
       return {
         ...state,
         loading: false,

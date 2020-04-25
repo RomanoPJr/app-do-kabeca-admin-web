@@ -1,4 +1,5 @@
 import axios from "../../axios";
+import { getError } from "../../utils/ErrorResponse";
 
 import {
   FETCH_REQUEST,
@@ -6,53 +7,43 @@ import {
   FETCH_FAILURE,
   CREATE_REQUEST,
   CREATE_SUCCESS,
-  CREATE_FAILURE
+  CREATE_FAILURE,
 } from "./session.types";
-import requests from "../async/async.actions";
+
+const endpoint = "/sessions";
 
 const fetch = () => {
   return function(dispatch) {
-    dispatch(requests.send(FETCH_REQUEST));
+    dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(`/sessions`)
-      .then(response => {
-        dispatch({
-          type: FETCH_SUCCESS,
-          payload: response.data
-        });
+      .get(endpoint)
+      .then((response) => {
+        dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
-      .catch(error => {
-        dispatch({
-          type: FETCH_FAILURE,
-          payload: error.message
-        });
+      .catch((error) => {
+        dispatch({ type: FETCH_FAILURE, payload: getError(error) });
       });
   };
 };
 
-const create = payload => {
+const create = (payload) => {
   return function(dispatch) {
-    dispatch(requests.send(CREATE_REQUEST));
+    dispatch({ type: CREATE_REQUEST });
     axios()
-      .post(`/sessions`, payload)
-      .then(response => {
-        localStorage.setItem("user-token", response.data.token);
-
-        dispatch({
-          type: CREATE_SUCCESS,
-          payload: response.data.admin
-        });
+      .post(endpoint, payload)
+      .then(({ data }) => {
+        if (data) {
+          localStorage.setItem("user-token", data.token);
+        }
+        dispatch({ type: CREATE_SUCCESS, payload: data.user });
       })
-      .catch(error => {
-        dispatch({
-          type: CREATE_FAILURE,
-          payload: error.message
-        });
+      .catch((error) => {
+        dispatch({ type: CREATE_FAILURE, payload: getError(error) });
       });
   };
 };
 
 export default {
   fetch,
-  create
+  create,
 };

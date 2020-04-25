@@ -10,13 +10,16 @@ import {
   DELETE_FAILURE,
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
-  UPDATE_FAILURE
-} from "./statuteSuggestion.types";
+  UPDATE_FAILURE,
+  FETCH_ALL_REQUEST,
+  FETCH_ALL_SUCCESS,
+  FETCH_ALL_FAILURE,
+} from "./suggestion_event.types";
 
 const INITIAL_STATE = {
   loading: false,
-  list: [],
-  error: ""
+  data: {},
+  error: "",
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -24,75 +27,92 @@ function reducer(state = INITIAL_STATE, action) {
     case FETCH_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case FETCH_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: action.payload,
-        error: ""
+        data: action.payload,
+        error: "",
       };
     case FETCH_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
+      };
+    case FETCH_ALL_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case FETCH_ALL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+        error: "",
+      };
+    case FETCH_ALL_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     case CREATE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case CREATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: [action.payload],
-        error: ""
+        data: action.payload,
+        error: "",
       };
     case CREATE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     case DELETE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case DELETE_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: [],
-        error: ""
+        data: {},
+        error: "",
       };
     case DELETE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     case UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
-        error: ""
+        error: "",
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
-        list: [action.payload],
         loading: false,
-        error: ""
+        error: "",
       };
     case UPDATE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     default:
       return state;

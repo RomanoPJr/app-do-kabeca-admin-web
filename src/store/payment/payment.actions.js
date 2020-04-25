@@ -1,6 +1,6 @@
 import axios from "../../axios";
 import { getError } from "../../utils/ErrorResponse";
-
+import { upload } from "../../utils/Upload";
 import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -14,18 +14,18 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+  CLEAR_STORE,
+} from "./payment.types";
 
-const endpoint = "/organizer";
+const endpoint = "/payment";
 
-const fetch = () => {
+const fetch = (payload) => {
   return function(dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(endpoint)
+      .get(`${endpoint}?pageNumber=${payload.pageNumber}`)
       .then((response) => {
-        const data = response.data;
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
@@ -34,8 +34,14 @@ const fetch = () => {
 };
 
 const create = (payload) => {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
+
+    if (payload.banner_url && payload.banner_url !== "") {
+      const dataUpload = await upload(payload.banner_url);
+      payload.banner_url = dataUpload.url;
+    }
+
     axios()
       .post(endpoint, payload)
       .then((response) => {
@@ -48,8 +54,17 @@ const create = (payload) => {
 };
 
 const update = (payload) => {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch({ type: UPDATE_REQUEST });
+    if (
+      payload.banner_url &&
+      payload.banner_url !== "" &&
+      payload.banner_url.search("res.cloudinary.com") === -1
+    ) {
+      const dataUpload = await upload(payload.banner_url);
+      payload.banner_url = dataUpload.url;
+    }
+
     axios()
       .put(endpoint, payload)
       .then((response) => {
@@ -66,7 +81,7 @@ const remove = (payload) => {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
-      .then((response) => {
+      .then(() => {
         dispatch({ type: DELETE_SUCCESS });
       })
       .catch((error) => {
@@ -75,9 +90,16 @@ const remove = (payload) => {
   };
 };
 
+const clear = (payload) => {
+  return function(dispatch) {
+    dispatch({ type: CLEAR_STORE });
+  };
+};
+
 export default {
   fetch,
   create,
   remove,
   update,
+  clear,
 };

@@ -15,7 +15,7 @@ import {
 
 const INITIAL_STATE = {
   loading: false,
-  list: [],
+  data: null,
   error: ""
 };
 
@@ -24,13 +24,14 @@ function reducer(state = INITIAL_STATE, action) {
     case FETCH_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: ""
       };
     case FETCH_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: action.payload,
+        data: action.payload,
         error: ""
       };
     case FETCH_FAILURE:
@@ -42,13 +43,14 @@ function reducer(state = INITIAL_STATE, action) {
     case CREATE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: ""
       };
     case CREATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: [action.payload],
+        data: action.payload,
         error: ""
       };
     case CREATE_FAILURE:
@@ -66,7 +68,7 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: false,
-        list: [],
+        data: null,
         error: ""
       };
     case DELETE_FAILURE:

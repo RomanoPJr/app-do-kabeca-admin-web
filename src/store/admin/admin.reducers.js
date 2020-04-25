@@ -11,16 +11,12 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-  FETCH_ONE_REQUEST,
-  FETCH_ONE_SUCCESS,
-  FETCH_ONE_FAILURE,
-} from "./user.types";
+} from "./admin.types";
 
 const INITIAL_STATE = {
   loading: false,
-  data: [],
+  data: {},
   error: "",
-  findOne: null,
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -32,7 +28,6 @@ function reducer(state = INITIAL_STATE, action) {
       };
     case FETCH_SUCCESS:
       return {
-        ...state,
         loading: false,
         data: action.payload,
         error: "",
@@ -52,7 +47,7 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: false,
-        data: [action.payload],
+        data: action.payload,
         error: "",
       };
     case CREATE_FAILURE:
@@ -70,7 +65,6 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: false,
-        data: [],
         error: "",
       };
     case DELETE_FAILURE:
@@ -92,25 +86,7 @@ function reducer(state = INITIAL_STATE, action) {
         error: "",
       };
     case UPDATE_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case FETCH_ONE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case FETCH_ONE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: "",
-        findOne: action.payload,
-      };
-    case FETCH_ONE_FAILURE:
+      console.log(action.payload);
       return {
         ...state,
         loading: false,

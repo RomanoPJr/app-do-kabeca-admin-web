@@ -1,9 +1,9 @@
 /*eslint-disable*/
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { PropTypes } from "prop-types";
-import PerfectScrollbar from "perfect-scrollbar";
 import { Nav } from "reactstrap";
+import { PropTypes } from "prop-types";
+import { NavLink } from "react-router-dom";
+import PerfectScrollbar from "perfect-scrollbar";
 
 var ps;
 
@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.sidebar, {
         suppressScrollX: true,
-        suppressScrollY: false
+        suppressScrollY: false,
       });
     }
   }
@@ -39,19 +39,7 @@ class Sidebar extends React.Component {
       <div className="sidebar" data="blue">
         <div className="sidebar-wrapper" ref="sidebar">
           <div className="logo">
-            {/* <a
-              // href={logo.outterLink}
-              className="simple-text logo-mini"
-              target="_blank"
-              onClick={this.props.toggleSidebar}
-            >
-              <div className="logo-img">
-                <img src={logo.imgSrc} alt="react-logo" />
-                <img src={require('../../assets/logo.png')} width="100" alt="Logo" />
-              </div>
-            </a> */}
             <a
-              // href={logo.outterLink}
               className="simple-text logo-normal"
               target="_blank"
               styles="display:flex;text-align:center;"
@@ -84,11 +72,11 @@ class Sidebar extends React.Component {
 }
 
 Sidebar.defaultProps = {
-  routes: [{}]
+  routes: [{}],
 };
 
 Sidebar.propTypes = {
-  routes: PropTypes.arrayOf(PropTypes.object)
+  routes: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Sidebar;

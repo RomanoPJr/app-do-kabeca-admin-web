@@ -14,15 +14,16 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+  CLEAR_STORE,
+} from "./event.types";
 
-const endpoint = "/organizer";
+const endpoint = "/event";
 
-const fetch = () => {
+const fetch = (payload) => {
   return function(dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(endpoint)
+      .get(`${endpoint}?pageNumber=${payload.pageNumber}`)
       .then((response) => {
         const data = response.data;
         dispatch({ type: FETCH_SUCCESS, payload: data });
@@ -40,6 +41,7 @@ const create = (payload) => {
       .post(endpoint, payload)
       .then((response) => {
         dispatch({ type: CREATE_SUCCESS, payload: response.data });
+        dispatch(fetch({ pageNumber: payload.pageNumber }));
       })
       .catch((error) => {
         dispatch({ type: CREATE_FAILURE, payload: getError(error) });
@@ -54,6 +56,7 @@ const update = (payload) => {
       .put(endpoint, payload)
       .then((response) => {
         dispatch({ type: UPDATE_SUCCESS, payload: response.data });
+        dispatch(fetch({ pageNumber: payload.pageNumber }));
       })
       .catch((error) => {
         dispatch({ type: UPDATE_FAILURE, payload: getError(error) });
@@ -66,7 +69,7 @@ const remove = (payload) => {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
-      .then((response) => {
+      .then(() => {
         dispatch({ type: DELETE_SUCCESS });
       })
       .catch((error) => {
@@ -75,8 +78,15 @@ const remove = (payload) => {
   };
 };
 
+const clear = () => {
+  return function(dispatch) {
+    dispatch({ type: CLEAR_STORE });
+  };
+};
+
 export default {
   fetch,
+  clear,
   create,
   remove,
   update,

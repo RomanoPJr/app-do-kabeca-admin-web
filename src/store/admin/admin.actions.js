@@ -14,18 +14,17 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+} from "./admin.types";
 
-const endpoint = "/organizer";
+const endpoint = "/admin";
 
-const fetch = () => {
+const fetch = ({ pageNumber }) => {
   return function(dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(endpoint)
+      .get(`${endpoint}?pageNumber=${pageNumber}`)
       .then((response) => {
-        const data = response.data;
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
@@ -53,7 +52,7 @@ const update = (payload) => {
     axios()
       .put(endpoint, payload)
       .then((response) => {
-        dispatch({ type: UPDATE_SUCCESS, payload: response.data });
+        dispatch({ type: UPDATE_SUCCESS });
       })
       .catch((error) => {
         dispatch({ type: UPDATE_FAILURE, payload: getError(error) });
@@ -78,6 +77,6 @@ const remove = (payload) => {
 export default {
   fetch,
   create,
-  remove,
   update,
+  remove,
 };

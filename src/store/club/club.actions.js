@@ -1,4 +1,5 @@
 import axios from "../../axios";
+import { upload } from "../../utils/Upload";
 import { getError } from "../../utils/ErrorResponse";
 
 import {
@@ -14,9 +15,10 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+  CLEAR_STORE,
+} from "./club.types";
 
-const endpoint = "/organizer";
+const endpoint = "/club";
 
 const fetch = () => {
   return function(dispatch) {
@@ -24,8 +26,7 @@ const fetch = () => {
     axios()
       .get(endpoint)
       .then((response) => {
-        const data = response.data;
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_SUCCESS, payload: response.data || null });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
@@ -34,8 +35,14 @@ const fetch = () => {
 };
 
 const create = (payload) => {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
+
+    if (payload.logo_url && payload.logo_url !== "") {
+      const dataUpload = await upload(payload.logo_url);
+      payload.logo_url = dataUpload.url;
+    }
+
     axios()
       .post(endpoint, payload)
       .then((response) => {
@@ -48,8 +55,18 @@ const create = (payload) => {
 };
 
 const update = (payload) => {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch({ type: UPDATE_REQUEST });
+
+    if (
+      payload.logo_url &&
+      payload.logo_url !== "" &&
+      payload.logo_url.search("res.cloudinary.com") === -1
+    ) {
+      const dataUpload = await upload(payload.logo_url);
+      payload.logo_url = dataUpload.url;
+    }
+
     axios()
       .put(endpoint, payload)
       .then((response) => {
@@ -66,7 +83,7 @@ const remove = (payload) => {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
-      .then((response) => {
+      .then(() => {
         dispatch({ type: DELETE_SUCCESS });
       })
       .catch((error) => {
@@ -75,9 +92,16 @@ const remove = (payload) => {
   };
 };
 
+const clear = (payload) => {
+  return function(dispatch) {
+    dispatch({ type: CLEAR_STORE });
+  };
+};
+
 export default {
   fetch,
   create,
   remove,
   update,
+  clear,
 };

@@ -8,24 +8,40 @@ import {
   CREATE_REQUEST,
   CREATE_SUCCESS,
   CREATE_FAILURE,
-  DELETE_REQUEST,
-  DELETE_SUCCESS,
-  DELETE_FAILURE,
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+  DELETE_REQUEST,
+  DELETE_SUCCESS,
+  DELETE_FAILURE,
+  FETCH_ALL_REQUEST,
+  FETCH_ALL_SUCCESS,
+  FETCH_ALL_FAILURE,
+} from "./suggestion_event.types";
 
-const endpoint = "/organizer";
+const endpoint = "/suggestion_event";
 
-const fetch = () => {
+const all = () => {
+  return function(dispatch) {
+    dispatch({ type: FETCH_ALL_REQUEST });
+    axios()
+      .get(`${endpoint}/all`)
+      .then((response) => {
+        dispatch({ type: FETCH_ALL_SUCCESS, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch({ type: FETCH_ALL_FAILURE, payload: getError(error) });
+      });
+  };
+};
+
+const fetch = (payload) => {
   return function(dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(endpoint)
+      .get(`${endpoint}?pageNumber=${payload}`)
       .then((response) => {
-        const data = response.data;
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
@@ -66,7 +82,7 @@ const remove = (payload) => {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
-      .then((response) => {
+      .then(() => {
         dispatch({ type: DELETE_SUCCESS });
       })
       .catch((error) => {
@@ -76,8 +92,9 @@ const remove = (payload) => {
 };
 
 export default {
+  all,
   fetch,
-  create,
   remove,
   update,
+  create,
 };

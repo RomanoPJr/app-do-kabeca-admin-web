@@ -11,16 +11,13 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-  FETCH_ONE_REQUEST,
-  FETCH_ONE_SUCCESS,
-  FETCH_ONE_FAILURE,
-} from "./user.types";
+  CLEAR_STORE,
+} from "./event.types";
 
 const INITIAL_STATE = {
   loading: false,
   data: [],
   error: "",
-  findOne: null,
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -97,20 +94,7 @@ function reducer(state = INITIAL_STATE, action) {
         loading: false,
         error: action.payload,
       };
-    case FETCH_ONE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case FETCH_ONE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: "",
-        findOne: action.payload,
-      };
-    case FETCH_ONE_FAILURE:
+    case CLEAR_STORE:
       return {
         ...state,
         loading: false,

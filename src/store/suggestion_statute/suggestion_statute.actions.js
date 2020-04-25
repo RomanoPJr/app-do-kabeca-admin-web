@@ -1,6 +1,5 @@
 import axios from "../../axios";
 import { getError } from "../../utils/ErrorResponse";
-
 import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -14,9 +13,9 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+} from "./suggestion_statute.types";
 
-const endpoint = "/organizer";
+const endpoint = "/suggestion_statute";
 
 const fetch = () => {
   return function(dispatch) {
@@ -24,8 +23,7 @@ const fetch = () => {
     axios()
       .get(endpoint)
       .then((response) => {
-        const data = response.data;
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });

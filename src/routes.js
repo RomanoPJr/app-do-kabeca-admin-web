@@ -1,38 +1,101 @@
 import React from "react";
-import { FaBook, FaRegFlag, FaUsers, FaUserShield } from "react-icons/fa";
-import Admins from "./views/Admins";
-import EventSuggestion from "./views/EventSuggestion";
-import Organizer from "./views/Organizer";
-import StatuteSuggestion from "./views/StatuteSuggestion";
+import {
+  FaHome,
+  FaBook,
+  FaUsers,
+  FaFutbol,
+  FaRegFlag,
+  FaRunning,
+  FaUserShield,
+  FaDollarSign,
+  FaRegHandshake,
+} from "react-icons/fa";
 
-var routes = [
+import Home from "./views/organizer/Home";
+import Club from "./views/organizer/Club";
+import Event from "./views/organizer/Event";
+import Player from "./views/organizer/Player";
+import Sponsor from "./views/organizer/Sponsor";
+import Payment from "./views/organizer/Payment";
+
+import Admins from "./views/admin/Admins";
+import Organizer from "./views/admin/Organizer";
+import SuggestionEvent from "./views/admin/SuggestionEvent";
+import SuggestionStatute from "./views/admin/SuggestionStatute";
+
+var admin = [
   {
     path: "/admins",
     name: "Administradores",
     icon: <FaUserShield size={18} />,
     component: Admins,
-    layout: "/admin"
+    layout: "/admin",
   },
   {
     path: "/organizers",
     name: "Organizadores",
     icon: <FaUsers size={18} />,
     component: Organizer,
-    layout: "/admin"
+    layout: "/admin",
   },
   {
     path: "/statute_suggestion",
     name: "Sugestão de Estatuto",
     icon: <FaBook size={18} />,
-    component: StatuteSuggestion,
-    layout: "/admin"
+    component: SuggestionStatute,
+    layout: "/admin",
   },
   {
     path: "/event_suggestions",
     name: "Sugestões de Eventos",
     icon: <FaRegFlag size={18} />,
-    component: EventSuggestion,
-    layout: "/admin"
-  }
+    component: SuggestionEvent,
+    layout: "/admin",
+  },
 ];
-export default routes;
+var organizer = [
+  {
+    path: "/home",
+    name: "Home",
+    icon: <FaHome size={18} />,
+    component: Home,
+    layout: "/organizer",
+  },
+  {
+    path: "/club",
+    name: "Clube",
+    icon: <FaFutbol size={18} />,
+    component: Club,
+    layout: "/organizer",
+  },
+  {
+    path: "/players",
+    name: "Jogadores",
+    icon: <FaRunning size={18} />,
+    component: Player,
+    layout: "/organizer",
+  },
+  {
+    path: "/sponsors",
+    name: "Patrocinadores",
+    icon: <FaRegHandshake size={22} />,
+    component: Sponsor,
+    layout: "/organizer",
+  },
+  {
+    path: "/events",
+    name: "Eventos de Partida",
+    icon: <FaRegFlag size={18} />,
+    component: Event,
+    layout: "/organizer",
+  },
+  {
+    path: "/payments",
+    name: "Mensalidades",
+    icon: <FaDollarSign size={18} />,
+    component: Payment,
+    layout: "/admin",
+  },
+];
+
+export { admin, organizer };

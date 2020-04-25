@@ -10,13 +10,14 @@ import {
   DELETE_FAILURE,
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
-  UPDATE_FAILURE
-} from "./eventSuggestion.types";
+  UPDATE_FAILURE,
+  CLEAR_STORE,
+} from "./payment.types";
 
 const INITIAL_STATE = {
   loading: false,
-  list: [],
-  error: ""
+  data: {},
+  error: "",
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -24,74 +25,77 @@ function reducer(state = INITIAL_STATE, action) {
     case FETCH_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case FETCH_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: action.payload,
-        error: ""
+        data: action.payload,
+        error: "",
       };
     case FETCH_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     case CREATE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case CREATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: [action.payload],
-        error: ""
+        data: action.payload,
+        error: "",
       };
     case CREATE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     case DELETE_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case DELETE_SUCCESS:
       return {
         ...state,
         loading: false,
-        list: [],
-        error: ""
+        error: "",
       };
     case DELETE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
       };
     case UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
-        error: ""
+        error: "",
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        error: ""
+        error: "",
       };
     case UPDATE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload
+        error: action.payload,
+      };
+    case CLEAR_STORE:
+      return {
+        ...INITIAL_STATE,
       };
     default:
       return state;

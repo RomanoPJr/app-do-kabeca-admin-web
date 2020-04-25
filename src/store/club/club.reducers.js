@@ -11,16 +11,13 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-  FETCH_ONE_REQUEST,
-  FETCH_ONE_SUCCESS,
-  FETCH_ONE_FAILURE,
-} from "./user.types";
+  CLEAR_STORE,
+} from "./club.types";
 
 const INITIAL_STATE = {
   loading: false,
-  data: [],
+  data: null,
   error: "",
-  findOne: null,
 };
 
 function reducer(state = INITIAL_STATE, action) {
@@ -29,6 +26,7 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: true,
+        error: "",
       };
     case FETCH_SUCCESS:
       return {
@@ -47,12 +45,13 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: true,
+        error: "",
       };
     case CREATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        data: [action.payload],
+        data: action.payload,
         error: "",
       };
     case CREATE_FAILURE:
@@ -65,12 +64,13 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: true,
+        error: "",
       };
     case DELETE_SUCCESS:
       return {
         ...state,
         loading: false,
-        data: [],
+        data: null,
         error: "",
       };
     case DELETE_FAILURE:
@@ -88,6 +88,7 @@ function reducer(state = INITIAL_STATE, action) {
     case UPDATE_SUCCESS:
       return {
         ...state,
+        data: action.payload,
         loading: false,
         error: "",
       };
@@ -97,25 +98,8 @@ function reducer(state = INITIAL_STATE, action) {
         loading: false,
         error: action.payload,
       };
-    case FETCH_ONE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case FETCH_ONE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: "",
-        findOne: action.payload,
-      };
-    case FETCH_ONE_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
+    case CLEAR_STORE:
+      return INITIAL_STATE;
     default:
       return state;
   }

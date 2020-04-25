@@ -1,6 +1,5 @@
 import axios from "../../axios";
 import { getError } from "../../utils/ErrorResponse";
-
 import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -14,18 +13,22 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./organizer.types";
+  CLEAR_STORE,
+} from "./player.types";
 
-const endpoint = "/organizer";
+const endpoint = "/player";
 
-const fetch = () => {
+const fetch = ({ pageNumber, pageSize, field, value }) => {
   return function(dispatch) {
+    const queryString = `${pageNumber ? `pageNumber=${pageNumber}&` : ""}${
+      pageSize ? `pageSize=${pageSize}&` : ""
+    }${field ? `field=${field}&` : ""}${value ? `value=${value}&` : ""}`;
+
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(endpoint)
+      .get(`${endpoint}?${queryString}`)
       .then((response) => {
-        const data = response.data;
-        dispatch({ type: FETCH_SUCCESS, payload: data });
+        dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
@@ -34,7 +37,7 @@ const fetch = () => {
 };
 
 const create = (payload) => {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
     axios()
       .post(endpoint, payload)
@@ -48,7 +51,7 @@ const create = (payload) => {
 };
 
 const update = (payload) => {
-  return function(dispatch) {
+  return async function(dispatch) {
     dispatch({ type: UPDATE_REQUEST });
     axios()
       .put(endpoint, payload)
@@ -66,7 +69,7 @@ const remove = (payload) => {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
-      .then((response) => {
+      .then(() => {
         dispatch({ type: DELETE_SUCCESS });
       })
       .catch((error) => {
@@ -75,8 +78,15 @@ const remove = (payload) => {
   };
 };
 
+const clear = (payload) => {
+  return function(dispatch) {
+    dispatch({ type: CLEAR_STORE });
+  };
+};
+
 export default {
   fetch,
+  clear,
   create,
   remove,
   update,

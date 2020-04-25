@@ -11,32 +11,49 @@ import {
   DELETE_FAILURE,
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
-  UPDATE_FAILURE
+  UPDATE_FAILURE,
+  FETCH_ONE_REQUEST,
+  FETCH_ONE_SUCCESS,
+  FETCH_ONE_FAILURE,
 } from "./user.types";
 
-const fetch = ({ type, pageNumber, pageSize }) => {
+const fetch = ({ field, value }) => {
   return function(dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(`/user?type=${type}&pageNumber=${pageNumber}&pageSize=${pageSize}`)
-      .then(response => {
+      .get(`/user?field=${field}&value=${value}`)
+      .then((response) => {
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: error.response });
       });
   };
 };
 
-const create = payload => {
+const fetchOne = ({ field, value }) => {
+  return function(dispatch) {
+    dispatch({ type: FETCH_ONE_REQUEST });
+    axios()
+      .get(`/user/find?field=${field}&value=${value}`)
+      .then((response) => {
+        dispatch({ type: FETCH_ONE_SUCCESS, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch({ type: FETCH_ONE_FAILURE, payload: error.response });
+      });
+  };
+};
+
+const create = (payload) => {
   return function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
     axios()
       .post(`/user`, payload)
-      .then(response => {
+      .then((response) => {
         dispatch({ type: CREATE_SUCCESS, payload: response.data });
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           dispatch({ type: CREATE_FAILURE, payload: error.response.data });
         } else {
@@ -46,29 +63,29 @@ const create = payload => {
   };
 };
 
-const remove = payload => {
+const remove = (payload) => {
   return function(dispatch) {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`/user/${payload}`)
-      .then(response => {
+      .then((response) => {
         dispatch({ type: DELETE_SUCCESS });
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({ type: DELETE_FAILURE, payload: error.response });
       });
   };
 };
 
-const update = payload => {
+const update = (payload) => {
   return function(dispatch) {
     dispatch({ type: UPDATE_REQUEST });
     axios()
       .put(`/user`, payload)
-      .then(response => {
+      .then((response) => {
         dispatch({ type: UPDATE_SUCCESS });
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           dispatch({ type: UPDATE_FAILURE, payload: error.response.data });
         } else {
@@ -82,5 +99,6 @@ export default {
   fetch,
   create,
   update,
-  remove
+  remove,
+  fetchOne,
 };
