@@ -20,15 +20,19 @@ const ModalCreate = ({
   const [id, setId] = useState(null);
   const [name, setName] = useState();
   const [value, setValue] = useState();
-  const [user_id, setUserId] = useState();
   const [referent, setReferent] = useState();
   const [selectOptions, setSelectOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState();
 
   useEffect(() => {
     if (data.id) {
       setId(data.id);
       setValue(data.value);
       setReferent(data.referent);
+
+      if (data.User.name) {
+        setSelectedOption({ label: data.User.name, value: data.User.id });
+      }
     }
   }, [data]);
 
@@ -51,10 +55,6 @@ const ModalCreate = ({
     }
   }, [name]);
 
-  function handleInputSelected(value) {
-    setUserId(value.value);
-  }
-
   return (
     <>
       {opened && (
@@ -69,7 +69,7 @@ const ModalCreate = ({
               confirmAction(evt, {
                 id,
                 value,
-                user_id,
+                user_id: selectedOption.value,
                 referent,
               });
             }}
@@ -78,13 +78,14 @@ const ModalCreate = ({
               <Col md="12">
                 <label>Nome</label>
                 <Select
+                  value={selectedOption || ""}
                   classNamePrefix="select"
                   isLoading={playerLoading}
                   isSearchable={true}
                   name="color"
                   placeholder="Digite o nome do jogador"
                   options={selectOptions}
-                  onChange={handleInputSelected}
+                  onChange={setSelectedOption}
                   onInputChange={(value) => {
                     setName(value.toUpperCase());
                   }}
@@ -95,7 +96,7 @@ const ModalCreate = ({
                 <Input
                   required={true}
                   type="number"
-                  placeholder="Informe o valor do evento"
+                  placeholder="Informe o valor do pagamento"
                   onChange={(event) => {
                     setValue(event.target.value.toUpperCase());
                   }}

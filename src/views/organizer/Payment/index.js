@@ -94,6 +94,17 @@ const Payment = ({
                     render: ({ data }) =>
                       moment(data.referent).format("DD/MM/YYYY"),
                   },
+                  {
+                    name: <b className="action-column">Acões</b>,
+                    render: ({ data }) => (
+                      <ActionColumn
+                        data={data}
+                        setCurrentData={setCurrentData}
+                        setModalDeleteOpened={setModalDeleteOpened}
+                        setModalCreateOpened={setModalCreateOpened}
+                      />
+                    ),
+                  },
                 ]}
               />
             </CardBody>

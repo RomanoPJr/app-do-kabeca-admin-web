@@ -36,6 +36,7 @@ const fetch = () => {
 const create = (payload) => {
   return function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
+
     axios()
       .post(endpoint, payload)
       .then((response) => {

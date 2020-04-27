@@ -63,6 +63,7 @@ const SignIn = ({ organizer, createOrganizer }) => {
                         type="text"
                         required={true}
                         placeholder="Qual seu nome?"
+                        value={name || ""}
                         onChange={(event) =>
                           setName(event.target.value.toUpperCase())
                         }
@@ -73,6 +74,7 @@ const SignIn = ({ organizer, createOrganizer }) => {
                       <Input
                         type="email"
                         required={true}
+                        value={email || ""}
                         placeholder="Qual seu E-mail?"
                         onChange={(event) =>
                           setEmail(event.target.value.toUpperCase())
@@ -82,9 +84,9 @@ const SignIn = ({ organizer, createOrganizer }) => {
                     <FormGroup>
                       <label>Telefone</label>
                       <Input
-                        value={phone}
                         maxLength="15"
                         required={true}
+                        value={phone || ""}
                         placeholder="Qual seu Telefone"
                         onChange={(event) => {
                           setPhone(formatPhone(event.target.value));
@@ -108,6 +110,7 @@ const SignIn = ({ organizer, createOrganizer }) => {
                       <label>Senha</label>
                       <Input
                         required
+                        value={password || ""}
                         placeholder="Digite sua Senha..."
                         type="password"
                         onChange={(event) =>
@@ -119,6 +122,7 @@ const SignIn = ({ organizer, createOrganizer }) => {
                       <label>Confirmar Senha</label>
                       <Input
                         required
+                        value={confirmPassword || ""}
                         type="password"
                         placeholder="Confirme sua Senha..."
                         onChange={(event) =>
