@@ -15,6 +15,7 @@ import Home from "./views/organizer/Home";
 import Club from "./views/organizer/Club";
 import Event from "./views/organizer/Event";
 import Player from "./views/organizer/Player";
+import Statute from "./views/organizer/Statute";
 import Sponsor from "./views/organizer/Sponsor";
 import Payment from "./views/organizer/Payment";
 
@@ -87,6 +88,13 @@ var organizer = [
     name: "Eventos de Partida",
     icon: <FaRegFlag size={18} />,
     component: Event,
+    layout: "/organizer",
+  },
+  {
+    path: "/statute",
+    name: "Estatuto",
+    icon: <FaBook size={18} />,
+    component: Statute,
     layout: "/organizer",
   },
   {

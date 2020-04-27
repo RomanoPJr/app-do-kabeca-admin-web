@@ -11,7 +11,7 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
-} from "./admin.types";
+} from "./statute.types";
 
 const INITIAL_STATE = {
   loading: false,
@@ -24,13 +24,15 @@ function reducer(state = INITIAL_STATE, action) {
     case FETCH_REQUEST:
       return {
         ...state,
+        error: "",
         loading: true,
       };
     case FETCH_SUCCESS:
       return {
+        ...state,
+        error: "",
         loading: false,
         data: action.payload,
-        error: "",
       };
     case FETCH_FAILURE:
       return {
@@ -41,14 +43,15 @@ function reducer(state = INITIAL_STATE, action) {
     case CREATE_REQUEST:
       return {
         ...state,
+        error: "",
         loading: true,
       };
     case CREATE_SUCCESS:
       return {
         ...state,
+        error: "",
         loading: false,
         data: action.payload,
-        error: "",
       };
     case CREATE_FAILURE:
       return {
@@ -64,8 +67,9 @@ function reducer(state = INITIAL_STATE, action) {
     case DELETE_SUCCESS:
       return {
         ...state,
-        loading: false,
+        data: {},
         error: "",
+        loading: false,
       };
     case DELETE_FAILURE:
       return {
@@ -76,14 +80,15 @@ function reducer(state = INITIAL_STATE, action) {
     case UPDATE_REQUEST:
       return {
         ...state,
-        loading: true,
         error: "",
+        loading: true,
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
-        loading: false,
         error: "",
+        loading: false,
+        data: action.payload,
       };
     case UPDATE_FAILURE:
       return {
