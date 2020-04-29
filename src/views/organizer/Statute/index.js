@@ -1,9 +1,9 @@
-import draftToHtml from "draftjs-to-html";
 import React, { useEffect, useState } from "react";
-import { FaRegEdit } from "react-icons/fa";
+import draftToHtml from "draftjs-to-html";
 import { connect } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
-import { Card, CardBody, Col, Row } from "reactstrap";
+import { CardBody } from "reactstrap";
+import { toast } from "react-toastify";
+import { FaRegEdit } from "react-icons/fa";
 
 import "./styles.css";
 import Content from "./Content";
@@ -11,6 +11,7 @@ import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import CardHeader from "../../../components/CardHeader";
+import Container from "../../../components/Container";
 import StatuteActions from "../../../store/statute/statute.actions";
 import SuggestionStatuteActions from "../../../store/suggestion_statute/suggestion_statute.actions";
 
@@ -76,26 +77,20 @@ const Statute = ({
   }
 
   return (
-    <div className="content statute_suggestion">
-      <Row>
-        <Col md="12">
-          <Card>
-            <CardHeader
-              btnText="Editar"
-              btnIcon={<FaRegEdit />}
-              data={statute.data}
-              setModalCreateOpened={statute.data ? setModalCreateOpened : null}
-            />
-            <CardBody>
-              {statute.data ? (
-                <Content data={currentData} />
-              ) : (
-                <EmptyState setModalCreateOpened={setModalCreateOpened} />
-              )}
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+    <Container loading={statute.loading} className="statute_suggestion">
+      <CardHeader
+        btnText="Editar"
+        btnIcon={<FaRegEdit />}
+        data={statute.data}
+        setModalCreateOpened={statute.data ? setModalCreateOpened : null}
+      />
+      <CardBody>
+        {statute.data ? (
+          <Content data={currentData} />
+        ) : (
+          <EmptyState setModalCreateOpened={setModalCreateOpened} />
+        )}
+      </CardBody>
       {modalCreateOpened && (
         <ModalCreate
           data={
@@ -118,8 +113,7 @@ const Statute = ({
           setOpened={setModalDeleteOpened}
         />
       )}
-      <ToastContainer />
-    </div>
+    </Container>
   );
 };
 

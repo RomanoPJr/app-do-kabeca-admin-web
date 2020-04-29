@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+import { CardBody } from "reactstrap";
+import { toast } from "react-toastify";
 import { FaFacebook, FaPencilAlt, FaTwitter } from "react-icons/fa";
-import { Card, CardBody, Col } from "reactstrap";
 
 import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
 import CardHeader from "../../../components/CardHeader";
+import Container from "../../../components/Container";
 import ClubActions from "../../../store/club/club.actions";
 
 const Club = ({
   club,
   fetchAction,
+  clearAction,
   createAction,
   updateAction,
-  clearAction,
 }) => {
   const [modalCreateOpened, setModalCreateOpened] = useState();
 
@@ -48,64 +49,62 @@ const Club = ({
   }
 
   return (
-    <div className="content">
-      <Card className="card-user">
-        <CardHeader
-          setModalCreateOpened={club.data ? setModalCreateOpened : null}
-          title="Clube"
-          btnText="Editar"
-          btnIcon={<FaPencilAlt />}
-        />
-        <CardBody>
-          {club.data ? (
-            <Col md="12">
-              <div className="author">
-                <div className="block block-one"></div>
-                <div className="block block-two"></div>
-                <div className="block block-three"></div>
-                <div className="block block-four"></div>
-                <img className="avatar" src={club.data.logo_url} alt="..." />
-                <p className="description">{club.data.name}</p>
+    <Container loading={club.loading} className="card-user">
+      <CardHeader
+        setModalCreateOpened={club.data ? setModalCreateOpened : null}
+        title="Clube"
+        btnText="Editar"
+        btnIcon={<FaPencilAlt />}
+      />
+      <CardBody>
+        {club.data ? (
+          <>
+            <div className="author">
+              <div className="block block-one"></div>
+              <div className="block block-two"></div>
+              <div className="block block-three"></div>
+              <div className="block block-four"></div>
+              <img className="avatar" src={club.data.logo_url} alt="..." />
+              <p className="description">{club.data.name}</p>
+            </div>
+            <div className="card-description">
+              <h5>
+                <b>DIA:</b>
+                {` ${club.data.day}`}
+              </h5>
+              <h5>
+                <b>HORÁRIO:</b>
+                {` ${club.data.time
+                  .split(":")
+                  .slice(0, 2)
+                  .join(":")} HRS`}
+              </h5>
+              <h5>
+                <b>LOCAL:</b>
+                {` ${club.data.city}/${club.data.state}`}
+              </h5>
+              <h5>
+                <b>MÓDULO DE PGTO:</b>
+                {club.data.payment_module_view_type === "ALL"
+                  ? "TODOS"
+                  : "INDIVIDUAL"}
+              </h5>
+            </div>
+            <div className="card-footer">
+              <div className="button-container">
+                <button className="btn btn-icon btn-round">
+                  <FaFacebook />
+                </button>
+                <button className="btn btn-icon btn-round">
+                  <FaTwitter />
+                </button>
               </div>
-              <div className="card-description">
-                <h5>
-                  <b>DIA:</b>
-                  {` ${club.data.day}`}
-                </h5>
-                <h5>
-                  <b>HORÁRIO:</b>
-                  {` ${club.data.time
-                    .split(":")
-                    .slice(0, 2)
-                    .join(":")} HRS`}
-                </h5>
-                <h5>
-                  <b>LOCAL:</b>
-                  {` ${club.data.city}/${club.data.state}`}
-                </h5>
-                <h5>
-                  <b>MÓDULO DE PGTO:</b>
-                  {club.data.payment_module_view_type === "ALL"
-                    ? "TODOS"
-                    : "INDIVIDUAL"}
-                </h5>
-              </div>
-              <div className="card-footer">
-                <div className="button-container">
-                  <button className="btn btn-icon btn-round">
-                    <FaFacebook />
-                  </button>
-                  <button className="btn btn-icon btn-round">
-                    <FaTwitter />
-                  </button>
-                </div>
-              </div>
-            </Col>
-          ) : (
-            <EmptyState setModalCreateOpened={setModalCreateOpened} />
-          )}
-        </CardBody>
-      </Card>
+            </div>
+          </>
+        ) : (
+          <EmptyState setModalCreateOpened={setModalCreateOpened} />
+        )}
+      </CardBody>
       {modalCreateOpened && (
         <ModalCreate
           data={club.data}
@@ -115,8 +114,7 @@ const Club = ({
           confirmAction={handleSubmitForm}
         />
       )}
-      <ToastContainer />
-    </div>
+    </Container>
   );
 };
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Card, CardBody, Col, Row } from "reactstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { CardBody } from "reactstrap";
+import { toast } from "react-toastify";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
 import { formatPhone } from "../../../utils/Phone";
+import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
 import UserAction from "../../../store/user/user.actions";
 import PlayerActions from "../../../store/player/player.actions";
@@ -70,45 +71,39 @@ const Player = ({
   }
 
   return (
-    <div className="content">
-      <Row>
-        <Col md="12">
-          <Card>
-            <CardHeader
-              setModalCreateOpened={setModalCreateOpened}
-              title="Jogadores (Cadastre até 60 Jogadores)"
-            />
-            <CardBody>
-              <Table
-                setPageNumber={setPageNumber}
-                isLoading={player.loading}
-                data={player.data}
-                columns={[
-                  { name: "Nome", attribute: "User.name" },
-                  {
-                    name: "Telefone",
-                    render: ({ data }) => formatPhone(data.User.phone),
-                  },
-                  { name: "Posição", attribute: "position" },
-                  { name: "Tipo", attribute: "type" },
-                  { name: "Status do Convite", attribute: "invite" },
-                  {
-                    name: <b className="action-column">Acões</b>,
-                    render: ({ data }) => (
-                      <ActionColumn
-                        data={data}
-                        setCurrentData={setCurrentData}
-                        setModalDeleteOpened={setModalDeleteOpened}
-                        setModalCreateOpened={setModalCreateOpened}
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+    <Container loading={player.loading}>
+      <CardHeader
+        setModalCreateOpened={setModalCreateOpened}
+        title="Jogadores (Cadastre até 60 Jogadores)"
+      />
+      <CardBody>
+        <Table
+          setPageNumber={setPageNumber}
+          isLoading={player.loading}
+          data={player.data}
+          columns={[
+            { name: "Nome", attribute: "User.name" },
+            {
+              name: "Telefone",
+              render: ({ data }) => formatPhone(data.User.phone),
+            },
+            { name: "Posição", attribute: "position" },
+            { name: "Tipo", attribute: "type" },
+            { name: "Status do Convite", attribute: "invite" },
+            {
+              name: <b className="action-column">Acões</b>,
+              render: ({ data }) => (
+                <ActionColumn
+                  data={data}
+                  setCurrentData={setCurrentData}
+                  setModalDeleteOpened={setModalDeleteOpened}
+                  setModalCreateOpened={setModalCreateOpened}
+                />
+              ),
+            },
+          ]}
+        />
+      </CardBody>
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
@@ -130,8 +125,7 @@ const Player = ({
           setOpened={setModalDeleteOpened}
         />
       )}
-      <ToastContainer />
-    </div>
+    </Container>
   );
 };
 

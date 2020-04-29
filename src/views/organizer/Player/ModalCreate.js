@@ -60,8 +60,8 @@ const ModalCreate = ({
     } else if (!userLoading && !user && phone && phone.length === 15) {
       setDisabledPlaceholder(false);
       setInputDisabled(false);
-      setName("");
-      setEmail("");
+      setName();
+      setEmail();
       setBirthDate(null);
       setPasswordRequired(true);
     }
@@ -81,7 +81,7 @@ const ModalCreate = ({
       {opened && (
         <Modal
           class="modal fade"
-          title="Patrocinador"
+          title="Jogador"
           opened={opened}
           setOpened={setOpened}
         >
@@ -102,7 +102,7 @@ const ModalCreate = ({
             }}
           >
             <Row>
-              <Col md="6">
+              <Col md="12">
                 <label>Telefone</label>
                 <Input
                   type="text"
@@ -128,7 +128,7 @@ const ModalCreate = ({
                   }
                 />
               </Col>
-              <Col md="6">
+              {/* <Col md="6">
                 <label>E-mail</label>
                 <Input
                   type="email"
@@ -140,12 +140,11 @@ const ModalCreate = ({
                     setEmail(event.target.value.toUpperCase());
                   }}
                 />
-              </Col>
+              </Col> */}
               <Col md="6">
                 <label>Data de Nascimento</label>
                 <Input
                   type="date"
-                  required={true}
                   value={birth_date || ""}
                   disabled={inputDisabled}
                   placeholder={
@@ -189,7 +188,6 @@ const ModalCreate = ({
               <Col md="6">
                 <label>Senha</label>
                 <Input
-                  required={passwordRequired}
                   type="password"
                   disabled={inputDisabled}
                   placeholder="Digite sua Senha..."
@@ -201,7 +199,7 @@ const ModalCreate = ({
               <Col md="6">
                 <label>Confirmar Senha</label>
                 <Input
-                  required={passwordRequired}
+                  required={password}
                   type="password"
                   disabled={inputDisabled}
                   placeholder="Confirme sua Senha..."

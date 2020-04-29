@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Card, CardBody, Col, Row } from "reactstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { CardBody } from "reactstrap";
 
-import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
+import ModalCreate from "./ModalCreate";
 import Table from "../../../components/Table";
+import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
 import SponsorActions from "../../../store/sponsor/sponsor.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
@@ -60,43 +61,37 @@ const Sponsor = ({
   }
 
   return (
-    <div className="content">
-      <Row>
-        <Col md="12">
-          <Card>
-            <CardHeader
-              setModalCreateOpened={setModalCreateOpened}
-              title="Patrocinadores (Cadastre até 6 patrocinadores)"
-            />
-            <CardBody>
-              <Table
-                setPageNumber={setPageNumber}
-                isLoading={sponsor.loading}
-                data={sponsor.data}
-                columns={[
-                  { name: "Patrocinador", attribute: "name" },
-                  {
-                    name: "Valor",
-                    render: ({ data }) => <p>R$ {data.value}</p>,
-                  },
-                  { name: "Status", attribute: "status" },
-                  {
-                    name: <b className="action-column">Acões</b>,
-                    render: ({ data }) => (
-                      <ActionColumn
-                        data={data}
-                        setCurrentData={setCurrentData}
-                        setModalDeleteOpened={setModalDeleteOpened}
-                        setModalCreateOpened={setModalCreateOpened}
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+    <Container loading={sponsor.loading}>
+      <CardHeader
+        setModalCreateOpened={setModalCreateOpened}
+        title="Patrocinadores (Cadastre até 6 patrocinadores)"
+      />
+      <CardBody>
+        <Table
+          setPageNumber={setPageNumber}
+          isLoading={sponsor.loading}
+          data={sponsor.data}
+          columns={[
+            { name: "Patrocinador", attribute: "name" },
+            {
+              name: "Valor",
+              render: ({ data }) => <p>R$ {data.value}</p>,
+            },
+            { name: "Status", attribute: "status" },
+            {
+              name: <b className="action-column">Acões</b>,
+              render: ({ data }) => (
+                <ActionColumn
+                  data={data}
+                  setCurrentData={setCurrentData}
+                  setModalDeleteOpened={setModalDeleteOpened}
+                  setModalCreateOpened={setModalCreateOpened}
+                />
+              ),
+            },
+          ]}
+        />
+      </CardBody>
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
@@ -115,8 +110,7 @@ const Sponsor = ({
           setOpened={setModalDeleteOpened}
         />
       )}
-      <ToastContainer />
-    </div>
+    </Container>
   );
 };
 

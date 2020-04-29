@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Card, CardBody, Col, Row } from "reactstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { CardBody } from "reactstrap";
+import { toast } from "react-toastify";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
+import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
 import EventActions from "../../../store/event/event.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
@@ -75,39 +76,33 @@ const Event = ({
   }
 
   return (
-    <div className="content">
-      <Row>
-        <Col md="12">
-          <Card>
-            <CardHeader
-              setModalCreateOpened={setModalCreateOpened}
-              title="Eventos de Partida (Crie até 10 eventos)"
-            />
-            <CardBody>
-              <Table
-                setPageNumber={setPageNumber}
-                isLoading={event.loading}
-                data={event.data}
-                columns={[
-                  { name: "Evento", attribute: "description" },
-                  { name: "Valor", attribute: "value" },
-                  {
-                    name: <b className="action-column">Acões</b>,
-                    render: ({ data }) => (
-                      <ActionColumn
-                        data={data}
-                        setCurrentData={setCurrentData}
-                        setModalDeleteOpened={setModalDeleteOpened}
-                        setModalCreateOpened={setModalCreateOpened}
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+    <Container loading={event.loading}>
+      <CardHeader
+        setModalCreateOpened={setModalCreateOpened}
+        title="Eventos de Partida (Crie até 10 eventos)"
+      />
+      <CardBody>
+        <Table
+          setPageNumber={setPageNumber}
+          isLoading={event.loading}
+          data={event.data}
+          columns={[
+            { name: "Evento", attribute: "description" },
+            { name: "Valor", attribute: "value" },
+            {
+              name: <b className="action-column">Acões</b>,
+              render: ({ data }) => (
+                <ActionColumn
+                  data={data}
+                  setCurrentData={setCurrentData}
+                  setModalDeleteOpened={setModalDeleteOpened}
+                  setModalCreateOpened={setModalCreateOpened}
+                />
+              ),
+            },
+          ]}
+        />
+      </CardBody>
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
@@ -125,8 +120,7 @@ const Event = ({
           setOpened={setModalDeleteOpened}
         />
       )}
-      <ToastContainer />
-    </div>
+    </Container>
   );
 };
 

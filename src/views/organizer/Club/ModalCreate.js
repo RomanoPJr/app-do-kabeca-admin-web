@@ -27,7 +27,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
       {opened && (
         <Modal
           class="modal fade"
-          title="Patrocinador"
+          title="Clube"
           opened={opened}
           setOpened={setOpened}
         >
