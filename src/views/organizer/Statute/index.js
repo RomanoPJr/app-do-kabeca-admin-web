@@ -9,7 +9,6 @@ import "./styles.css";
 import Content from "./Content";
 import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
-import ModalDelete from "./ModalDelete";
 import CardHeader from "../../../components/CardHeader";
 import Container from "../../../components/Container";
 import StatuteActions from "../../../store/statute/statute.actions";
@@ -20,13 +19,11 @@ const Statute = ({
   fetchAction,
   createAction,
   updateAction,
-  removeAction,
   suggestion_statute,
   fetchSuggestionStatute,
 }) => {
   const [currentData, setCurrentData] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState();
-  const [modalDeleteOpened, setModalDeleteOpened] = useState();
 
   useEffect(() => {
     fetchAction();
@@ -39,12 +36,6 @@ const Statute = ({
   }, [statute]);
 
   useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
-      setCurrentData({});
-    }
-  }, [modalCreateOpened, modalDeleteOpened]);
-
-  useEffect(() => {
     if (!statute.loading && modalCreateOpened && statute.error === "") {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
@@ -52,11 +43,6 @@ const Statute = ({
       setCurrentData(null);
     } else if (!statute.loading && modalCreateOpened && statute.error !== "") {
       toast.error(statute.error);
-    } else if (!statute.loading && modalDeleteOpened && statute.error === "") {
-      setModalDeleteOpened(false);
-      toast.success("Registro deletado com sucesso!");
-      fetchAction();
-      setCurrentData(null);
     }
   }, [statute.loading]);
 
@@ -105,14 +91,6 @@ const Statute = ({
           handleSubmitForm={handleSubmitForm}
         />
       )}
-      {modalDeleteOpened && (
-        <ModalDelete
-          opened={modalDeleteOpened}
-          removeAction={removeAction}
-          data={statute.data}
-          setOpened={setModalDeleteOpened}
-        />
-      )}
     </Container>
   );
 };
@@ -126,7 +104,6 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAction: (payload) => dispatch(StatuteActions.fetch(payload)),
   createAction: (payload) => dispatch(StatuteActions.create(payload)),
   updateAction: (payload) => dispatch(StatuteActions.update(payload)),
-  removeAction: (payload) => dispatch(StatuteActions.remove(payload)),
   fetchSuggestionStatute: (payload) =>
     dispatch(SuggestionStatuteActions.fetch(payload)),
 });

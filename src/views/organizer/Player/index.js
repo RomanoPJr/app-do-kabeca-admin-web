@@ -26,6 +26,7 @@ const Player = ({
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
+  const [findedUser, setFindedUser] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
 
@@ -40,8 +41,15 @@ const Player = ({
   }, []);
 
   useEffect(() => {
+    if (user) {
+      setFindedUser(user.findOne);
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
       setCurrentData({});
+      setFindedUser();
     }
   }, [modalCreateOpened, modalDeleteOpened]);
 
@@ -70,6 +78,10 @@ const Player = ({
     evt.preventDefault();
   }
 
+  function handleFetchOneUser(payload) {
+    fetchOneUser(payload);
+  }
+
   return (
     <Container loading={player.loading}>
       <CardHeader
@@ -82,14 +94,14 @@ const Player = ({
           isLoading={player.loading}
           data={player.data}
           columns={[
-            { name: "Nome", attribute: "User.name" },
+            { name: "Nome", attribute: "name" },
             {
               name: "Telefone",
-              render: ({ data }) => formatPhone(data.User.phone),
+              render: ({ data }) => formatPhone(data.phone),
             },
-            { name: "Posição", attribute: "position" },
-            { name: "Tipo", attribute: "type" },
-            { name: "Status do Convite", attribute: "invite" },
+            { name: "Posição", attribute: "ClubPlayers.position" },
+            { name: "Tipo", attribute: "ClubPlayers.type" },
+            { name: "Status do Convite", attribute: "ClubPlayers.invite" },
             {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (
@@ -107,13 +119,13 @@ const Player = ({
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
-          user={user.findOne}
+          user={findedUser}
           loading={player.loading}
           userLoading={user.loading}
           opened={modalCreateOpened}
-          fetchOneUser={fetchOneUser}
           setOpened={setModalCreateOpened}
           confirmAction={handleSubmitForm}
+          handleFetchOneUser={handleFetchOneUser}
         />
       )}
       {modalDeleteOpened && (

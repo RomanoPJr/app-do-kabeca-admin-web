@@ -28,6 +28,14 @@ const fetch = ({ pageNumber, pageSize, field, value }) => {
     axios()
       .get(`${endpoint}?${queryString}`)
       .then((response) => {
+        if (response.data.data) {
+          response.data.data.map((item) => {
+            if (item.ClubPlayers.length) {
+              item.ClubPlayers = item.ClubPlayers[0];
+            }
+          });
+        }
+
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {

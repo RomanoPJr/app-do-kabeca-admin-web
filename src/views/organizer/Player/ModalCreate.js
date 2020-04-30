@@ -13,34 +13,31 @@ const ModalCreate = ({
   loading,
   setOpened,
   userLoading,
-  fetchOneUser,
   confirmAction,
+  handleFetchOneUser,
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
   const [invite, setInvite] = useState();
-  const [password, setPassword] = useState();
   const [type, setType] = useState("JOGADOR");
   const [birth_date, setBirthDate] = useState();
   const [position, setPosition] = useState("GOLEIRO");
-  const [confirmPassword, setConfirmPassword] = useState();
   const [inputDisabled, setInputDisabled] = useState(true);
-  const [passwordRequired, setPasswordRequired] = useState(false);
   const [disabledPlaceholder, setDisabledPlaceholder] = useState(false);
 
   useEffect(() => {
     if (data.id) {
-      setId(data.id);
-      setType(data.type);
-      setInvite(data.invite);
+      setId(data.ClubPlayers.id);
+      setType(data.ClubPlayers.type);
+      setInvite(data.ClubPlayers.invite);
       setInputDisabled(false);
-      setName(data.User.name);
-      setEmail(data.User.email);
-      setPhone(formatPhone(data.User.phone));
-      setPosition(data.position);
-      setBirthDate(data.User.birth_date);
+      setName(data.name);
+      setEmail(data.email);
+      setPhone(formatPhone(data.phone));
+      setPosition(data.ClubPlayers.position);
+      setBirthDate(data.birth_date);
     }
   }, [data]);
 
@@ -56,20 +53,18 @@ const ModalCreate = ({
     if (userLoading) {
       setDisabledPlaceholder("Carregando...");
       setInputDisabled(true);
-      setPasswordRequired(false);
-    } else if (!userLoading && !user && phone && phone.length === 15) {
+    } else if (!userLoading && !user && phone && phone.length >= 14) {
       setDisabledPlaceholder(false);
       setInputDisabled(false);
       setName();
       setEmail();
       setBirthDate(null);
-      setPasswordRequired(true);
     }
   }, [userLoading]);
 
   useEffect(() => {
-    if (!data.id && phone && phone.length === 15) {
-      fetchOneUser({
+    if (!data.id && phone && phone.length >= 14) {
+      handleFetchOneUser({
         field: "phone",
         value: phone.replace(/\D/g, ""),
       });
@@ -93,10 +88,8 @@ const ModalCreate = ({
                 type,
                 email,
                 invite,
-                password,
                 position,
                 birth_date,
-                confirmPassword,
                 phone: clearPhone(phone),
               });
             }}
@@ -184,29 +177,6 @@ const ModalCreate = ({
                   <option value="GOLEIRO">JOGADOR</option>
                   <option value="COLABORADOR">COLABORADOR</option>
                 </select>
-              </Col>
-              <Col md="6">
-                <label>Senha</label>
-                <Input
-                  type="password"
-                  disabled={inputDisabled}
-                  placeholder="Digite sua Senha..."
-                  onChange={(event) =>
-                    setPassword(event.target.value.toUpperCase())
-                  }
-                />
-              </Col>
-              <Col md="6">
-                <label>Confirmar Senha</label>
-                <Input
-                  required={password}
-                  type="password"
-                  disabled={inputDisabled}
-                  placeholder="Confirme sua Senha..."
-                  onChange={(event) =>
-                    setConfirmPassword(event.target.value.toUpperCase())
-                  }
-                />
               </Col>
               {data.id &&
                 data.invite &&

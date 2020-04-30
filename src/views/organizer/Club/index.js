@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { CardBody } from "reactstrap";
 import { toast } from "react-toastify";
-import { FaFacebook, FaPencilAlt, FaTwitter } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
 
 import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
@@ -89,16 +89,6 @@ const Club = ({
                   ? "TODOS"
                   : "INDIVIDUAL"}
               </h5>
-            </div>
-            <div className="card-footer">
-              <div className="button-container">
-                <button className="btn btn-icon btn-round">
-                  <FaFacebook />
-                </button>
-                <button className="btn btn-icon btn-round">
-                  <FaTwitter />
-                </button>
-              </div>
             </div>
           </>
         ) : (

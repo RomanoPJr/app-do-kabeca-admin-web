@@ -17,7 +17,7 @@ const ModalDelete = ({ opened, setOpened, confirmAction, data, loading }) => {
         </Button>
         <Button
           color="danger"
-          onClick={() => confirmAction(data.id)}
+          onClick={() => confirmAction(data.ClubPlayers.id)}
           disabled={loading}
         >
           {loading && <LoadingSpinner />}
