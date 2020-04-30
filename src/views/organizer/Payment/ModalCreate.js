@@ -60,7 +60,7 @@ const ModalCreate = ({
       {opened && (
         <Modal
           class="modal fade"
-          title="Patrocinador"
+          title="Pagamento"
           opened={opened}
           setOpened={setOpened}
         >

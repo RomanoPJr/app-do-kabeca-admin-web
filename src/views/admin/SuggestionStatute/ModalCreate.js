@@ -29,7 +29,7 @@ const ModalCreate = ({
       {opened && (
         <Modal
           class="modal fade bd-example-modal-lg"
-          title="Estatuto"
+          title="Sugestão de Estatuto"
           opened={opened}
           setOpened={setOpened}
           size="lg"
