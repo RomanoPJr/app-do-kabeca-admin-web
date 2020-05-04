@@ -84,9 +84,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   autoComplete="off"
                   placeholder="Informe o Telefone"
                   type="text"
-                  onChange={(event) =>
-                    setPhone(formatPhone(event.target.value))
-                  }
+                  onChange={(event) => setPhone(formatPhone(event))}
                   value={phone}
                 />
               </Col>

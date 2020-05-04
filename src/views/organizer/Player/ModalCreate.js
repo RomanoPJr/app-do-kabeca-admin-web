@@ -104,7 +104,7 @@ const ModalCreate = ({
                   required={true}
                   placeholder="Informe o telefone"
                   onChange={(event) => {
-                    setPhone(formatPhone(event.target.value));
+                    setPhone(formatPhone(event));
                   }}
                 />
               </Col>

@@ -89,7 +89,7 @@ const SignIn = ({ organizer, createOrganizer }) => {
                         value={phone || ""}
                         placeholder="Qual seu Telefone"
                         onChange={(event) => {
-                          setPhone(formatPhone(event.target.value));
+                          setPhone(formatPhone(event));
                         }}
                       />
                     </FormGroup>
