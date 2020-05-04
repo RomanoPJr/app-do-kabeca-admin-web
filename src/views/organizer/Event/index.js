@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { CardBody } from "reactstrap";
+import { CardBody, Badge } from "reactstrap";
 import { toast } from "react-toastify";
 
+import "./styles.css";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
@@ -88,7 +89,19 @@ const Event = ({
           data={event.data}
           columns={[
             { name: "Evento", attribute: "description" },
-            { name: "Valor", attribute: "value" },
+            {
+              name: "Valor",
+              render: ({ data }) => {
+                const sign = Math.sign(data.value);
+                return sign === -1 ? (
+                  <Badge className="event-value-badge red">{data.value}</Badge>
+                ) : (
+                  <Badge className="event-value-badge green">
+                    +{data.value}
+                  </Badge>
+                );
+              },
+            },
             {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (

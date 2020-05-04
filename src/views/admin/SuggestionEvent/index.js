@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Card, CardBody, Col, Row } from "reactstrap";
+import { Card, CardBody, Col, Row, Badge } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
 
+import "./styles.css";
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
@@ -86,7 +87,21 @@ const SuggestionEvent = ({
                   isLoading={suggestion_event.loading}
                   columns={[
                     { name: "Descrição", attribute: "description" },
-                    { name: "Valor", attribute: "value" },
+                    {
+                      name: "Valor",
+                      render: ({ data }) => {
+                        const sign = Math.sign(data.value);
+                        return sign === -1 ? (
+                          <Badge className="event-value-badge red">
+                            {data.value}
+                          </Badge>
+                        ) : (
+                          <Badge className="event-value-badge green">
+                            +{data.value}
+                          </Badge>
+                        );
+                      },
+                    },
                     {
                       name: <b className="action-column">Acões</b>,
                       render: ({ data }) => (
