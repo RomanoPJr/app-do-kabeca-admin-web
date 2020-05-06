@@ -11,6 +11,9 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILURE,
   CLEAR_STORE,
 } from "./player.types";
 
@@ -88,6 +91,24 @@ function reducer(state = INITIAL_STATE, action) {
         error: "",
       };
     case UPDATE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case RESET_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: "",
+      };
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: "",
+      };
+    case RESET_PASSWORD_FAILURE:
       return {
         ...state,
         loading: false,

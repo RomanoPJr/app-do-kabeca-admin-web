@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Button, Col, Form, Row, Input, Label, FormGroup } from "reactstrap";
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Input,
+  Label,
+  FormGroup,
+  Popover,
+  PopoverHeader,
+  PopoverBody,
+} from "reactstrap";
 
+import ModalConfirm from "./ModalConfirm";
 import Modal from "../../../components/Modal";
 import { formatPhone, clearPhone } from "../../../utils/Phone";
 import LoadingSpinner from "../../../components/LoadingSpinner";
@@ -15,6 +27,7 @@ const ModalCreate = ({
   userLoading,
   confirmAction,
   handleFetchOneUser,
+  resetPasswordAction,
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
@@ -26,6 +39,7 @@ const ModalCreate = ({
   const [position, setPosition] = useState("GOLEIRO");
   const [inputDisabled, setInputDisabled] = useState(true);
   const [disabledPlaceholder, setDisabledPlaceholder] = useState(false);
+  const [modalConfirmOpened, setModalConfirmOpened] = useState(false);
 
   useEffect(() => {
     if (data.id) {
@@ -201,6 +215,22 @@ const ModalCreate = ({
                     </FormGroup>
                   </Col>
                 )}
+              {data.id && (
+                <Col
+                  md="12"
+                  style={{ display: "flex", justifyContent: "flex-end" }}
+                >
+                  <Button
+                    className="btn-simple"
+                    color="danger"
+                    onClick={() => {
+                      setModalConfirmOpened(true);
+                    }}
+                  >
+                    Resetar Senha
+                  </Button>
+                </Col>
+              )}
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>
@@ -212,6 +242,14 @@ const ModalCreate = ({
               </Button>
             </div>
           </Form>
+          {modalConfirmOpened && (
+            <ModalConfirm
+              loading={loading}
+              opened={modalConfirmOpened}
+              action={() => resetPasswordAction(data.ClubPlayers.id)}
+              setOpened={setModalConfirmOpened}
+            />
+          )}
         </Modal>
       )}
     </>

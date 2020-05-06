@@ -23,6 +23,7 @@ const Player = ({
   updateAction,
   removeAction,
   fetchOneUser,
+  resetPasswordAction,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -126,6 +127,7 @@ const Player = ({
           setOpened={setModalCreateOpened}
           confirmAction={handleSubmitForm}
           handleFetchOneUser={handleFetchOneUser}
+          resetPasswordAction={resetPasswordAction}
         />
       )}
       {modalDeleteOpened && (
@@ -175,6 +177,8 @@ const mapDispatchToProps = (dispatch) => ({
   updateAction: (payload) => dispatch(PlayerActions.update(payload)),
   removeAction: (payload) => dispatch(PlayerActions.remove(payload)),
   fetchOneUser: (payload) => dispatch(UserAction.fetchOne(payload)),
+  resetPasswordAction: (payload) =>
+    dispatch(PlayerActions.resetPassword(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

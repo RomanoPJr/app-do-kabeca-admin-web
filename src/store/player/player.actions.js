@@ -13,6 +13,9 @@ import {
   UPDATE_REQUEST,
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILURE,
   CLEAR_STORE,
 } from "./player.types";
 
@@ -92,10 +95,25 @@ const clear = (payload) => {
   };
 };
 
+const resetPassword = (payload) => {
+  return async function(dispatch) {
+    dispatch({ type: RESET_PASSWORD_REQUEST });
+    axios()
+      .put(`${endpoint}/${payload}/reset_password`, payload)
+      .then((response) => {
+        dispatch({ type: RESET_PASSWORD_SUCCESS, payload: response.data });
+      })
+      .catch((error) => {
+        dispatch({ type: RESET_PASSWORD_FAILURE, payload: getError(error) });
+      });
+  };
+};
+
 export default {
   fetch,
   clear,
   create,
   remove,
   update,
+  resetPassword,
 };
