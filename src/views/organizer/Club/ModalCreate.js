@@ -126,7 +126,10 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                 </select>
               </Col>
               <Col md="12" style={{ display: "flex", flexDirection: "column" }}>
-                <label>Logotipo da Pelada</label>
+                <label>
+                  Logotipo da Pelada (Tamanho Recomendado: 512px x 512px)
+                </label>
+
                 <UploadInput
                   text="Upload"
                   onLoad={(base64) => {
