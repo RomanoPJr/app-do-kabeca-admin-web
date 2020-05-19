@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { CardBody } from "reactstrap";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
@@ -103,6 +104,11 @@ const Player = ({
             { name: "Posição", attribute: "ClubPlayers.position" },
             { name: "Tipo", attribute: "ClubPlayers.type" },
             { name: "Status do Convite", attribute: "ClubPlayers.invite" },
+            {
+              name: "Entrou Em:",
+              render: ({ data }) =>
+                moment(data.ClubPlayers.created_at).format("DD/MM/YYYY"),
+            },
             {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (

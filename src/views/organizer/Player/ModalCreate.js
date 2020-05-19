@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import {
-  Button,
-  Col,
-  Form,
-  Row,
-  Input,
-  Label,
-  FormGroup,
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-} from "reactstrap";
+import { Button, Col, Form, Row, Input, Label, FormGroup } from "reactstrap";
 
 import ModalConfirm from "./ModalConfirm";
 import Modal from "../../../components/Modal";
@@ -34,24 +23,24 @@ const ModalCreate = ({
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
   const [invite, setInvite] = useState();
-  const [type, setType] = useState("JOGADOR");
   const [birth_date, setBirthDate] = useState();
   const [position, setPosition] = useState("GOLEIRO");
   const [inputDisabled, setInputDisabled] = useState(true);
-  const [disabledPlaceholder, setDisabledPlaceholder] = useState(false);
+  const [monthly_payment, setMonthlyPayment] = useState(0);
   const [modalConfirmOpened, setModalConfirmOpened] = useState(false);
+  const [disabledPlaceholder, setDisabledPlaceholder] = useState(false);
 
   useEffect(() => {
     if (data.id) {
-      setId(data.ClubPlayers.id);
-      setType(data.ClubPlayers.type);
-      setInvite(data.ClubPlayers.invite);
-      setInputDisabled(false);
       setName(data.name);
       setEmail(data.email);
-      setPhone(formatPhone(data.phone));
-      setPosition(data.ClubPlayers.position);
+      setInputDisabled(false);
+      setId(data.ClubPlayers.id);
       setBirthDate(data.birth_date);
+      setPhone(formatPhone(data.phone));
+      setInvite(data.ClubPlayers.invite);
+      setPosition(data.ClubPlayers.position);
+      setMonthlyPayment(data.ClubPlayers.monthly_payment);
     }
   }, [data]);
 
@@ -99,11 +88,11 @@ const ModalCreate = ({
               confirmAction(evt, {
                 id,
                 name,
-                type,
                 email,
                 invite,
                 position,
                 birth_date,
+                monthly_payment,
                 phone: clearPhone(phone),
               });
             }}
@@ -176,21 +165,20 @@ const ModalCreate = ({
                   <option value="DEFESA">DEFESA</option>
                   <option value="MEIO">MEIO</option>
                   <option value="ATAQUE">ATAQUE</option>
+                  <option value="COLABORADOR">COLABORADOR</option>
                 </select>
               </Col>
               <Col md="6">
-                <label>Tipo</label>
-                <select
-                  name="select"
-                  className="form-control"
-                  value={type || "JOGADOR"}
+                <label>Valor da Mensalidade (R$)</label>
+                <Input
+                  type="number"
+                  min="1"
+                  placeholder="Informe o valor da mensalidade"
+                  value={monthly_payment || "0.00"}
                   onChange={(event) =>
-                    setType(event.target.value.toUpperCase())
+                    setMonthlyPayment(event.target.value.toUpperCase())
                   }
-                >
-                  <option value="GOLEIRO">JOGADOR</option>
-                  <option value="COLABORADOR">COLABORADOR</option>
-                </select>
+                />
               </Col>
               {data.id &&
                 data.invite &&
@@ -217,12 +205,16 @@ const ModalCreate = ({
                 )}
               {data.id && (
                 <Col
-                  md="12"
-                  style={{ display: "flex", justifyContent: "flex-end" }}
+                  md="6"
+                  style={{
+                    display: "block",
+                  }}
                 >
                   <Button
-                    className="btn-simple"
+                    className="btn"
+                    type="button"
                     color="danger"
+                    style={{ width: "100%", marginTop: 15 }}
                     onClick={() => {
                       setModalConfirmOpened(true);
                     }}
