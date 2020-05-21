@@ -102,7 +102,6 @@ const Player = ({
               render: ({ data }) => formatPhone(data.phone),
             },
             { name: "Posição", attribute: "ClubPlayers.position" },
-            { name: "Tipo", attribute: "ClubPlayers.type" },
             { name: "Status do Convite", attribute: "ClubPlayers.invite" },
             {
               name: "Entrou Em:",

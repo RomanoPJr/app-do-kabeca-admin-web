@@ -32,8 +32,8 @@ const ModalCreate = ({
         setId(data.MonthlyPayments[0].id);
         setValue(data.MonthlyPayments[0].value);
         setReferent(data.MonthlyPayments[0].referent);
-        setDueValue(data.MonthlyPayments[0].paid_value);
-        setPaidValue(data.MonthlyPayments[0].club_player_id);
+        setDueValue(data.MonthlyPayments[0].due_value);
+        setPaidValue(data.MonthlyPayments[0].paid_value);
       } else {
         setValue(0);
         setDueValue(data.monthly_payment);
