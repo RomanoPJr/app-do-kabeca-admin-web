@@ -99,7 +99,7 @@ var organizer = [
   },
   {
     path: "/payments",
-    name: "Mensalidades",
+    name: "Financeiro",
     icon: <FaDollarSign size={18} />,
     component: Payment,
     layout: "/admin",

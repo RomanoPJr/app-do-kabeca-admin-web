@@ -21,9 +21,14 @@ const endpoint = "/payment";
 
 const fetch = (payload) => {
   return function(dispatch) {
+    const { month, year, pageNumber, pageSize } = payload;
+    const queryString = `${pageNumber ? `pageNumber=${pageNumber}&` : ""}${
+      pageSize ? `pageSize=${pageSize}&` : ""
+    }${year ? `year=${year}&` : ""}${month ? `month=${month}&` : ""}`;
+
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(`${endpoint}?pageNumber=${payload.pageNumber}`)
+      .get(`${endpoint}?${queryString}`)
       .then((response) => {
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
@@ -36,12 +41,6 @@ const fetch = (payload) => {
 const create = (payload) => {
   return async function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
-
-    if (payload.banner_url && payload.banner_url !== "") {
-      const dataUpload = await upload(payload.banner_url);
-      payload.banner_url = dataUpload.url;
-    }
-
     axios()
       .post(endpoint, payload)
       .then((response) => {

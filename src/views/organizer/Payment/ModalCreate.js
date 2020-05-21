@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Select from "react-select";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 
 import "./styles.css";
@@ -11,49 +10,37 @@ const ModalCreate = ({
   data,
   opened,
   loading,
-  playerList,
   setOpened,
-  playerLoading,
-  fetchPlayer,
+  filterYear,
+  filterMonth,
   confirmAction,
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
   const [value, setValue] = useState();
   const [referent, setReferent] = useState();
-  const [selectOptions, setSelectOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState();
+  const [due_value, setDueValue] = useState(0);
+  const [paid_value, setPaidValue] = useState(0);
+  const [club_player_id, setClubPlayerId] = useState();
 
   useEffect(() => {
     if (data.id) {
-      setId(data.id);
-      setValue(data.value);
-      setReferent(data.referent);
+      setClubPlayerId(data.id);
+      setName(data.User.name);
 
-      if (data.User.name) {
-        setSelectedOption({ label: data.User.name, value: data.User.id });
+      if (data.MonthlyPayments.length > 0) {
+        setId(data.MonthlyPayments[0].id);
+        setValue(data.MonthlyPayments[0].value);
+        setReferent(data.MonthlyPayments[0].referent);
+        setDueValue(data.MonthlyPayments[0].paid_value);
+        setPaidValue(data.MonthlyPayments[0].club_player_id);
+      } else {
+        setValue(0);
+        setDueValue(data.monthly_payment);
+        setReferent(`${filterYear}-${filterMonth}-${new Date().getDate()}`);
       }
     }
   }, [data]);
-
-  useEffect(() => {
-    if (playerList) {
-      const users = playerList.map((user) => ({
-        value: user.User.id,
-        label: user.User.name,
-      }));
-      setSelectOptions(users);
-    }
-  }, [playerList]);
-
-  useEffect(() => {
-    if (name && name.length >= 3) {
-      fetchPlayer({
-        field: "name",
-        value: name.toUpperCase(),
-      });
-    }
-  }, [name]);
 
   return (
     <>
@@ -69,38 +56,41 @@ const ModalCreate = ({
               confirmAction(evt, {
                 id,
                 value,
-                user_id: selectedOption.value,
                 referent,
+                due_value,
+                paid_value,
+                club_player_id,
               });
             }}
           >
             <Row>
               <Col md="12">
                 <label>Nome</label>
-                <Select
-                  value={selectedOption || ""}
-                  classNamePrefix="select"
-                  isLoading={playerLoading}
-                  isSearchable={true}
-                  name="color"
-                  placeholder="Digite o nome do jogador"
-                  options={selectOptions}
-                  onChange={setSelectedOption}
-                  onInputChange={(value) => {
-                    setName(value.toUpperCase());
-                  }}
-                />
+                <Input value={name || ""} disabled />
               </Col>
               <Col md="6">
-                <label>Valor</label>
+                <label>Valor Devido(R$)</label>
                 <Input
                   required={true}
                   type="number"
                   placeholder="Informe o valor do pagamento"
                   onChange={(event) => {
-                    setValue(event.target.value.toUpperCase());
+                    setDueValue(event.target.value.toUpperCase());
                   }}
-                  value={value || ""}
+                  value={due_value || 0}
+                  step="0.01"
+                />
+              </Col>
+              <Col md="6">
+                <label>Valor Pago(R$)</label>
+                <Input
+                  required={true}
+                  type="number"
+                  placeholder="Informe o valor do pagamento"
+                  onChange={(event) => {
+                    setPaidValue(event.target.value.toUpperCase());
+                  }}
+                  value={paid_value || 0}
                   step="0.01"
                 />
               </Col>

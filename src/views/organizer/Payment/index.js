@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
-import { Card, CardBody, Col, Row } from "reactstrap";
 import { ToastContainer, toast } from "react-toastify";
+import {
+  FaUserMinus,
+  FaEdit,
+  FaDollarSign,
+  FaHandHoldingUsd,
+} from "react-icons/fa";
+import {
+  Col,
+  Row,
+  Card,
+  Input,
+  Label,
+  CardBody,
+  CardTitle,
+  FormGroup,
+  CardHeader as CardH,
+} from "reactstrap";
 
 import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
 import CardHeader from "../../../components/CardHeader";
-import PlayerActions from "../../../store/player/player.actions";
+import { formatMoney } from "../../../utils/Currency";
 import PaymentActions from "../../../store/payment/payment.actions";
-import EditButton from "../../../components/ActionButtons/EditButton";
-import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const Payment = ({
   player,
@@ -23,20 +36,26 @@ const Payment = ({
   removeAction,
   fetchPlayer,
 }) => {
+  const [received, setReceived] = useState(0);
+  const [playersPending, setPlayersPending] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
-
-  useEffect(() => {
-    fetchAction({ pageNumber });
-  }, [pageNumber]);
+  const [filterYear, setFilterYear] = useState(new Date().getFullYear());
+  const [filterMonth, setFilterMonth] = useState(
+    `${new Date().getMonth() + 1}`.padStart(2, "0")
+  );
 
   useEffect(() => {
     return () => {
       clearAction();
     };
   }, []);
+
+  useEffect(() => {
+    handleFetch();
+  }, [pageNumber, filterMonth, filterYear]);
 
   useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
@@ -48,17 +67,45 @@ const Payment = ({
     if (!payment.loading && modalCreateOpened && payment.error === "") {
       setModalCreateOpened(false);
       toast.success("Registro salvo com sucesso!");
-      fetchAction({ pageNumber });
+      handleFetch();
       setCurrentData(null);
     } else if (!payment.loading && payment.error !== "") {
       toast.error(payment.error);
     } else if (!payment.loading && modalDeleteOpened && payment.error === "") {
       setModalDeleteOpened(false);
       toast.success("Registro deletado com sucesso!");
-      fetchAction({ pageNumber });
+      handleFetch();
       setCurrentData(null);
     }
   }, [payment.loading]);
+
+  useEffect(() => {
+    if (payment.data && payment.data.data) {
+      let sumReceived = 0;
+      let numPending = 0;
+      payment.data.data.map((item) => {
+        if (item.MonthlyPayments.length > 0) {
+          item.MonthlyPayments.map((monthlyPayment) => {
+            if (monthlyPayment.value > 0) {
+              sumReceived += monthlyPayment.value;
+            } else {
+              numPending += 1;
+            }
+          });
+        } else {
+          numPending += 1;
+        }
+      });
+      setReceived(sumReceived);
+      setPlayersPending(numPending);
+    }
+  }, [payment]);
+
+  function handleFetch() {
+    if (filterMonth && filterYear && filterYear.toString().length === 4) {
+      fetchAction({ pageNumber, year: filterYear, month: filterMonth });
+    }
+  }
 
   function handleSubmitForm(evt, data) {
     if (!data.id) {
@@ -72,13 +119,116 @@ const Payment = ({
   return (
     <div className="content">
       <Row>
+        <Col lg="12">
+          <Card>
+            <CardH>
+              <h5 className="card-category">Filtros</h5>
+            </CardH>
+            <CardBody>
+              <Row style={{ alignItems: "baseline" }}>
+                <Col lg="6">
+                  <FormGroup>
+                    <Label>Mês</Label>
+                    <Input
+                      type="select"
+                      name="select"
+                      id="exampleSelect1"
+                      placeholder="Mês"
+                      value={filterMonth || ""}
+                      onChange={(event) => {
+                        setFilterMonth(event.target.value);
+                      }}
+                    >
+                      <option value="01">JANEIRO</option>
+                      <option value="02">FEVEREIRO</option>
+                      <option value="03">MARÇO</option>
+                      <option value="04">ABRIL</option>
+                      <option value="05">MAIO</option>
+                      <option value="06">JUNHO</option>
+                      <option value="07">JULHO</option>
+                      <option value="08">AGOSTO</option>
+                      <option value="09">SETEMBRO</option>
+                      <option value="10">OUTUBRO</option>
+                      <option value="11">NOVEMBRO</option>
+                      <option value="12">DEZEMBRO</option>
+                    </Input>
+                  </FormGroup>
+                </Col>
+                <Col lg="6">
+                  <FormGroup>
+                    <Label>Ano</Label>
+                    <Input
+                      required
+                      value={filterYear || ""}
+                      placeholder="Ano"
+                      type="number"
+                      min="2020"
+                      onChange={(event) => {
+                        setFilterYear(event.target.value);
+                      }}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
         <Col md="12">
           <Card>
             <CardHeader
               setModalCreateOpened={setModalCreateOpened}
-              title="Mensalidades"
+              title="Financeiro"
             />
             <CardBody>
+              <Row>
+                <Col lg="4">
+                  <Card className="card-chart">
+                    <CardH>
+                      <h5 className="card-category">Total a Receber</h5>
+                      <CardTitle tag="h3">
+                        <FaDollarSign style={{ marginRight: 15 }} />
+                        {formatMoney(
+                          payment.data.totalizers
+                            ? payment.data.totalizers.totalReceivable
+                            : 0
+                        )}
+                      </CardTitle>
+                    </CardH>
+                  </Card>
+                </Col>
+                <Col lg="4">
+                  <Card className="card-chart">
+                    <CardH>
+                      <h5 className="card-category">Total Recebido</h5>
+                      <CardTitle tag="h3">
+                        <FaHandHoldingUsd style={{ marginRight: 15 }} />
+                        {formatMoney(
+                          payment.data.totalizers
+                            ? payment.data.totalizers.totalReceived
+                            : 0
+                        )}
+                      </CardTitle>
+                    </CardH>
+                  </Card>
+                </Col>
+                <Col lg="4">
+                  <Card className="card-chart">
+                    <CardH>
+                      <h5 className="card-category">Total em Pendência</h5>
+                      <CardTitle tag="h3" style={{ color: "red" }}>
+                        <FaUserMinus style={{ marginRight: 15 }} />
+                        {formatMoney(
+                          payment.data.totalizers
+                            ? payment.data.totalizers.totalDue
+                            : 0
+                        )}
+                      </CardTitle>
+                    </CardH>
+                  </Card>
+                </Col>
+              </Row>
               <Table
                 setPageNumber={setPageNumber}
                 isLoading={payment.loading}
@@ -86,16 +236,49 @@ const Payment = ({
                 columns={[
                   { name: "Nome", attribute: "User.name" },
                   {
-                    name: "Valor",
-                    render: ({ data }) => `R$ ${data.value}`,
+                    name: "Valor a Receber",
+                    render: ({ data }) => {
+                      if (data.MonthlyPayments.length > 0) {
+                        return formatMoney(data.MonthlyPayments[0].due_value);
+                      }
+                      return formatMoney(data.monthly_payment);
+                    },
                   },
                   {
-                    name: "Referente",
-                    render: ({ data }) =>
-                      moment(data.referent).format("DD/MM/YYYY"),
+                    name: "Valor Recebido",
+                    render: ({ data }) => {
+                      if (
+                        data.MonthlyPayments.length > 0 &&
+                        data.MonthlyPayments[0].paid_value > 0
+                      ) {
+                        const value = formatMoney(
+                          data.MonthlyPayments[0].paid_value
+                        );
+                        if (
+                          data.MonthlyPayments[0].paid_value <
+                          data.MonthlyPayments[0].due_value
+                        ) {
+                          return <p style={{ color: "red" }}>{value}</p>;
+                        }
+                        return value;
+                      }
+                      return <p style={{ color: "red" }}>{formatMoney(0)}</p>;
+                    },
                   },
                   {
-                    name: <b className="action-column">Acões</b>,
+                    name: "",
+                    render: ({ data }) => {
+                      if (!(data.MonthlyPayments.length > 0)) {
+                        return (
+                          <p style={{ color: "yellow" }}>
+                            Sem Registro de Pagamento
+                          </p>
+                        );
+                      }
+                    },
+                  },
+                  {
+                    name: <b className="action-column">Registrar Pagamento</b>,
                     render: ({ data }) => (
                       <ActionColumn
                         data={data}
@@ -114,12 +297,14 @@ const Payment = ({
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
+          filterYear={filterYear}
+          filterMonth={filterMonth}
+          fetchPlayer={fetchPlayer}
+          opened={modalCreateOpened}
           playerList={player.data.data}
           playerLoading={player.loading}
-          opened={modalCreateOpened}
-          fetchPlayer={fetchPlayer}
-          setOpened={setModalCreateOpened}
           confirmAction={handleSubmitForm}
+          setOpened={setModalCreateOpened}
         />
       )}
       {modalDeleteOpened && (
@@ -136,25 +321,27 @@ const Payment = ({
   );
 };
 
-const ActionColumn = ({
-  data,
-  setCurrentData,
-  setModalDeleteOpened,
-  setModalCreateOpened,
-}) => (
+const ActionColumn = ({ data, setCurrentData, setModalCreateOpened }) => (
   <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
-    <EditButton
+    <button
+      style={{ marginRight: 15 }}
+      className="btn btn-default btn-icon"
       onClick={() => {
         setCurrentData(data);
         setModalCreateOpened(true);
       }}
-    />
+    >
+      <FaEdit />
+    </button>
+    <button
+      className="btn btn-default btn-icon"
+      onClick={() => {
+        setCurrentData(data);
+        setModalCreateOpened(true);
+      }}
+    >
+      <FaDollarSign />
+    </button>
   </div>
 );
 
@@ -169,7 +356,6 @@ const mapDispatchToProps = (dispatch) => ({
   createAction: (payload) => dispatch(PaymentActions.create(payload)),
   updateAction: (payload) => dispatch(PaymentActions.update(payload)),
   removeAction: (payload) => dispatch(PaymentActions.remove(payload)),
-  fetchPlayer: (payload) => dispatch(PlayerActions.fetch(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payment);
