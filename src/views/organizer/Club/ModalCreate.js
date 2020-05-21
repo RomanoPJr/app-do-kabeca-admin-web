@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Row, Input } from "reactstrap";
 
@@ -7,20 +7,27 @@ import UploadInput from "../../../components/UploadInput";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
 const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
-  const [id] = useState(data && data.id ? data.id : "");
-  const [name, setName] = useState(data && data.name ? data.name : "");
-  const [city, setCity] = useState(data && data.city ? data.city : "");
-  const [time, setTime] = useState(data && data.time ? data.time : "");
-  const [state, setState] = useState(data && data.state ? data.state : "");
-  const [day, setDay] = useState(data && data.day ? data.day : "SEGUNDA-FEIRA");
-  const [logo_url, setLogoUrl] = useState(
-    data && data.logo_url ? data.logo_url : ""
-  );
-  const [payment_module_view_type, setPaymentModuleViewType] = useState(
-    data && data.payment_module_view_type
-      ? data.payment_module_view_type
-      : "ALL"
-  );
+  const [id, setId] = useState();
+  const [name, setName] = useState();
+  const [city, setCity] = useState();
+  const [time, setTime] = useState();
+  const [state, setState] = useState();
+  const [logo_url, setLogoUrl] = useState("");
+  const [day, setDay] = useState("SEGUNDA-FEIRA");
+  const [payment_module_view_type, setPaymentModuleViewType] = useState("ALL");
+
+  useEffect(() => {
+    if (data) {
+      setId(data.id);
+      setDay(data.day);
+      setName(data.name);
+      setCity(data.city);
+      setTime(data.time);
+      setState(data.state);
+      setLogoUrl(data.logo_url);
+      setPaymentModuleViewType(data.payment_module_view_type);
+    }
+  }, [data]);
 
   return (
     <>
@@ -111,25 +118,10 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                   }
                 />
               </Col>
-              <Col md="12">
-                <label>Módulo de Pagamento (Tipo de Visualização)</label>
-                <select
-                  name="select"
-                  className="form-control"
-                  value={payment_module_view_type || "INDIVIDUAL"}
-                  onChange={(event) =>
-                    setPaymentModuleViewType(event.target.value.toUpperCase())
-                  }
-                >
-                  <option value="ALL">TODOS</option>
-                  <option value="INDIVIDUAL">INDIVIDUAL</option>
-                </select>
-              </Col>
               <Col md="12" style={{ display: "flex", flexDirection: "column" }}>
                 <label>
                   Logotipo da Pelada (Tamanho Recomendado: 512px x 512px)
                 </label>
-
                 <UploadInput
                   text="Upload"
                   onLoad={(base64) => {

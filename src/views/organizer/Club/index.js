@@ -83,12 +83,6 @@ const Club = ({
                 <b>LOCAL:</b>
                 {` ${club.data.city}/${club.data.state}`}
               </h5>
-              <h5>
-                <b>MÓDULO DE PGTO:</b>
-                {club.data.payment_module_view_type === "ALL"
-                  ? "TODOS"
-                  : "INDIVIDUAL"}
-              </h5>
             </div>
           </>
         ) : (
