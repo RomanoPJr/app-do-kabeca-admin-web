@@ -177,10 +177,7 @@ const Payment = ({
       <Row>
         <Col md="12">
           <Card>
-            <CardHeader
-              setModalCreateOpened={setModalCreateOpened}
-              title="Financeiro"
-            />
+            <CardHeader title="Financeiro" />
             <CardBody>
               <Row>
                 <Col lg="4">
