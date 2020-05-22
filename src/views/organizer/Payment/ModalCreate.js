@@ -17,7 +17,6 @@ const ModalCreate = ({
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
-  const [value, setValue] = useState();
   const [referent, setReferent] = useState();
   const [due_value, setDueValue] = useState(0);
   const [paid_value, setPaidValue] = useState(0);
@@ -30,12 +29,11 @@ const ModalCreate = ({
 
       if (data.MonthlyPayments.length > 0) {
         setId(data.MonthlyPayments[0].id);
-        setValue(data.MonthlyPayments[0].value);
         setReferent(data.MonthlyPayments[0].referent);
         setDueValue(data.MonthlyPayments[0].due_value);
         setPaidValue(data.MonthlyPayments[0].paid_value);
       } else {
-        setValue(0);
+        setPaidValue(data.monthly_payment);
         setDueValue(data.monthly_payment);
         setReferent(`${filterYear}-${filterMonth}-${new Date().getDate()}`);
       }
@@ -55,7 +53,6 @@ const ModalCreate = ({
             onSubmit={(evt) => {
               confirmAction(evt, {
                 id,
-                value,
                 referent,
                 due_value,
                 paid_value,
