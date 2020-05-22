@@ -36,8 +36,6 @@ const Payment = ({
   removeAction,
   fetchPlayer,
 }) => {
-  const [received, setReceived] = useState(0);
-  const [playersPending, setPlayersPending] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
@@ -78,28 +76,6 @@ const Payment = ({
       setCurrentData(null);
     }
   }, [payment.loading]);
-
-  useEffect(() => {
-    if (payment.data && payment.data.data) {
-      let sumReceived = 0;
-      let numPending = 0;
-      payment.data.data.map((item) => {
-        if (item.MonthlyPayments.length > 0) {
-          item.MonthlyPayments.map((monthlyPayment) => {
-            if (monthlyPayment.value > 0) {
-              sumReceived += monthlyPayment.value;
-            } else {
-              numPending += 1;
-            }
-          });
-        } else {
-          numPending += 1;
-        }
-      });
-      setReceived(sumReceived);
-      setPlayersPending(numPending);
-    }
-  }, [payment]);
 
   function handleFetch() {
     if (filterMonth && filterYear && filterYear.toString().length === 4) {

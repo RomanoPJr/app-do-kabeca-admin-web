@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Input, Row } from "reactstrap";
+import CurrencyInput from "react-currency-input";
 
 import "./styles.css";
 import Modal from "../../../components/Modal";
@@ -51,11 +52,15 @@ const ModalCreate = ({
         >
           <Form
             onSubmit={(evt) => {
+              evt.preventDefault();
+              const cleanDue = String(due_value).replace('R$ ', '').replace('.', '').replace(',', '.')
+              const cleanPaid = String(paid_value).replace('R$ ', '').replace('.', '').replace(',', '.')
+
               confirmAction(evt, {
                 id,
                 referent,
-                due_value,
-                paid_value,
+                due_value: cleanDue,
+                paid_value: cleanPaid,
                 club_player_id,
               });
             }}
@@ -66,29 +71,29 @@ const ModalCreate = ({
                 <Input value={name || ""} disabled />
               </Col>
               <Col md="6">
-                <label>Valor Devido(R$)</label>
-                <Input
-                  required={true}
-                  type="number"
-                  placeholder="Informe o valor do pagamento"
-                  onChange={(event) => {
-                    setDueValue(event.target.value.toUpperCase());
+                <label>Valor Devido</label>
+                <CurrencyInput
+                  prefix="R$ "
+                  className="form-control"
+                  decimalSeparator=","
+                  thousandSeparator="."
+                  value={due_value}
+                  onChangeEvent={(event) => {
+                    setDueValue(event.target.value)
                   }}
-                  value={due_value || 0}
-                  step="0.01"
                 />
               </Col>
               <Col md="6">
-                <label>Valor Pago(R$)</label>
-                <Input
-                  required={true}
-                  type="number"
-                  placeholder="Informe o valor do pagamento"
-                  onChange={(event) => {
-                    setPaidValue(event.target.value.toUpperCase());
+                <label>Valor Pago</label>
+                <CurrencyInput
+                  className="form-control"
+                  prefix="R$ "
+                  decimalSeparator=","
+                  thousandSeparator="."
+                  value={paid_value}
+                  onChangeEvent={(event) => {
+                    setPaidValue(event.target.value)
                   }}
-                  value={paid_value || 0}
-                  step="0.01"
                 />
               </Col>
               <Col md="6">
