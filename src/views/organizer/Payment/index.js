@@ -1,65 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import {
-  FaUserMinus,
-  FaEdit,
-  FaDollarSign,
-  FaHandHoldingUsd,
-} from "react-icons/fa";
-import {
-  Col,
-  Row,
-  Card,
-  Input,
-  Label,
-  CardBody,
-  CardTitle,
-  FormGroup,
-  CardHeader as CardH,
-} from "reactstrap";
+import { FaEdit, FaDollarSign, } from "react-icons/fa";
+import { Col, Row, Card, CardBody } from "reactstrap";
 
+import Filter from "./Filter";
+import Counters from "./Counters";
+import CardHeader from "./CardHeader";
 import ModalCreate from "./ModalCreate";
-import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
-import CardHeader from "../../../components/CardHeader";
 import { formatMoney } from "../../../utils/Currency";
+import ClubActions from "../../../store/club/club.actions";
 import PaymentActions from "../../../store/payment/payment.actions";
 
 const Payment = ({
+  club,
   player,
   payment,
+  updateClub,
+  fetchPlayer,
   clearAction,
   fetchAction,
   createAction,
   updateAction,
-  removeAction,
-  fetchPlayer,
 }) => {
-  const [pageNumber, setPageNumber] = useState(1);
+  const [totalizers, setTotalizers] = useState();
+  const [filterYear, setFilterYear] = useState();
+  const [pageNumber, setPageNumber] = useState();
+  const [filterMonth, setFilterMonth] = useState();
   const [currentData, setCurrentData] = useState({});
+  const [switchValue, setSwitchValue] = useState(false);
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
-  const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
-  const [filterYear, setFilterYear] = useState(new Date().getFullYear());
-  const [filterMonth, setFilterMonth] = useState(
-    `${new Date().getMonth() + 1}`.padStart(2, "0")
-  );
 
   useEffect(() => {
+    setPageNumber(1);
+    setFilterYear(new Date().getFullYear());
+    setFilterMonth(`${new Date().getMonth() + 1}`.padStart(2, "0"));
+
     return () => {
       clearAction();
     };
   }, []);
 
   useEffect(() => {
+    if (club.data) {
+      setSwitchValue(club.data.payment_module_view_type === 'ALL')
+    }
+  }, [club])
+
+  useEffect(() => {
     handleFetch();
   }, [pageNumber, filterMonth, filterYear]);
 
   useEffect(() => {
-    if (!modalCreateOpened && !modalDeleteOpened) {
+    if (payment.data) {
+      setTotalizers(payment.data.totalizers)
+    }
+  }, [payment])
+
+  useEffect(() => {
+    if (!modalCreateOpened) {
       setCurrentData({});
     }
-  }, [modalCreateOpened, modalDeleteOpened]);
+  }, [modalCreateOpened]);
 
   useEffect(() => {
     if (!payment.loading && modalCreateOpened && payment.error === "") {
@@ -69,11 +72,6 @@ const Payment = ({
       setCurrentData(null);
     } else if (!payment.loading && payment.error !== "") {
       toast.error(payment.error);
-    } else if (!payment.loading && modalDeleteOpened && payment.error === "") {
-      setModalDeleteOpened(false);
-      toast.success("Registro deletado com sucesso!");
-      handleFetch();
-      setCurrentData(null);
     }
   }, [payment.loading]);
 
@@ -92,116 +90,27 @@ const Payment = ({
     evt.preventDefault();
   }
 
+  function handleSwicthChange(value) {
+    updateClub({ ...club.data, payment_module_view_type: value ? 'ALL' : 'INDIVIDUAL' })
+  }
+
   return (
     <div className="content">
-      <Row>
-        <Col lg="12">
-          <Card>
-            <CardH>
-              <h5 className="card-category">Filtros</h5>
-            </CardH>
-            <CardBody>
-              <Row style={{ alignItems: "baseline" }}>
-                <Col lg="6">
-                  <FormGroup>
-                    <Label>Mês</Label>
-                    <Input
-                      type="select"
-                      name="select"
-                      id="exampleSelect1"
-                      placeholder="Mês"
-                      value={filterMonth || ""}
-                      onChange={(event) => {
-                        setFilterMonth(event.target.value);
-                      }}
-                    >
-                      <option value="01">JANEIRO</option>
-                      <option value="02">FEVEREIRO</option>
-                      <option value="03">MARÇO</option>
-                      <option value="04">ABRIL</option>
-                      <option value="05">MAIO</option>
-                      <option value="06">JUNHO</option>
-                      <option value="07">JULHO</option>
-                      <option value="08">AGOSTO</option>
-                      <option value="09">SETEMBRO</option>
-                      <option value="10">OUTUBRO</option>
-                      <option value="11">NOVEMBRO</option>
-                      <option value="12">DEZEMBRO</option>
-                    </Input>
-                  </FormGroup>
-                </Col>
-                <Col lg="6">
-                  <FormGroup>
-                    <Label>Ano</Label>
-                    <Input
-                      required
-                      value={filterYear || ""}
-                      placeholder="Ano"
-                      type="number"
-                      min="2020"
-                      onChange={(event) => {
-                        setFilterYear(event.target.value);
-                      }}
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+      <Filter
+        filterYear={filterYear}
+        filterMonth={filterMonth}
+        setFilterYear={setFilterYear}
+        setFilterMonth={setFilterMonth}
+      />
       <Row>
         <Col md="12">
           <Card>
-            <CardHeader title="Financeiro" />
+            <CardHeader
+              switchValue={switchValue}
+              handleSwicthChange={handleSwicthChange}
+            />
             <CardBody>
-              <Row>
-                <Col lg="4">
-                  <Card className="card-chart">
-                    <CardH>
-                      <h5 className="card-category">Total a Receber</h5>
-                      <CardTitle tag="h3">
-                        <FaDollarSign style={{ marginRight: 15 }} />
-                        {formatMoney(
-                          payment.data.totalizers
-                            ? payment.data.totalizers.totalReceivable
-                            : 0
-                        )}
-                      </CardTitle>
-                    </CardH>
-                  </Card>
-                </Col>
-                <Col lg="4">
-                  <Card className="card-chart">
-                    <CardH>
-                      <h5 className="card-category">Total Recebido</h5>
-                      <CardTitle tag="h3">
-                        <FaHandHoldingUsd style={{ marginRight: 15 }} />
-                        {formatMoney(
-                          payment.data.totalizers
-                            ? payment.data.totalizers.totalReceived
-                            : 0
-                        )}
-                      </CardTitle>
-                    </CardH>
-                  </Card>
-                </Col>
-                <Col lg="4">
-                  <Card className="card-chart">
-                    <CardH>
-                      <h5 className="card-category">Total em Pendência</h5>
-                      <CardTitle tag="h3" style={{ color: "red" }}>
-                        <FaUserMinus style={{ marginRight: 15 }} />
-                        {formatMoney(
-                          payment.data.totalizers
-                            ? payment.data.totalizers.totalDue
-                            : 0
-                        )}
-                      </CardTitle>
-                    </CardH>
-                  </Card>
-                </Col>
-              </Row>
+              <Counters totalizers={totalizers} />
               <Table
                 setPageNumber={setPageNumber}
                 isLoading={payment.loading}
@@ -256,7 +165,6 @@ const Payment = ({
                       <ActionColumn
                         data={data}
                         setCurrentData={setCurrentData}
-                        setModalDeleteOpened={setModalDeleteOpened}
                         setModalCreateOpened={setModalCreateOpened}
                       />
                     ),
@@ -278,15 +186,6 @@ const Payment = ({
           playerLoading={player.loading}
           confirmAction={handleSubmitForm}
           setOpened={setModalCreateOpened}
-        />
-      )}
-      {modalDeleteOpened && (
-        <ModalDelete
-          data={currentData}
-          loading={payment.loading}
-          opened={modalDeleteOpened}
-          confirmAction={removeAction}
-          setOpened={setModalDeleteOpened}
         />
       )}
       <ToastContainer />
@@ -319,12 +218,14 @@ const ActionColumn = ({ data, setCurrentData, setModalCreateOpened }) => (
 );
 
 const mapStateToProps = (state) => ({
+  club: state.club,
   player: state.player,
   payment: state.payment,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   clearAction: () => dispatch(PaymentActions.clear()),
+  updateClub: (payload) => dispatch(ClubActions.update(payload)),
   fetchAction: (payload) => dispatch(PaymentActions.fetch(payload)),
   createAction: (payload) => dispatch(PaymentActions.create(payload)),
   updateAction: (payload) => dispatch(PaymentActions.update(payload)),

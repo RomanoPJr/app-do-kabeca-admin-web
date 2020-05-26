@@ -34,3 +34,11 @@
 .css-1uccc91-singleValue {
   font-size: 0.75rem;
 }
+
+.payment-switch-container{
+  display: flex;
+  align-items: center;
+}
+.payment-switch-container>.react-switch{
+  margin-left: 15px !important;
+}

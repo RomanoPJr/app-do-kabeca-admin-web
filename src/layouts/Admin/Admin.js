@@ -4,11 +4,12 @@ import React, { useState, useEffect } from "react";
 
 import history from "../../history";
 import { admin, organizer } from "../../routes";
+import ClubActions from "../../store/club/club.actions";
 import Sidebar from "../../components/Sidebar/Sidebar.js";
 import SessionActions from "../../store/session/session.actions";
 import AdminNavbar from "../../components/Navbars/AdminNavbar.js";
 
-const Admin = ({ fetchSession, session, ...props }) => {
+const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
   const [routes, setRoutes] = useState([]);
   const [sidebarOpened, setSidebarOpened] = useState();
 
@@ -17,6 +18,7 @@ const Admin = ({ fetchSession, session, ...props }) => {
       setRoutes(admin);
     } else if (session.data && session.data.type === "ORGANIZER") {
       setRoutes(organizer);
+      fetchClub()
     }
   }, [session.data]);
 
@@ -77,6 +79,7 @@ const Admin = ({ fetchSession, session, ...props }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchSession: () => dispatch(SessionActions.fetch(dispatch)),
+  fetchClub: () => dispatch(ClubActions.fetch(dispatch)),
 });
 
 const mapStateToProps = (state) => ({

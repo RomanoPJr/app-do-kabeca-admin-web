@@ -21,7 +21,7 @@ import {
 const endpoint = "/club";
 
 const fetch = () => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
       .get(endpoint)
@@ -35,7 +35,7 @@ const fetch = () => {
 };
 
 const create = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: CREATE_REQUEST });
 
     if (payload.logo_url && payload.logo_url !== "") {
@@ -55,7 +55,7 @@ const create = (payload) => {
 };
 
 const update = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: UPDATE_REQUEST });
 
     if (
@@ -79,7 +79,7 @@ const update = (payload) => {
 };
 
 const remove = (payload) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
@@ -92,8 +92,8 @@ const remove = (payload) => {
   };
 };
 
-const clear = (payload) => {
-  return function(dispatch) {
+const clear = () => {
+  return function (dispatch) {
     dispatch({ type: CLEAR_STORE });
   };
 };
