@@ -42,3 +42,7 @@
 .payment-switch-container>.react-switch{
   margin-left: 15px !important;
 }
+
+.btn-green{
+  background: #65cf65;
+}

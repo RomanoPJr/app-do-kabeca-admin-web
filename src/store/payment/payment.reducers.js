@@ -49,7 +49,6 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: false,
-        data: action.payload,
         error: "",
       };
     case CREATE_FAILURE:

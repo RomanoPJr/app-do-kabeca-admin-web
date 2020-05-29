@@ -7,37 +7,28 @@ import "./styles.css";
 import Modal from "../../../components/Modal";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
-const ModalCreate = ({
+const ModalUpdatePayment = ({
   data,
   opened,
   loading,
   setOpened,
-  filterYear,
-  filterMonth,
   confirmAction,
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
-  const [referent, setReferent] = useState();
+  const [phone, setPhone] = useState();
   const [due_value, setDueValue] = useState(0);
   const [paid_value, setPaidValue] = useState(0);
-  const [club_player_id, setClubPlayerId] = useState();
+  const [club_player_id, setClubPlayerID] = useState(0);
 
   useEffect(() => {
-    if (data.id) {
-      setClubPlayerId(data.id);
-      setName(data.User.name);
-
-      if (data.MonthlyPayments.length > 0) {
-        setId(data.MonthlyPayments[0].id);
-        setReferent(data.MonthlyPayments[0].referent);
-        setDueValue(data.MonthlyPayments[0].due_value);
-        setPaidValue(data.MonthlyPayments[0].paid_value);
-      } else {
-        setPaidValue(data.monthly_payment);
-        setDueValue(data.monthly_payment);
-        setReferent(`${filterYear}-${filterMonth}-${new Date().getDate()}`);
-      }
+    if (data.name) {
+      setId(data.id);
+      setName(data.name);
+      setPhone(data.phone);
+      setDueValue(data.due_value);
+      setPaidValue(data.paid_value);
+      setClubPlayerID(data.club_player_id)
     }
   }, [data]);
 
@@ -52,24 +43,26 @@ const ModalCreate = ({
         >
           <Form
             onSubmit={(evt) => {
-              evt.preventDefault();
-              const cleanDue = String(due_value).replace('R$ ', '').replace('.', '').replace(',', '.')
-              const cleanPaid = String(paid_value).replace('R$ ', '').replace('.', '').replace(',', '.')
-
               confirmAction(evt, {
                 id,
-                referent,
-                due_value: cleanDue,
-                paid_value: cleanPaid,
-                club_player_id,
+                due_value: String(due_value).replace('R$ ', '').replace('.', '').replace(',', '.'),
+                paid_value: String(paid_value).replace('R$ ', '').replace('.', '').replace(',', '.'),
+                club_player_id
               });
+              evt.preventDefault();
             }}
           >
             <Row>
-              <Col md="12">
+              <Col md="6">
                 <label>Nome</label>
                 <Input value={name || ""} disabled />
               </Col>
+              <Col md="6">
+                <label>Telefone</label>
+                <Input value={phone || ""} disabled />
+              </Col>
+            </Row>
+            <Row>
               <Col md="6">
                 <label>Valor Devido</label>
                 <CurrencyInput
@@ -96,18 +89,6 @@ const ModalCreate = ({
                   }}
                 />
               </Col>
-              <Col md="6">
-                <label>Referente à</label>
-                <Input
-                  type="date"
-                  required={true}
-                  value={referent || ""}
-                  placeholder={"Informe a data de referência"}
-                  onChange={(event) => {
-                    setReferent(event.target.value.toUpperCase());
-                  }}
-                />
-              </Col>
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>
@@ -125,4 +106,4 @@ const ModalCreate = ({
   );
 };
 
-export default ModalCreate;
+export default ModalUpdatePayment;

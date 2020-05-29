@@ -20,15 +20,18 @@ import {
 const endpoint = "/payment";
 
 const fetch = (payload) => {
-  return function(dispatch) {
-    const { month, year, pageNumber, pageSize } = payload;
-    const queryString = `${pageNumber ? `pageNumber=${pageNumber}&` : ""}${
-      pageSize ? `pageSize=${pageSize}&` : ""
-    }${year ? `year=${year}&` : ""}${month ? `month=${month}&` : ""}`;
+  return function (dispatch) {
+    const { month, year, type, pageNumber, pageSize } = payload;
+    var queryString = '';
+    queryString += `${pageNumber ? `pageNumber=${pageNumber}&` : ""}`
+    queryString += `${pageSize ? `pageSize=${pageSize}&` : ""}`
+    queryString += `${year ? `year=${year}&` : ""}`
+    queryString += `${month ? `month=${month}&` : ""}`;
 
+    const paymentType = type || 'paid';
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(`${endpoint}?${queryString}`)
+      .get(`${endpoint}/${paymentType}?${queryString}`)
       .then((response) => {
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
@@ -39,12 +42,12 @@ const fetch = (payload) => {
 };
 
 const create = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: CREATE_REQUEST });
     axios()
       .post(endpoint, payload)
       .then((response) => {
-        dispatch({ type: CREATE_SUCCESS, payload: response.data });
+        dispatch({ type: CREATE_SUCCESS });
       })
       .catch((error) => {
         dispatch({ type: CREATE_FAILURE, payload: getError(error) });
@@ -53,7 +56,7 @@ const create = (payload) => {
 };
 
 const update = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: UPDATE_REQUEST });
     if (
       payload.banner_url &&
@@ -76,7 +79,7 @@ const update = (payload) => {
 };
 
 const remove = (payload) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
@@ -90,7 +93,7 @@ const remove = (payload) => {
 };
 
 const clear = (payload) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: CLEAR_STORE });
   };
 };
