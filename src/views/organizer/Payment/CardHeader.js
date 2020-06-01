@@ -7,7 +7,7 @@ function CustomCardHeader({ switchValue, handleSwicthChange }) {
     <CardHeader className="card-header-with-button">
       <CardTitle tag="h4">Financeiro</CardTitle>
       <div className="payment-switch-container">
-        {switchValue ? "Peladeiros visualizam os pagamentos de todos" : "Peladeiros visualizam somente os próprios pagamentos"}
+        {switchValue ? "Jogadores visualizam os pagamentos de todos" : "Jogadores visualizam somente os próprios pagamentos"}
         <Switch
           className="payment-switch"
           checked={switchValue}

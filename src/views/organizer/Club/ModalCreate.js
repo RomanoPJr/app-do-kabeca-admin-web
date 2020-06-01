@@ -6,7 +6,7 @@ import Modal from "../../../components/Modal";
 import UploadInput from "../../../components/UploadInput";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
-const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
+const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS, fetchCities, ufs, cities, ufs_loading }) => {
   const [id, setId] = useState();
   const [name, setName] = useState();
   const [city, setCity] = useState();
@@ -15,6 +15,10 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
   const [logo_url, setLogoUrl] = useState("");
   const [day, setDay] = useState("SEGUNDA-FEIRA");
   const [payment_module_view_type, setPaymentModuleViewType] = useState("ALL");
+
+  useEffect(() => {
+    fetchUFS()
+  }, [])
 
   useEffect(() => {
     if (data) {
@@ -28,6 +32,24 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
       setPaymentModuleViewType(data.payment_module_view_type);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (state) {
+      const selectedState = ufs.find(uf => uf.nome.toUpperCase() === state)
+      if (selectedState) {
+        fetchCities(selectedState.sigla)
+        // setCity()
+      }
+    }
+  }, [state, ufs])
+
+  useEffect(() => {
+    if ((state && data) && state !== data.state) {
+      if (cities.length > 0) {
+        setCity(cities[0].nome.toUpperCase())
+      }
+    }
+  }, [cities])
 
   return (
     <>
@@ -95,28 +117,35 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                 />
               </Col>
               <Col md="6">
-                <label>Cidade</label>
-                <Input
-                  required
-                  type="text"
-                  value={city || ""}
-                  placeholder="Informe a cidade"
-                  onChange={(event) =>
-                    setCity(event.target.value.toUpperCase())
-                  }
-                />
+                <label>Estado</label>
+                <select
+                  value={state}
+                  name="select"
+                  className="form-control"
+                  onChange={(event) => {
+                    setState(event.target.value.toUpperCase())
+                  }}
+                >
+                  {ufs && ufs.map(uf => (
+                    <option key={uf.id} value={uf.nome.toUpperCase()}>{uf.nome.toUpperCase()}</option>
+                  ))}
+                </select>
               </Col>
               <Col md="6">
-                <label>Estado</label>
-                <Input
-                  required
-                  type="text"
-                  value={state || ""}
-                  placeholder="Informe o estado"
-                  onChange={(event) =>
-                    setState(event.target.value.toUpperCase())
-                  }
-                />
+                <label>Cidade</label>
+                <select
+                  disabled={ufs.length === 0 || ufs_loading}
+                  value={city}
+                  name="select"
+                  className="form-control"
+                  onChange={(event) => {
+                    setCity(event.target.value.toUpperCase())
+                  }}
+                >
+                  {cities && cities.map(city => (
+                    <option key={city.id} value={city.nome.toUpperCase()}>{city.nome.toUpperCase()}</option>
+                  ))}
+                </select>
               </Col>
               <Col md="12" style={{ display: "flex", flexDirection: "column" }}>
                 <label>

@@ -10,6 +10,7 @@ import session from "../store/session/session.reducers";
 import payment from "../store/payment/payment.reducers";
 import sponsor from "../store/sponsor/sponsor.reducers";
 import statute from "../store/statute/statute.reducers";
+import location from "../store/location/location.reducers";
 import organizer from "../store/organizer/organizer.reducers";
 import suggestion_event from "../store/suggestion_event/suggestion_event.reducers";
 import suggestion_statute from "../store/suggestion_statute/suggestion_statute.reducers";
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   payment,
   sponsor,
   statute,
+  location,
   organizer,
   suggestion_event,
   suggestion_statute,
@@ -37,7 +39,7 @@ if (process.env.NODE_ENV === "development") {
     compose(
       applyMiddleware(thunk),
       window.__REDUX_DEVTOOLS_EXTENSION__ &&
-        window.__REDUX_DEVTOOLS_EXTENSION__()
+      window.__REDUX_DEVTOOLS_EXTENSION__()
     )
   );
 } else {

@@ -6,16 +6,22 @@ import { FaPencilAlt } from "react-icons/fa";
 
 import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
-import CardHeader from "../../../components/CardHeader";
 import Container from "../../../components/Container";
+import CardHeader from "../../../components/CardHeader";
 import ClubActions from "../../../store/club/club.actions";
+import LocationActions from "../../../store/location/location.actions";
 
 const Club = ({
   club,
+  ufs,
+  cities,
+  fetchUFS,
   fetchAction,
+  fetchCities,
   clearAction,
   createAction,
   updateAction,
+  ufs_loading
 }) => {
   const [modalCreateOpened, setModalCreateOpened] = useState();
 
@@ -86,16 +92,21 @@ const Club = ({
             </div>
           </>
         ) : (
-          <EmptyState setModalCreateOpened={setModalCreateOpened} />
-        )}
+            <EmptyState setModalCreateOpened={setModalCreateOpened} />
+          )}
       </CardBody>
       {modalCreateOpened && (
         <ModalCreate
           data={club.data}
           loading={club.loading}
+          ufs={ufs}
+          cities={cities}
+          fetchUFS={fetchUFS}
+          fetchCities={fetchCities}
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
           confirmAction={handleSubmitForm}
+          ufs_loading={ufs_loading}
         />
       )}
     </Container>
@@ -104,10 +115,15 @@ const Club = ({
 
 const mapStateToProps = (state) => ({
   club: state.club,
+  ufs: state.location.data.ufs,
+  ufs_loading: state.location.loading,
+  cities: state.location.data.cities
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAction: (payload) => dispatch(ClubActions.fetch(payload)),
+  fetchUFS: () => dispatch(LocationActions.fetchUFS()),
+  fetchCities: (payload) => dispatch(LocationActions.fetchCities(payload)),
   createAction: (payload) => dispatch(ClubActions.create(payload)),
   updateAction: (payload) => dispatch(ClubActions.update(payload)),
   removeAction: (payload) => dispatch(ClubActions.remove(payload)),
