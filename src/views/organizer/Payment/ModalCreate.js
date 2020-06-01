@@ -26,7 +26,7 @@ const ModalUpdatePayment = ({
       setId(data.id);
       setName(data.name);
       setPhone(data.phone);
-      setDueValue(data.due_value);
+      setDueValue(data.position === 'COLABORADOR' ? 0 : data.due_value);
       setPaidValue(data.paid_value);
       setClubPlayerID(data.club_player_id)
     }

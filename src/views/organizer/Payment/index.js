@@ -197,13 +197,15 @@ const Tabs = ({
         <TabPane tabId="2">
           <Row>
             <Col sm="12">
-              {activeTab === '2' && < TableDebits
-                payment={payment || {}}
-                setPageNumber={setPageNumber}
-                setCurrentData={setCurrentData}
-                confirmAction={confirmAction}
-                setModalCreateOpened={setModalCreateOpened}
-              />}
+              {activeTab === '2' &&
+                < TableDebits
+                  payment={payment || {}}
+                  setPageNumber={setPageNumber}
+                  setCurrentData={setCurrentData}
+                  confirmAction={confirmAction}
+                  setModalCreateOpened={setModalCreateOpened}
+                />
+              }
             </Col>
           </Row>
         </TabPane>

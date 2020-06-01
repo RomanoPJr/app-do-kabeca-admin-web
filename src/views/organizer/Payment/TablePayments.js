@@ -32,7 +32,7 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
           name: "",
           render: ({ data }) => {
             if (data.position && data.position === 'COLABORADOR') {
-              return data.position
+              return <div className="positionTag">{data.position}</div >
             }
           },
         },

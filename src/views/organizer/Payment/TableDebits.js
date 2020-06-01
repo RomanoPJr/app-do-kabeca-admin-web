@@ -22,13 +22,13 @@ const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, 
         },
         {
           name: "Valor a Receber",
-          render: ({ data }) => formatMoney(data.monthly_payment || 0),
+          render: ({ data }) => data.position === 'COLABORADOR' ? formatMoney() : formatMoney(data.monthly_payment)
         },
         {
           name: "",
           render: ({ data }) => {
             if (data && data.position === 'COLABORADOR') {
-              return data.position
+              return <div className="positionTag">{data.position}</div >
             }
           },
         },
@@ -59,6 +59,7 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
           name: data.User.name,
           phone: data.User.phone,
           due_value: data.monthly_payment,
+          position: data.position,
           paid_value: 0,
         });
         setModalCreateOpened(true);
@@ -71,8 +72,8 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
       onClick={() => {
         confirmAction(null, {
           club_player_id: data.id,
-          due_value: data.monthly_payment,
-          paid_value: data.monthly_payment,
+          due_value: data.position === 'COLABORADOR' ? 0 : data.monthly_payment,
+          paid_value: data.position === 'COLABORADOR' ? 0 : data.monthly_payment,
         })
       }}
     >
