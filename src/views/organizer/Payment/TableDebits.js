@@ -12,23 +12,23 @@ const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, 
       isLoading={payment.loading}
       data={payment.data}
       columns={[
-        { name: "Nome", attribute: "User.name" },
+        { name: "Nome", attribute: "name" },
         {
-          name: "Telefone", render: ({ data }) => {
-            if (data.User) {
-              return formatPhone(data.User.phone)
+          name: "Telefone", render: ({ data }) => formatPhone(data.phone)
+        },
+        {
+          name: "Valor a Receber",
+          render: ({ data }) => {
+            if (data.ClubPlayers) {
+              return data.ClubPlayers.position === 'COLABORADOR' ? formatMoney() : formatMoney(data.ClubPlayers.monthly_payment)
             }
           }
         },
         {
-          name: "Valor a Receber",
-          render: ({ data }) => data.position === 'COLABORADOR' ? formatMoney() : formatMoney(data.monthly_payment)
-        },
-        {
           name: "",
           render: ({ data }) => {
-            if (data && data.position === 'COLABORADOR') {
-              return <div className="positionTag">{data.position}</div >
+            if (data.ClubPlayers && data.ClubPlayers.position === 'COLABORADOR') {
+              return <div className="positionTag">{data.ClubPlayers.position}</div >
             }
           },
         },
@@ -55,11 +55,11 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
       className="btn btn-default btn-icon"
       onClick={() => {
         setCurrentData({
-          club_player_id: data.id,
-          name: data.User.name,
-          phone: data.User.phone,
-          due_value: data.monthly_payment,
-          position: data.position,
+          club_player_id: data.ClubPlayers.id,
+          name: data.name,
+          phone: data.phone,
+          due_value: data.ClubPlayers.monthly_payment,
+          position: data.ClubPlayers.position,
           paid_value: 0,
         });
         setModalCreateOpened(true);
@@ -71,9 +71,9 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
       className="btn btn-icon btn-green"
       onClick={() => {
         confirmAction(null, {
-          club_player_id: data.id,
-          due_value: data.position === 'COLABORADOR' ? 0 : data.monthly_payment,
-          paid_value: data.position === 'COLABORADOR' ? 0 : data.monthly_payment,
+          club_player_id: data.ClubPlayers.id,
+          due_value: data.ClubPlayers.position === 'COLABORADOR' ? 0 : data.ClubPlayers.monthly_payment,
+          paid_value: data.ClubPlayers.position === 'COLABORADOR' ? 0 : data.ClubPlayers.monthly_payment,
         })
       }}
     >
