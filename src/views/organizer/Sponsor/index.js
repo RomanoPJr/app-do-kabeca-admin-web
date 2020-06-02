@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { CardBody } from "reactstrap";
+import moment from 'moment';
 
 import ModalDelete from "./ModalDelete";
 import ModalCreate from "./ModalCreate";
@@ -78,6 +79,15 @@ const Sponsor = ({
               render: ({ data }) => <p>R$ {data.value}</p>,
             },
             { name: "Status", attribute: "status" },
+            { name: "Início do Patrocínio", render: ({ data }) => moment(data.created_at).format('DD/MM/YYYY') },
+            {
+              name: "Tempo de Patrocínio", render: ({ data }) => {
+                if (data.sponsorship_time === 1) {
+                  return `${data.sponsorship_time} Mês`
+                }
+                return `${data.sponsorship_time} Meses`
+              }
+            },
             {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (
@@ -120,21 +130,21 @@ const ActionColumn = ({
   setModalDeleteOpened,
   setModalCreateOpened,
 }) => (
-  <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
-    <EditButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalCreateOpened(true);
-      }}
-    />
-  </div>
-);
+    <div className="action-column">
+      <DeleteButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalDeleteOpened(true);
+        }}
+      />
+      <EditButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalCreateOpened(true);
+        }}
+      />
+    </div>
+  );
 
 const mapStateToProps = (state) => ({
   sponsor: state.sponsor,
