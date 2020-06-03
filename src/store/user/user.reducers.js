@@ -14,6 +14,7 @@ import {
   FETCH_ONE_REQUEST,
   FETCH_ONE_SUCCESS,
   FETCH_ONE_FAILURE,
+  CLEAR_FIND_ONE
 } from "./user.types";
 
 const INITIAL_STATE = {
@@ -115,6 +116,11 @@ function reducer(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case CLEAR_FIND_ONE:
+      return {
+        ...state,
+        findOne: null,
       };
     default:
       return state;

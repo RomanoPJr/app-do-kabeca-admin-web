@@ -24,11 +24,11 @@ const Player = ({
   updateAction,
   removeAction,
   fetchOneUser,
+  clearFindOneAction,
   resetPasswordAction,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
-  const [findedUser, setFindedUser] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalDeleteOpened, setModalDeleteOpened] = useState(false);
 
@@ -43,15 +43,9 @@ const Player = ({
   }, []);
 
   useEffect(() => {
-    if (user) {
-      setFindedUser(user.findOne);
-    }
-  }, [user]);
-
-  useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
       setCurrentData({});
-      setFindedUser();
+      clearFindOneAction()
     }
   }, [modalCreateOpened, modalDeleteOpened]);
 
@@ -125,9 +119,8 @@ const Player = ({
       {modalCreateOpened && (
         <ModalCreate
           data={currentData}
-          user={findedUser}
+          user={user.findOne}
           loading={player.loading}
-          userLoading={user.loading}
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
           confirmAction={handleSubmitForm}
@@ -154,21 +147,21 @@ const ActionColumn = ({
   setModalDeleteOpened,
   setModalCreateOpened,
 }) => (
-  <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
-    <EditButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalCreateOpened(true);
-      }}
-    />
-  </div>
-);
+    <div className="action-column">
+      <DeleteButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalDeleteOpened(true);
+        }}
+      />
+      <EditButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalCreateOpened(true);
+        }}
+      />
+    </div>
+  );
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -177,6 +170,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   clearAction: () => dispatch(PlayerActions.clear()),
+  clearFindOneAction: () => dispatch(UserAction.clearFindOne()),
   fetchAction: (payload) => dispatch(PlayerActions.fetch(payload)),
   createAction: (payload) => dispatch(PlayerActions.create(payload)),
   updateAction: (payload) => dispatch(PlayerActions.update(payload)),

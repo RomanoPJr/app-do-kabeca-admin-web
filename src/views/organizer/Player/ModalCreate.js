@@ -13,31 +13,26 @@ const ModalCreate = ({
   opened,
   loading,
   setOpened,
-  userLoading,
   confirmAction,
   handleFetchOneUser,
   resetPasswordAction,
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
-  const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
   const [invite, setInvite] = useState();
   const [birth_date, setBirthDate] = useState();
   const [position, setPosition] = useState("GOLEIRO");
-  const [inputDisabled, setInputDisabled] = useState(true);
   const [monthly_payment, setMonthlyPayment] = useState(0);
   const [modalConfirmOpened, setModalConfirmOpened] = useState(false);
-  const [disabledPlaceholder, setDisabledPlaceholder] = useState(false);
 
   useEffect(() => {
     if (data.id) {
       setName(data.name);
-      setEmail(data.email);
-      setInputDisabled(false);
-      setId(data.ClubPlayers.id);
       setBirthDate(data.birth_date);
       setPhone(formatPhone(data.phone));
+
+      setId(data.ClubPlayers.id);
       setInvite(data.ClubPlayers.invite);
       setPosition(data.ClubPlayers.position);
       setMonthlyPayment(data.ClubPlayers.monthly_payment);
@@ -47,30 +42,19 @@ const ModalCreate = ({
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setEmail(user.email);
       setBirthDate(user.birth_date);
     }
   }, [user]);
 
   useEffect(() => {
-    if (userLoading) {
-      setDisabledPlaceholder("Carregando...");
-      setInputDisabled(true);
-    } else if (!userLoading && !user && phone && phone.length >= 14) {
-      setDisabledPlaceholder(false);
-      setInputDisabled(false);
-      setName();
-      setEmail();
-      setBirthDate(null);
-    }
-  }, [userLoading]);
-
-  useEffect(() => {
-    if (!data.id && phone && phone.length >= 14) {
+    if (phone && phone.length >= 14) {
       handleFetchOneUser({
         field: "phone",
         value: phone.replace(/\D/g, ""),
       });
+    } else if (phone && phone.length < 14) {
+      setName();
+      setBirthDate(null);
     }
   }, [phone]);
 
@@ -88,10 +72,8 @@ const ModalCreate = ({
               confirmAction(evt, {
                 id,
                 name,
-                email,
                 invite,
                 position,
-                birth_date,
                 monthly_payment,
                 phone: clearPhone(phone),
               });
@@ -105,52 +87,34 @@ const ModalCreate = ({
                   value={phone || ""}
                   maxLength="15"
                   required={true}
+                  disabled={data && data.id}
                   placeholder="Informe o telefone"
                   onChange={(event) => {
                     setPhone(formatPhone(event));
                   }}
                 />
               </Col>
+            </Row>
+            <Row>
               <Col md="6">
                 <label>Nome</label>
                 <Input
                   type="text"
-                  required={true}
                   value={name || ""}
-                  disabled={inputDisabled}
-                  placeholder={disabledPlaceholder || "Informe o nome"}
-                  onChange={(event) =>
-                    setName(event.target.value.toUpperCase())
-                  }
+                  onChange={event => setName(event.target.value.toUpperCase())}
+                  disabled={(data && data.id) || (user)}
                 />
               </Col>
-              {/* <Col md="6">
-                <label>E-mail</label>
-                <Input
-                  type="email"
-                  required={true}
-                  value={email || ""}
-                  disabled={inputDisabled}
-                  placeholder={disabledPlaceholder || "Informe o e-mail"}
-                  onChange={(event) => {
-                    setEmail(event.target.value.toUpperCase());
-                  }}
-                />
-              </Col> */}
               <Col md="6">
                 <label>Data de Nascimento</label>
                 <Input
                   type="date"
                   value={birth_date || ""}
-                  disabled={inputDisabled}
-                  placeholder={
-                    disabledPlaceholder || "Informe a data de nascimento"
-                  }
-                  onChange={(event) => {
-                    setBirthDate(event.target.value.toUpperCase());
-                  }}
+                  disabled={true}
                 />
               </Col>
+            </Row>
+            <Row>
               <Col md="6">
                 <label>Posição</label>
                 <select
@@ -168,18 +132,22 @@ const ModalCreate = ({
                   <option value="COLABORADOR">COLABORADOR</option>
                 </select>
               </Col>
-              <Col md="6">
-                <label>Valor da Mensalidade (R$)</label>
-                <Input
-                  type="number"
-                  min="1"
-                  placeholder="Informe o valor da mensalidade"
-                  value={monthly_payment || "0.00"}
-                  onChange={(event) =>
-                    setMonthlyPayment(event.target.value.toUpperCase())
-                  }
-                />
-              </Col>
+              {position && position !== 'COLABORADOR' && (
+                <Col md="6">
+                  <label>Valor da Mensalidade (R$)</label>
+                  <Input
+                    type="number"
+                    min="1"
+                    placeholder="Informe o valor da mensalidade"
+                    value={monthly_payment || "0.00"}
+                    onChange={(event) =>
+                      setMonthlyPayment(event.target.value.toUpperCase())
+                    }
+                  />
+                </Col>
+              )}
+            </Row>
+            <Row>
               {data.id &&
                 data.invite &&
                 (data.invite === "ACEITO" || data.invite === "BLOQUEADO") && (

@@ -22,10 +22,10 @@ import {
 const endpoint = "/player";
 
 const fetch = ({ pageNumber, pageSize, field, value }) => {
-  return function(dispatch) {
+  return function (dispatch) {
     const queryString = `${pageNumber ? `pageNumber=${pageNumber}&` : ""}${
       pageSize ? `pageSize=${pageSize}&` : ""
-    }${field ? `field=${field}&` : ""}${value ? `value=${value}&` : ""}`;
+      }${field ? `field=${field}&` : ""}${value ? `value=${value}&` : ""}`;
 
     dispatch({ type: FETCH_REQUEST });
     axios()
@@ -48,7 +48,7 @@ const fetch = ({ pageNumber, pageSize, field, value }) => {
 };
 
 const create = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: CREATE_REQUEST });
     axios()
       .post(endpoint, payload)
@@ -62,7 +62,7 @@ const create = (payload) => {
 };
 
 const update = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: UPDATE_REQUEST });
     axios()
       .put(endpoint, payload)
@@ -76,7 +76,7 @@ const update = (payload) => {
 };
 
 const remove = (payload) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
@@ -90,13 +90,13 @@ const remove = (payload) => {
 };
 
 const clear = (payload) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: CLEAR_STORE });
   };
 };
 
 const resetPassword = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     dispatch({ type: RESET_PASSWORD_REQUEST });
     axios()
       .put(`${endpoint}/${payload}/reset_password`, payload)
