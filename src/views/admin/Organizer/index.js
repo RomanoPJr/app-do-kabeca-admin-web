@@ -59,11 +59,7 @@ const Organizer = ({
   }, [organizer.loading]);
 
   function handleSubmitForm(evt, formData) {
-    if (!formData.id) {
-      createAction(formData);
-    } else {
-      updateAction(formData);
-    }
+    updateAction(formData);
     evt.preventDefault();
   }
 
@@ -78,10 +74,7 @@ const Organizer = ({
       <Row>
         <Col md="12">
           <Card>
-            <CardHeader
-              setModalCreateOpened={setModalCreateOpened}
-              title="Organizadores"
-            />
+            <CardHeader title="Organizadores" />
             <CardBody>
               <Table
                 setPageNumber={setPageNumber}
@@ -94,6 +87,14 @@ const Organizer = ({
                     render: ({ data }) => formatPhone(data.phone),
                   },
                   { name: "E-mail", attribute: "email" },
+                  {
+                    name: "Plano", render: ({ data }) => {
+                      if (data.Club) {
+                        return `${data.Club.plan_type} Jogadores`
+                      }
+                      return "Sem Clube Config."
+                    }
+                  },
                   { name: "Status", attribute: "status" },
                   {
                     name: <b className="action-column">Acões</b>,
@@ -139,21 +140,21 @@ const ActionColumn = ({
   setModalDeleteOpened,
   setModalCreateOpened,
 }) => (
-  <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
-    <EditButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalCreateOpened(true);
-      }}
-    />
-  </div>
-);
+    <div className="action-column">
+      <DeleteButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalDeleteOpened(true);
+        }}
+      />
+      <EditButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalCreateOpened(true);
+        }}
+      />
+    </div>
+  );
 
 const mapStateToProps = (state) => ({
   organizer: state.organizer,
