@@ -15,7 +15,6 @@ import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 const Organizer = ({
   organizer,
   fetchAction,
-  createAction,
   updateAction,
   removeAction,
 }) => {
@@ -162,7 +161,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAction: (payload) => dispatch(OrganizerActions.fetch(payload)),
-  createAction: (payload) => dispatch(OrganizerActions.create(payload)),
   updateAction: (payload) => dispatch(OrganizerActions.update(payload)),
   removeAction: (payload) => dispatch(OrganizerActions.remove(payload)),
 });

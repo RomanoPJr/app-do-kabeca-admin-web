@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Col, Form, Input, Row } from "reactstrap";
 
 import Modal from "../../../components/Modal";
-import { formatPhone, clearPhone } from "../../../utils/Phone";
+import { formatPhone } from "../../../utils/Phone";
 
 const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
   const [id, setId] = useState();
@@ -18,7 +18,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
     if (data) {
       setId(data.id)
       setName(data.name)
-      setPhone(data.phone)
+      setPhone(formatPhone(data.phone))
       setStatus(data.status)
       setPlanType(data.Club.plan_type)
       setCity(data.Club && data.Club.city)
