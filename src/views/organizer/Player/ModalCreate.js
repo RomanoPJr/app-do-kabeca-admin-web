@@ -30,12 +30,12 @@ const ModalCreate = ({
     if (data.id) {
       setName(data.name);
       setBirthDate(data.birth_date);
-      setPhone(formatPhone(data.phone));
 
       setId(data.ClubPlayers.id);
       setInvite(data.ClubPlayers.invite);
       setPosition(data.ClubPlayers.position);
       setMonthlyPayment(data.ClubPlayers.monthly_payment);
+      setPhone(formatPhone(data.phone));
     }
   }, [data]);
 
@@ -47,14 +47,16 @@ const ModalCreate = ({
   }, [user]);
 
   useEffect(() => {
-    if (phone && phone.length >= 14) {
-      handleFetchOneUser({
-        field: "phone",
-        value: phone.replace(/\D/g, ""),
-      });
-    } else if (phone && phone.length < 14) {
-      setName();
-      setBirthDate(null);
+    if (!data.id) {
+      if (phone && phone.length >= 14) {
+        handleFetchOneUser({
+          field: "phone",
+          value: phone.replace(/\D/g, ""),
+        });
+      } else if (phone && phone.length < 14) {
+        setName();
+        setBirthDate(null);
+      }
     }
   }, [phone]);
 
