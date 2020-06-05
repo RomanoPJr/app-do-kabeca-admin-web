@@ -12,7 +12,6 @@ import CardHeader from "../../../components/CardHeader";
 import EventActions from "../../../store/event/event.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
-import SuggestionEventActions from "../../../store/suggestion_event/suggestion_event.actions";
 
 const Event = ({
   event,
@@ -21,17 +20,11 @@ const Event = ({
   createAction,
   updateAction,
   removeAction,
-  suggestion_event,
-  fetchSuggestionEvent,
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
   const [modalCreateOpened, setModalCreateOpened] = useState();
   const [modalDeleteOpened, setModalDeleteOpened] = useState();
-
-  useEffect(() => {
-    fetchSuggestionEvent();
-  }, []);
 
   useEffect(() => {
     fetchAction({ pageNumber });
@@ -56,8 +49,6 @@ const Event = ({
       fetchAction({ pageNumber });
       setCurrentData(null);
     } else if (!event.loading && event.error !== "") {
-      toast.error(event.error);
-    } else if (!suggestion_event.loading && event.error !== "") {
       toast.error(event.error);
     } else if (!event.loading && modalDeleteOpened && event.error === "") {
       setModalDeleteOpened(false);
@@ -96,10 +87,10 @@ const Event = ({
                 return sign === -1 ? (
                   <Badge className="event-value-badge red">{data.value}</Badge>
                 ) : (
-                  <Badge className="event-value-badge green">
-                    +{data.value}
-                  </Badge>
-                );
+                    <Badge className="event-value-badge green">
+                      +{data.value}
+                    </Badge>
+                  );
               },
             },
             {
@@ -122,7 +113,6 @@ const Event = ({
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
           handleSubmitForm={handleSubmitForm}
-          suggestion_event={suggestion_event.data}
         />
       )}
       {modalDeleteOpened && (
@@ -143,21 +133,21 @@ const ActionColumn = ({
   setModalDeleteOpened,
   setModalCreateOpened,
 }) => (
-  <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
-    <EditButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalCreateOpened(true);
-      }}
-    />
-  </div>
-);
+    <div className="action-column">
+      <DeleteButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalDeleteOpened(true);
+        }}
+      />
+      <EditButton
+        onClick={() => {
+          setCurrentData(data);
+          setModalCreateOpened(true);
+        }}
+      />
+    </div>
+  );
 
 const mapStateToProps = (state) => ({
   event: state.event,
@@ -170,8 +160,6 @@ const mapDispatchToProps = (dispatch) => ({
   createAction: (payload) => dispatch(EventActions.create(payload)),
   updateAction: (payload) => dispatch(EventActions.update(payload)),
   removeAction: (payload) => dispatch(EventActions.remove(payload)),
-  fetchSuggestionEvent: (payload) =>
-    dispatch(SuggestionEventActions.all(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Event);

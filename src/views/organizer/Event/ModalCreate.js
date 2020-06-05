@@ -7,7 +7,6 @@ const ModalCreate = ({
   data,
   opened,
   setOpened,
-  suggestion_event,
   handleSubmitForm,
 }) => {
   const [id, setId] = useState();
@@ -22,50 +21,24 @@ const ModalCreate = ({
     }
   }, [data]);
 
-  function handleSetSugestion(selectedOption) {
-    setDescription(selectedOption.text.toUpperCase());
-    setValue(selectedOption.value);
-  }
-
   return (
     <>
       {opened && (
         <Modal
           class="modal fade"
-          title="Evento"
+          title="Evento de Partida"
           opened={opened}
           setOpened={setOpened}
         >
-          {!id && (
-            <p className="text-center">
-              Selecione uma sugestão de evento ou crie um.
-            </p>
-          )}
+          <p className="text-center">
+            INSERIR EVENTOS DE PARTIDA.
+          </p>
           <Form
             onSubmit={(evt) =>
               handleSubmitForm(evt, { id, value, description })
             }
           >
             <Row>
-              {!id && (
-                <Col md="12">
-                  <label>Sugestões</label>
-                  <select
-                    name="select"
-                    className="form-control"
-                    onChange={({ target: { selectedIndex, options } }) => {
-                      handleSetSugestion(options[selectedIndex]);
-                    }}
-                  >
-                    <option> SELECIONE... </option>
-                    {suggestion_event.map((item, i) => (
-                      <option key={i} value={item.value}>
-                        {item.description}
-                      </option>
-                    ))}
-                  </select>
-                </Col>
-              )}
               <Col md="12">
                 <label>Descrição</label>
                 <Input

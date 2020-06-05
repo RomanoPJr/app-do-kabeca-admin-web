@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Row, Input, Label, FormGroup } from "reactstrap";
+import CurrencyInput from "react-currency-input";
 
 import ModalConfirm from "./ModalConfirm";
 import Modal from "../../../components/Modal";
@@ -21,7 +22,6 @@ const ModalCreate = ({
   const [name, setName] = useState();
   const [phone, setPhone] = useState();
   const [invite, setInvite] = useState();
-  const [birth_date, setBirthDate] = useState();
   const [position, setPosition] = useState("GOLEIRO");
   const [monthly_payment, setMonthlyPayment] = useState(0);
   const [modalConfirmOpened, setModalConfirmOpened] = useState(false);
@@ -29,20 +29,18 @@ const ModalCreate = ({
   useEffect(() => {
     if (data.id) {
       setName(data.name);
-      setBirthDate(data.birth_date);
+      setPhone(formatPhone(data.phone));
 
       setId(data.ClubPlayers.id);
       setInvite(data.ClubPlayers.invite);
       setPosition(data.ClubPlayers.position);
       setMonthlyPayment(data.ClubPlayers.monthly_payment);
-      setPhone(formatPhone(data.phone));
     }
   }, [data]);
 
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setBirthDate(user.birth_date);
     }
   }, [user]);
 
@@ -55,7 +53,6 @@ const ModalCreate = ({
         });
       } else if (phone && phone.length < 14) {
         setName();
-        setBirthDate(null);
       }
     }
   }, [phone]);
@@ -76,8 +73,8 @@ const ModalCreate = ({
                 name,
                 invite,
                 position,
-                monthly_payment,
                 phone: clearPhone(phone),
+                monthly_payment: String(monthly_payment).replace('R$ ', '').replace('.', '').replace(',', '.'),
               });
             }}
           >
@@ -98,21 +95,13 @@ const ModalCreate = ({
               </Col>
             </Row>
             <Row>
-              <Col md="6">
+              <Col md="12">
                 <label>Nome</label>
                 <Input
                   type="text"
                   value={name || ""}
                   onChange={event => setName(event.target.value.toUpperCase())}
                   disabled={(data && data.id) || (user)}
-                />
-              </Col>
-              <Col md="6">
-                <label>Data de Nascimento</label>
-                <Input
-                  type="date"
-                  value={birth_date || ""}
-                  disabled={true}
                 />
               </Col>
             </Row>
@@ -136,15 +125,16 @@ const ModalCreate = ({
               </Col>
               {position && position !== 'COLABORADOR' && (
                 <Col md="6">
-                  <label>Valor da Mensalidade (R$)</label>
-                  <Input
-                    type="number"
-                    min="1"
-                    placeholder="Informe o valor da mensalidade"
-                    value={monthly_payment || "0.00"}
-                    onChange={(event) =>
-                      setMonthlyPayment(event.target.value.toUpperCase())
-                    }
+                  <label>Valor da Mensalidade</label>
+                  <CurrencyInput
+                    prefix="R$ "
+                    className="form-control"
+                    decimalSeparator=","
+                    thousandSeparator="."
+                    value={monthly_payment}
+                    onChangeEvent={(event) => {
+                      setMonthlyPayment(event.target.value)
+                    }}
                   />
                 </Col>
               )}
