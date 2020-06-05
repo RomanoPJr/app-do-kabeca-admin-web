@@ -11,7 +11,6 @@ import {
   FaRegHandshake,
 } from "react-icons/fa";
 
-import Home from "./views/organizer/Home";
 import Club from "./views/organizer/Club";
 import Event from "./views/organizer/Event";
 import Player from "./views/organizer/Player";
@@ -55,13 +54,6 @@ var admin = [
   },
 ];
 var organizer = [
-  {
-    path: "/home",
-    name: "Home",
-    icon: <FaHome size={18} />,
-    component: Home,
-    layout: "/organizer",
-  },
   {
     path: "/club",
     name: "Clube",
