@@ -169,7 +169,7 @@ const Tabs = ({
             className={classnames({ active: activeTab === '1' })}
             onClick={() => { toggle('1'); }}
           >
-            Pagamentos
+            MENSALIDADES PAGAS
           </NavLink>
         </NavItem>
         <NavItem>
@@ -177,7 +177,7 @@ const Tabs = ({
             className={classnames({ active: activeTab === '2' })}
             onClick={() => { toggle('2'); }}
           >
-            Débitos
+            JOGADORES EM DÉBITO
           </NavLink>
         </NavItem>
       </Nav>

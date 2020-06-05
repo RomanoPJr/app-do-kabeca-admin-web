@@ -4,6 +4,7 @@ import { CardBody } from "reactstrap";
 import { toast } from "react-toastify";
 import { FaPencilAlt } from "react-icons/fa";
 
+import './styles.css';
 import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
 import Container from "../../../components/Container";
@@ -71,7 +72,7 @@ const Club = ({
               <div className="block block-three"></div>
               <div className="block block-four"></div>
               <img className="avatar" src={club.data.logo_url} alt="..." />
-              <p className="description">{club.data.name}</p>
+              <h2 className="description" style={{ marginTop: 25, marginBottom: 25 }}>{club.data.name}</h2>
             </div>
             <div className="card-description">
               <h5>

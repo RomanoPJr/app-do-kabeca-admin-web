@@ -16,6 +16,7 @@ import EditButton from "../../../components/ActionButtons/EditButton";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const Player = ({
+  club,
   user,
   player,
   clearAction,
@@ -82,7 +83,7 @@ const Player = ({
     <Container loading={player.loading}>
       <CardHeader
         setModalCreateOpened={setModalCreateOpened}
-        title="Jogadores (Cadastre até 60 Jogadores)"
+        title={`Jogadores (Cadastre até ${club.data && club.data.plan_type} Jogadores)`}
       />
       <CardBody>
         <Table
@@ -166,6 +167,7 @@ const ActionColumn = ({
 const mapStateToProps = (state) => ({
   user: state.user,
   player: state.player,
+  club: state.club
 });
 
 const mapDispatchToProps = (dispatch) => ({

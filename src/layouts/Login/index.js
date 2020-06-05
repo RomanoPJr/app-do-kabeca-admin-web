@@ -28,7 +28,7 @@ const Login = ({ session, createSession }) => {
       localStorage.getItem("user-token")
     ) {
       if (session.data.type === "ORGANIZER") {
-        history.push(`/${session.data.type.toLowerCase()}/home`);
+        history.push(`/${session.data.type.toLowerCase()}/club`);
       } else if (session.data.type === "ADMIN") {
         history.push(`/${session.data.type.toLowerCase()}/admins`);
       }

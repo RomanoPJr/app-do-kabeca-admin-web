@@ -1,4 +1,5 @@
 import React from "react";
+import moment from 'moment';
 import { FaEdit, } from "react-icons/fa";
 import { formatPhone } from "../../../utils/Phone";
 
@@ -29,6 +30,10 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
           ),
         },
         {
+          name: "PAGO EM",
+          render: ({ data }) => moment(data.createdAt).format('DD/MM/YYYY'),
+        },
+        {
           name: "",
           render: ({ data }) => {
             if (data.position && data.position === 'COLABORADOR') {
@@ -37,7 +42,7 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
           },
         },
         {
-          name: <b className="action-column">Registrar Pagamento</b>,
+          name: <b className="action-column">Editar Pagamento</b>,
           render: ({ data }) => (
             <ActionColumn
               data={data}
