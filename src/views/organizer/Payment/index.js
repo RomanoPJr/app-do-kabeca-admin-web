@@ -25,7 +25,8 @@ const Payment = ({
 }) => {
   const [totalizers, setTotalizers] = useState();
   const [filterYear, setFilterYear] = useState();
-  const [pageNumber, setPageNumber] = useState();
+  const [pageNumberDebits, setPageNumberDebits] = useState();
+  const [pageNumberPayments, setPageNumberPayments] = useState();
   const [activeTab, setActiveTab] = useState('1');
   const [crudSent, setCrudSent] = useState(false);
   const [filterMonth, setFilterMonth] = useState();
@@ -39,10 +40,11 @@ const Payment = ({
 
   useEffect(() => {
     handleFetch();
-  }, [activeTab, pageNumber, filterMonth, filterYear]);
+  }, [activeTab, pageNumberDebits, pageNumberPayments, filterMonth, filterYear]);
 
   useEffect(() => {
-    setPageNumber(1);
+    setPageNumberPayments(1);
+    setPageNumberDebits(1);
     setFilterYear(new Date().getFullYear());
     setFilterMonth(`${new Date().getMonth() + 1}`.padStart(2, "0"));
 
@@ -85,10 +87,12 @@ const Payment = ({
   function handleFetch() {
     if (filterMonth && filterYear && filterYear.toString().length === 4) {
       var type = '';
+      var currentPageNumber = 0;
       if (activeTab) {
         type = activeTab === '1' ? 'paid' : 'debit'
+        currentPageNumber = activeTab === '1' ? pageNumberPayments : pageNumberDebits
       }
-      fetchAction({ pageNumber, year: filterYear, month: filterMonth, type });
+      fetchAction({ pageNumber: currentPageNumber, year: filterYear, month: filterMonth, type });
     }
   }
 
@@ -130,7 +134,8 @@ const Payment = ({
                 activeTab={activeTab}
                 toggle={toggleTab}
                 confirmAction={handleSubmitForm}
-                setPageNumber={setPageNumber}
+                setPageNumberPayments={setPageNumberPayments}
+                setPageNumberDebits={setPageNumberDebits}
                 setCurrentData={setCurrentData}
                 setModalCreateOpened={setModalCreateOpened}
               />
@@ -157,7 +162,8 @@ const Tabs = ({
   payment,
   activeTab,
   confirmAction,
-  setPageNumber,
+  setPageNumberPayments,
+  setPageNumberDebits,
   setCurrentData,
   setModalCreateOpened
 }) => {
@@ -187,7 +193,7 @@ const Tabs = ({
             <Col sm="12">
               {activeTab === '1' && <TablePayments
                 payment={payment || {}}
-                setPageNumber={setPageNumber}
+                setPageNumber={setPageNumberPayments}
                 setCurrentData={setCurrentData}
                 setModalCreateOpened={setModalCreateOpened}
               />}
@@ -198,9 +204,9 @@ const Tabs = ({
           <Row>
             <Col sm="12">
               {activeTab === '2' &&
-                < TableDebits
+                <TableDebits
                   payment={payment || {}}
-                  setPageNumber={setPageNumber}
+                  setPageNumber={setPageNumberDebits}
                   setCurrentData={setCurrentData}
                   confirmAction={confirmAction}
                   setModalCreateOpened={setModalCreateOpened}

@@ -1,7 +1,6 @@
 import React from "react";
 import moment from 'moment';
 import { FaEdit, } from "react-icons/fa";
-import { formatPhone } from "../../../utils/Phone";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
@@ -15,13 +14,6 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
       data={payment.data}
       columns={[
         { name: "Nome", attribute: "name" },
-        {
-          name: "Telefone", render: ({ data }) => {
-            if (data.phone) {
-              return formatPhone(data.phone)
-            }
-          }
-        },
         { name: "Valor a Receber", render: ({ data }) => formatMoney(data.due_value || 0) },
         {
           name: "Valor Recebido",

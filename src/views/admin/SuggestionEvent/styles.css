@@ -1,9 +1,11 @@
 .event-value-badge {
   min-width: 36px;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .event-value-badge.green {
-  background-color: #50b504;
+  background-color: #4b9413;
   color: white;
 }
 

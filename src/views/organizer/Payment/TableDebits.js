@@ -3,7 +3,6 @@ import { FaEdit, FaCheck, } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
-import { formatPhone } from "../../../utils/Phone";
 
 const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, setModalCreateOpened }) => {
   return (
@@ -13,9 +12,6 @@ const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, 
       data={payment.data}
       columns={[
         { name: "Nome", attribute: "name" },
-        {
-          name: "Telefone", render: ({ data }) => formatPhone(data.phone)
-        },
         {
           name: "Valor a Receber",
           render: ({ data }) => {
