@@ -17,6 +17,12 @@ import AdminLayout from "./layouts/Admin/Admin";
 
 import history from "./history";
 
+window.addEventListener("beforeunload", (ev) => {
+  if (process.env.NODE_ENV !== 'development') {
+    localStorage.removeItem("user-token");
+  }
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
