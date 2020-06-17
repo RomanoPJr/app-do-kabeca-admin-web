@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { CardBody, Badge } from "reactstrap";
 import { toast } from "react-toastify";
+import moment from 'moment'
 
 import "./styles.css";
 import ModalCreate from "./ModalCreate";
@@ -92,6 +93,10 @@ const Event = ({
                     </Badge>
                   );
               },
+            },
+            {
+              name: "Atualizado Em:",
+              render: ({ data }) => moment(data.updatedAt).format('DD/MM/YYYY HH:mm'),
             },
             {
               name: <b className="action-column">Acões</b>,
