@@ -1,11 +1,11 @@
 import React from "react";
 import moment from 'moment';
-import { FaEdit, } from "react-icons/fa";
+import { FaEdit, FaTimes } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
 
-const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateOpened }) => {
+const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateOpened, removeAction }) => {
 
   return (
     <Table
@@ -38,6 +38,7 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
           render: ({ data }) => (
             <ActionColumn
               data={data}
+              removeAction={removeAction}
               setCurrentData={setCurrentData}
               setModalCreateOpened={setModalCreateOpened}
             />
@@ -48,7 +49,7 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
   );
 };
 
-const ActionColumn = ({ data, setCurrentData, setModalCreateOpened }) => (
+const ActionColumn = ({ data, setCurrentData, setModalCreateOpened, removeAction }) => (
   <div className="action-column">
     <button
       style={{ marginRight: 15 }}
@@ -59,6 +60,15 @@ const ActionColumn = ({ data, setCurrentData, setModalCreateOpened }) => (
       }}
     >
       <FaEdit />
+    </button>
+    <button
+      style={{ marginRight: 15 }}
+      className="btn btn-danger btn-icon"
+      onClick={() => {
+        removeAction(data.id);
+      }}
+    >
+      <FaTimes />
     </button>
   </div>
 );

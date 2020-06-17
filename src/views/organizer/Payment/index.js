@@ -22,6 +22,7 @@ const Payment = ({
   fetchAction,
   createAction,
   updateAction,
+  removeAction
 }) => {
   const [totalizers, setTotalizers] = useState();
   const [filterYear, setFilterYear] = useState();
@@ -112,6 +113,23 @@ const Payment = ({
     updateClub({ ...club.data, payment_module_view_type: value ? 'ALL' : 'INDIVIDUAL' })
   }
 
+  const handleRemovePayment = (payload) => {
+    var type = '';
+    var currentPageNumber = 0;
+    if (activeTab) {
+      type = activeTab === '1' ? 'paid' : 'debit'
+      currentPageNumber = activeTab === '1' ? pageNumberPayments : pageNumberDebits
+    }
+
+    const fetchPayload = {
+      pageNumber: currentPageNumber,
+      year: filterYear,
+      month: filterMonth,
+      type
+    }
+    removeAction(payload, fetchPayload)
+  }
+
   return (
     <div className="content">
       <Filter
@@ -138,6 +156,7 @@ const Payment = ({
                 setPageNumberDebits={setPageNumberDebits}
                 setCurrentData={setCurrentData}
                 setModalCreateOpened={setModalCreateOpened}
+                handleRemovePayment={handleRemovePayment}
               />
             </CardBody>
           </Card>
@@ -165,8 +184,10 @@ const Tabs = ({
   setPageNumberPayments,
   setPageNumberDebits,
   setCurrentData,
-  setModalCreateOpened
+  setModalCreateOpened,
+  handleRemovePayment
 }) => {
+
   return (
     <>
       <Nav tabs>
@@ -193,6 +214,7 @@ const Tabs = ({
             <Col sm="12">
               {activeTab === '1' && <TablePayments
                 payment={payment || {}}
+                removeAction={handleRemovePayment}
                 setPageNumber={setPageNumberPayments}
                 setCurrentData={setCurrentData}
                 setModalCreateOpened={setModalCreateOpened}
@@ -231,7 +253,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAction: (payload) => dispatch(PaymentActions.fetch(payload)),
   createAction: (payload) => dispatch(PaymentActions.create(payload)),
   updateAction: (payload) => dispatch(PaymentActions.update(payload)),
-  removeAction: (payload) => dispatch(PaymentActions.remove(payload)),
+  removeAction: (payload, fetchPayload) => dispatch(PaymentActions.remove(payload, fetchPayload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payment);

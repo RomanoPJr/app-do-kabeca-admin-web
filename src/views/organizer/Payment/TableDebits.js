@@ -16,15 +16,15 @@ const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, 
           name: "Valor a Receber",
           render: ({ data }) => {
             if (data.ClubPlayers) {
-              return data.ClubPlayers.position === 'COLABORADOR' ? formatMoney() : formatMoney(data.ClubPlayers.monthly_payment)
+              return data.ClubPlayers[0].position === 'COLABORADOR' ? formatMoney() : formatMoney(data.ClubPlayers[0].monthly_payment)
             }
           }
         },
         {
           name: "",
           render: ({ data }) => {
-            if (data.ClubPlayers && data.ClubPlayers.position === 'COLABORADOR') {
-              return <div className="positionTag">{data.ClubPlayers.position}</div >
+            if (data.ClubPlayers && data.ClubPlayers[0].position === 'COLABORADOR') {
+              return <div className="positionTag">{data.ClubPlayers[0].position}</div >
             }
           },
         },
@@ -51,11 +51,11 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
       className="btn btn-default btn-icon"
       onClick={() => {
         setCurrentData({
-          club_player_id: data.ClubPlayers.id,
+          club_player_id: data.ClubPlayers[0].id,
           name: data.name,
           phone: data.phone,
-          due_value: data.ClubPlayers.monthly_payment,
-          position: data.ClubPlayers.position,
+          due_value: data.ClubPlayers[0].monthly_payment,
+          position: data.ClubPlayers[0].position,
           paid_value: 0,
         });
         setModalCreateOpened(true);
@@ -67,9 +67,9 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
       className="btn btn-icon btn-green"
       onClick={() => {
         confirmAction(null, {
-          club_player_id: data.ClubPlayers.id,
-          due_value: data.ClubPlayers.position === 'COLABORADOR' ? 0 : data.ClubPlayers.monthly_payment,
-          paid_value: data.ClubPlayers.position === 'COLABORADOR' ? 0 : data.ClubPlayers.monthly_payment,
+          club_player_id: data.ClubPlayers[0].id,
+          due_value: data.ClubPlayers[0].position === 'COLABORADOR' ? 0 : data.ClubPlayers[0].monthly_payment,
+          paid_value: data.ClubPlayers[0].position === 'COLABORADOR' ? 0 : data.ClubPlayers[0].monthly_payment,
         })
       }}
     >

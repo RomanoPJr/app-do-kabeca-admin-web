@@ -78,13 +78,14 @@ const update = (payload) => {
   };
 };
 
-const remove = (payload) => {
+const remove = (payload, fetchPayload) => {
   return function (dispatch) {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
       .then(() => {
         dispatch({ type: DELETE_SUCCESS });
+        dispatch(fetch(fetchPayload))
       })
       .catch((error) => {
         dispatch({ type: DELETE_FAILURE, payload: getError(error) });
