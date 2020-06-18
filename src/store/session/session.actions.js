@@ -36,6 +36,7 @@ const fetchOrganizer = (payload) => {
       .post(`${endpoint}/external`, payload)
       .then((response) => {
         localStorage.setItem('user-token', response.data.token);
+        localStorage.setItem('is-redirect', true);
         dispatch({ type: FETCH_ORGANIZER_TOKEN_SUCCESS, payload: response.data.token });
       })
       .catch((error) => {
