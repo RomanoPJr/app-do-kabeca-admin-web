@@ -20,10 +20,9 @@ import history from "./history";
 window.addEventListener("beforeunload", (ev) => {
   if (process.env.NODE_ENV !== 'development') {
     const is_redirect = localStorage.getItem("is-redirect");
-
+    localStorage.removeItem("is-redirect");
     if (!is_redirect) {
       localStorage.removeItem("user-token");
-      localStorage.removeItem("is-redirect");
     }
   }
 });
