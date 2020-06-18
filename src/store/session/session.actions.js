@@ -8,12 +8,15 @@ import {
   CREATE_REQUEST,
   CREATE_SUCCESS,
   CREATE_FAILURE,
+  FETCH_ORGANIZER_TOKEN_REQUEST,
+  FETCH_ORGANIZER_TOKEN_SUCCESS,
+  FETCH_ORGANIZER_TOKEN_FAILURE
 } from "./session.types";
 
 const endpoint = "/sessions";
 
 const fetch = () => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
       .get(endpoint)
@@ -26,8 +29,23 @@ const fetch = () => {
   };
 };
 
+const fetchOrganizer = (payload) => {
+  return function (dispatch) {
+    dispatch({ type: FETCH_ORGANIZER_TOKEN_REQUEST });
+    axios()
+      .post(`${endpoint}/external`, payload)
+      .then((response) => {
+        localStorage.setItem('user-token', response.data.token);
+        dispatch({ type: FETCH_ORGANIZER_TOKEN_SUCCESS, payload: response.data.token });
+      })
+      .catch((error) => {
+        dispatch({ type: FETCH_ORGANIZER_TOKEN_FAILURE, payload: getError(error) });
+      });
+  };
+};
+
 const create = (payload) => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: CREATE_REQUEST });
     axios()
       .post(endpoint, payload)
@@ -45,5 +63,6 @@ const create = (payload) => {
 
 export default {
   fetch,
+  fetchOrganizer,
   create,
 };

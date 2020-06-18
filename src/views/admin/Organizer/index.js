@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { FaDoorOpen } from 'react-icons/fa'
 import { ToastContainer, toast } from "react-toastify";
 import { Card, CardBody, Col, Row } from "reactstrap";
 
@@ -10,13 +11,16 @@ import { formatPhone } from "../../../utils/Phone";
 import CardHeader from "../../../components/CardHeader";
 import EditButton from "../../../components/ActionButtons/EditButton";
 import OrganizerActions from "../../../store/organizer/organizer.actions";
+import SessionActions from "../../../store/session/session.actions";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const Organizer = ({
+  session,
   organizer,
   fetchAction,
   updateAction,
   removeAction,
+  fetchOrganizerSession
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -26,6 +30,12 @@ const Organizer = ({
   useEffect(() => {
     fetchAction({ type: "ADMIN", pageNumber });
   }, [pageNumber]);
+
+  useEffect(() => {
+    if (session.external) {
+      window.location = '/organizer/club'
+    }
+  }, [session.external])
 
   useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
@@ -103,6 +113,7 @@ const Organizer = ({
                         setCurrentData={setCurrentData}
                         setModalDeleteOpened={setModalDeleteOpened}
                         setModalCreateOpened={setModalCreateOpened}
+                        fetchOrganizerSession={fetchOrganizerSession}
                       />
                     ),
                   },
@@ -138,6 +149,7 @@ const ActionColumn = ({
   setCurrentData,
   setModalDeleteOpened,
   setModalCreateOpened,
+  fetchOrganizerSession
 }) => (
     <div className="action-column">
       <DeleteButton
@@ -152,17 +164,24 @@ const ActionColumn = ({
           setModalCreateOpened(true);
         }}
       />
+      <button className="btn btn-default btn-icon" style={{ marginLeft: 10 }} onClick={() => {
+        fetchOrganizerSession({ user_id: data.id })
+      }}>
+        <FaDoorOpen />
+      </button>
     </div>
   );
 
 const mapStateToProps = (state) => ({
   organizer: state.organizer,
+  session: state.session,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAction: (payload) => dispatch(OrganizerActions.fetch(payload)),
   updateAction: (payload) => dispatch(OrganizerActions.update(payload)),
   removeAction: (payload) => dispatch(OrganizerActions.remove(payload)),
+  fetchOrganizerSession: (payload) => dispatch(SessionActions.fetchOrganizer(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Organizer);
