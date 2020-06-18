@@ -29,6 +29,8 @@ function Filter({ filterMonth, setFilterMonth, filterYear, setFilterYear }) {
 
   const currentMonth = moment().format('M')
   const currentYear = moment().format('YYYY')
+
+  console.log(filterMonth)
   return (
     <Row>
       <Col lg="12">
@@ -53,10 +55,11 @@ function Filter({ filterMonth, setFilterMonth, filterYear, setFilterYear }) {
                   >
                     {months.map((month, i) => {
                       let show = true
+                      const value = String(i + 1)
                       if (parseInt(filterYear) === parseInt(currentYear) && i > parseInt(currentMonth - 1)) {
                         show = false
                       }
-                      return show && <option key={`month-${i}`} value={i + 1}>{month}</option>
+                      return show && <option key={`month-${i}`} value={value.padStart(2, "0")}>{month}</option>
                     })}
                   </Input>
                 </FormGroup>
