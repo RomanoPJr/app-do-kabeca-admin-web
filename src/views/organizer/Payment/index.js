@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Row, Col, CardBody } from 'reactstrap';
-import classnames from 'classnames';
-
+import {
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Card,
+  Row,
+  Col,
+  CardBody
+} from "reactstrap";
+import classnames from "classnames";
 
 import Filter from "./Filter";
 import Counters from "./Counters";
@@ -28,7 +37,7 @@ const Payment = ({
   const [filterYear, setFilterYear] = useState();
   const [pageNumberDebits, setPageNumberDebits] = useState();
   const [pageNumberPayments, setPageNumberPayments] = useState();
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState("1");
   const [crudSent, setCrudSent] = useState(false);
   const [filterMonth, setFilterMonth] = useState();
   const [currentData, setCurrentData] = useState({});
@@ -37,11 +46,17 @@ const Payment = ({
 
   const toggleTab = tab => {
     if (activeTab !== tab) setActiveTab(tab);
-  }
+  };
 
   useEffect(() => {
     handleFetch();
-  }, [activeTab, pageNumberDebits, pageNumberPayments, filterMonth, filterYear]);
+  }, [
+    activeTab,
+    pageNumberDebits,
+    pageNumberPayments,
+    filterMonth,
+    filterYear
+  ]);
 
   useEffect(() => {
     setPageNumberPayments(1);
@@ -56,15 +71,15 @@ const Payment = ({
 
   useEffect(() => {
     if (club.data) {
-      setSwitchValue(club.data.payment_module_view_type === 'ALL')
+      setSwitchValue(club.data.payment_module_view_type === "ALL");
     }
-  }, [club])
+  }, [club]);
 
   useEffect(() => {
     if (payment.data) {
-      setTotalizers(payment.data.totalizers)
+      setTotalizers(payment.data.totalizers);
     }
-  }, [payment])
+  }, [payment]);
 
   useEffect(() => {
     if (!modalCreateOpened) {
@@ -74,7 +89,7 @@ const Payment = ({
 
   useEffect(() => {
     if (!payment.loading && crudSent) {
-      setCrudSent(false)
+      setCrudSent(false);
       if (payment.error === "") {
         setModalCreateOpened(false);
         toast.success("Registro salvo com sucesso!");
@@ -87,38 +102,48 @@ const Payment = ({
 
   function handleFetch() {
     if (filterMonth && filterYear && filterYear.toString().length === 4) {
-      var type = '';
+      var type = "";
       var currentPageNumber = 0;
       if (activeTab) {
-        type = activeTab === '1' ? 'paid' : 'debit'
-        currentPageNumber = activeTab === '1' ? pageNumberPayments : pageNumberDebits
+        type = activeTab === "1" ? "paid" : "debit";
+        currentPageNumber =
+          activeTab === "1" ? pageNumberPayments : pageNumberDebits;
       }
-      fetchAction({ pageNumber: currentPageNumber, year: filterYear, month: filterMonth, type });
+      fetchAction({
+        pageNumber: currentPageNumber,
+        year: filterYear,
+        month: filterMonth,
+        type
+      });
     }
   }
 
   function handleSubmitForm(evt, data) {
-    if (activeTab === '1') {
+    if (activeTab === "1") {
       updateAction(data);
-    } else if (activeTab === '2') {
+    } else if (activeTab === "2") {
       createAction(data);
     }
     if (evt) {
       evt.preventDefault();
     }
-    setCrudSent(true)
+    setCrudSent(true);
   }
 
   function handleSwicthChange(value) {
-    updateClub({ ...club.data, payment_module_view_type: value ? 'ALL' : 'INDIVIDUAL' })
+    updateClub({
+      ...club.data,
+      payment_module_view_type: value ? "ALL" : "INDIVIDUAL"
+    });
   }
 
-  const handleRemovePayment = (payload) => {
-    var type = '';
+  const handleRemovePayment = payload => {
+    var type = "";
     var currentPageNumber = 0;
     if (activeTab) {
-      type = activeTab === '1' ? 'paid' : 'debit'
-      currentPageNumber = activeTab === '1' ? pageNumberPayments : pageNumberDebits
+      type = activeTab === "1" ? "paid" : "debit";
+      currentPageNumber =
+        activeTab === "1" ? pageNumberPayments : pageNumberDebits;
     }
 
     const fetchPayload = {
@@ -126,9 +151,9 @@ const Payment = ({
       year: filterYear,
       month: filterMonth,
       type
-    }
-    removeAction(payload, fetchPayload)
-  }
+    };
+    removeAction(payload, fetchPayload);
+  };
 
   return (
     <div className="content">
@@ -148,6 +173,8 @@ const Payment = ({
             <CardBody>
               <Counters totalizers={totalizers} />
               <Tabs
+                filterYear={filterYear}
+                filterMonth={filterMonth}
                 payment={payment}
                 activeTab={activeTab}
                 toggle={toggleTab}
@@ -175,34 +202,38 @@ const Payment = ({
   );
 };
 
-
 const Tabs = ({
   toggle,
   payment,
   activeTab,
+  filterYear,
+  filterMonth,
   confirmAction,
-  setPageNumberPayments,
-  setPageNumberDebits,
   setCurrentData,
+  handleRemovePayment,
+  setPageNumberDebits,
   setModalCreateOpened,
-  handleRemovePayment
+  setPageNumberPayments
 }) => {
-
   return (
     <>
       <Nav tabs>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '1' })}
-            onClick={() => { toggle('1'); }}
+            className={classnames({ active: activeTab === "1" })}
+            onClick={() => {
+              toggle("1");
+            }}
           >
             MENSALIDADES PAGAS
           </NavLink>
         </NavItem>
         <NavItem>
           <NavLink
-            className={classnames({ active: activeTab === '2' })}
-            onClick={() => { toggle('2'); }}
+            className={classnames({ active: activeTab === "2" })}
+            onClick={() => {
+              toggle("2");
+            }}
           >
             JOGADORES EM DÉBITO
           </NavLink>
@@ -212,48 +243,53 @@ const Tabs = ({
         <TabPane tabId="1">
           <Row>
             <Col sm="12">
-              {activeTab === '1' && <TablePayments
-                payment={payment || {}}
-                removeAction={handleRemovePayment}
-                setPageNumber={setPageNumberPayments}
-                setCurrentData={setCurrentData}
-                setModalCreateOpened={setModalCreateOpened}
-              />}
+              {activeTab === "1" && (
+                <TablePayments
+                  payment={payment || {}}
+                  removeAction={handleRemovePayment}
+                  setPageNumber={setPageNumberPayments}
+                  setCurrentData={setCurrentData}
+                  setModalCreateOpened={setModalCreateOpened}
+                />
+              )}
             </Col>
           </Row>
         </TabPane>
         <TabPane tabId="2">
           <Row>
             <Col sm="12">
-              {activeTab === '2' &&
+              {activeTab === "2" && (
                 <TableDebits
+                  filterYear={filterYear}
+                  filterMonth={filterMonth}
                   payment={payment || {}}
                   setPageNumber={setPageNumberDebits}
                   setCurrentData={setCurrentData}
                   confirmAction={confirmAction}
                   setModalCreateOpened={setModalCreateOpened}
                 />
-              }
+              )}
             </Col>
           </Row>
         </TabPane>
       </TabContent>
     </>
-  )
-}
-const mapStateToProps = (state) => ({
+  );
+};
+const mapStateToProps = state => ({
   club: state.club,
   player: state.player,
-  payment: state.payment,
+  payment: state.payment
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearAction: () => dispatch(PaymentActions.clear()),
-  updateClub: (payload) => dispatch(ClubActions.update(payload)),
-  fetchAction: (payload) => dispatch(PaymentActions.fetch(payload)),
-  createAction: (payload) => dispatch(PaymentActions.create(payload)),
-  updateAction: (payload) => dispatch(PaymentActions.update(payload)),
-  removeAction: (payload, fetchPayload) => dispatch(PaymentActions.remove(payload, fetchPayload)),
+  updateClub: payload => dispatch(ClubActions.update(payload)),
+  fetchAction: payload => dispatch(PaymentActions.fetch(payload)),
+  createAction: payload => dispatch(PaymentActions.create(payload)),
+  updateAction: payload => dispatch(PaymentActions.update(payload)),
+  removeAction: (payload, fetchPayload) =>
+    dispatch(PaymentActions.remove(payload, fetchPayload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payment);

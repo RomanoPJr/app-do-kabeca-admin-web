@@ -1,17 +1,15 @@
 import React from "react";
 import { Table as DataTable } from "reactstrap";
-import LoadingTable from "../../components/Table/LoadingTable";
 
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import "./styles.css";
+import EmptyTable from "./EmptyTable";
 
 const Table = ({ isLoading, columns, data, setPageNumber }) => {
-  return isLoading ? (
-    <LoadingTable />
-  ) : data && data.data && data.data.length > 0 ? (
+  return !isLoading && data && data.data && data.data.length > 0 ? (
     <TableContent columns={columns} data={data} setPageNumber={setPageNumber} />
   ) : (
-    <></>
+    <EmptyTable isLoading={isLoading} />
   );
 };
 
@@ -68,7 +66,7 @@ const TableContent = ({ columns, data, setPageNumber }) => (
         flexDirection: "row",
         padding: "10px 0",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <button

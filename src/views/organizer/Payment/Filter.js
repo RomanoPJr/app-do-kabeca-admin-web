@@ -8,35 +8,35 @@ import {
   CardBody,
   FormGroup,
   CardHeader,
+  CardTitle
 } from "reactstrap";
-import moment from 'moment'
+import moment from "moment";
 
 function Filter({ filterMonth, setFilterMonth, filterYear, setFilterYear }) {
   const months = [
-    'JANEIRO',
-    'FEVEREIRO',
-    'MARÇO',
-    'ABRIL',
-    'MAIO',
-    'JUNHO',
-    'JULHO',
-    'AGOSTO',
-    'SETEMBRO',
-    'OUTUBRO',
-    'NOVEMBRO',
-    'DEZEMBRO',
-  ]
+    "JANEIRO",
+    "FEVEREIRO",
+    "MARÇO",
+    "ABRIL",
+    "MAIO",
+    "JUNHO",
+    "JULHO",
+    "AGOSTO",
+    "SETEMBRO",
+    "OUTUBRO",
+    "NOVEMBRO",
+    "DEZEMBRO"
+  ];
 
-  const currentMonth = moment().format('M')
-  const currentYear = moment().format('YYYY')
+  const currentMonth = moment().format("M");
+  const currentYear = moment().format("YYYY");
 
-  console.log(filterMonth)
   return (
     <Row>
       <Col lg="12">
         <Card>
           <CardHeader>
-            <h5 className="card-category">Filtros</h5>
+            <CardTitle tag="h4">Filtros</CardTitle>
           </CardHeader>
           <CardBody>
             <Row style={{ alignItems: "baseline" }}>
@@ -49,17 +49,29 @@ function Filter({ filterMonth, setFilterMonth, filterYear, setFilterYear }) {
                     id="exampleSelect1"
                     placeholder="Mês"
                     value={filterMonth || ""}
-                    onChange={(event) => {
+                    onChange={event => {
                       setFilterMonth(event.target.value);
                     }}
                   >
                     {months.map((month, i) => {
-                      let show = true
-                      const value = String(i + 1)
-                      if (parseInt(filterYear) === parseInt(currentYear) && i > parseInt(currentMonth - 1)) {
-                        show = false
+                      let show = true;
+                      const value = String(i + 1);
+                      if (
+                        parseInt(filterYear) === parseInt(currentYear) &&
+                        i > parseInt(currentMonth - 1)
+                      ) {
+                        show = false;
                       }
-                      return show && <option key={`month-${i}`} value={value.padStart(2, "0")}>{month}</option>
+                      return (
+                        show && (
+                          <option
+                            key={`month-${i}`}
+                            value={value.padStart(2, "0")}
+                          >
+                            {month}
+                          </option>
+                        )
+                      );
                     })}
                   </Input>
                 </FormGroup>
@@ -74,7 +86,7 @@ function Filter({ filterMonth, setFilterMonth, filterYear, setFilterYear }) {
                     type="number"
                     min={2019}
                     max={currentYear}
-                    onChange={(event) => {
+                    onChange={event => {
                       setFilterYear(event.target.value);
                     }}
                   />

@@ -1,10 +1,18 @@
 import React from "react";
-import { FaEdit, FaCheck, } from "react-icons/fa";
+import { FaEdit, FaCheck } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
 
-const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, setModalCreateOpened }) => {
+const TableDebits = ({
+  filterYear,
+  filterMonth,
+  payment,
+  confirmAction,
+  setPageNumber,
+  setCurrentData,
+  setModalCreateOpened
+}) => {
   return (
     <Table
       setPageNumber={setPageNumber}
@@ -16,35 +24,53 @@ const PaymentsTable = ({ payment, confirmAction, setPageNumber, setCurrentData, 
           name: "Valor a Receber",
           render: ({ data }) => {
             if (data.ClubPlayers) {
-              return data.ClubPlayers[0].position === 'COLABORADOR' ? formatMoney() : formatMoney(data.ClubPlayers[0].monthly_payment)
+              return data.ClubPlayers[0].position === "COLABORADOR"
+                ? formatMoney()
+                : formatMoney(data.ClubPlayers[0].monthly_payment);
             }
           }
         },
         {
           name: "",
           render: ({ data }) => {
-            if (data.ClubPlayers && data.ClubPlayers[0].position === 'COLABORADOR') {
-              return <div className="positionTag">{data.ClubPlayers[0].position}</div >
+            if (
+              data.ClubPlayers &&
+              data.ClubPlayers[0].position === "COLABORADOR"
+            ) {
+              return (
+                <div className="positionTag">
+                  {data.ClubPlayers[0].position}
+                </div>
+              );
             }
-          },
+          }
         },
         {
           name: <b className="action-column">Registrar Pagamento</b>,
           render: ({ data }) => (
             <ActionColumn
               data={data}
+              filterYear={filterYear}
+              filterMonth={filterMonth}
               confirmAction={confirmAction}
               setCurrentData={setCurrentData}
               setModalCreateOpened={setModalCreateOpened}
             />
-          ),
-        },
+          )
+        }
       ]}
     />
   );
 };
 
-const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpened }) => (
+const ActionColumn = ({
+  data,
+  filterYear,
+  filterMonth,
+  confirmAction,
+  setCurrentData,
+  setModalCreateOpened
+}) => (
   <div className="action-column">
     <button
       style={{ marginRight: 15 }}
@@ -56,7 +82,7 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
           phone: data.phone,
           due_value: data.ClubPlayers[0].monthly_payment,
           position: data.ClubPlayers[0].position,
-          paid_value: 0,
+          paid_value: 0
         });
         setModalCreateOpened(true);
       }}
@@ -67,10 +93,18 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
       className="btn btn-icon btn-green"
       onClick={() => {
         confirmAction(null, {
+          year: filterYear,
+          month: filterMonth,
           club_player_id: data.ClubPlayers[0].id,
-          due_value: data.ClubPlayers[0].position === 'COLABORADOR' ? 0 : data.ClubPlayers[0].monthly_payment,
-          paid_value: data.ClubPlayers[0].position === 'COLABORADOR' ? 0 : data.ClubPlayers[0].monthly_payment,
-        })
+          due_value:
+            data.ClubPlayers[0].position === "COLABORADOR"
+              ? 0
+              : data.ClubPlayers[0].monthly_payment,
+          paid_value:
+            data.ClubPlayers[0].position === "COLABORADOR"
+              ? 0
+              : data.ClubPlayers[0].monthly_payment
+        });
       }}
     >
       <FaCheck />
@@ -78,5 +112,4 @@ const ActionColumn = ({ data, confirmAction, setCurrentData, setModalCreateOpene
   </div>
 );
 
-
-export default PaymentsTable;
+export default TableDebits;
