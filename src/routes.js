@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FaHome,
   FaBook,
   FaUsers,
   FaFutbol,
@@ -8,7 +7,7 @@ import {
   FaRunning,
   FaUserShield,
   FaDollarSign,
-  FaRegHandshake,
+  FaRegHandshake
 } from "react-icons/fa";
 
 import Club from "./views/organizer/Club";
@@ -29,29 +28,29 @@ var admin = [
     name: "Administradores",
     icon: <FaUserShield size={18} />,
     component: Admins,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/organizers",
     name: "Organizadores",
     icon: <FaUsers size={18} />,
     component: Organizer,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/statute_suggestion",
     name: "Sugestão de Estatuto",
     icon: <FaBook size={18} />,
     component: SuggestionStatute,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/event_suggestions",
     name: "Sugestões de Eventos",
     icon: <FaRegFlag size={18} />,
     component: SuggestionEvent,
-    layout: "/admin",
-  },
+    layout: "/admin"
+  }
 ];
 var organizer = [
   {
@@ -59,43 +58,43 @@ var organizer = [
     name: "Clube",
     icon: <FaFutbol size={18} />,
     component: Club,
-    layout: "/organizer",
+    layout: "/organizer"
   },
   {
     path: "/players",
     name: "Jogadores",
     icon: <FaRunning size={18} />,
     component: Player,
-    layout: "/organizer",
+    layout: "/organizer"
   },
   {
     path: "/sponsors",
     name: "Patrocinadores",
     icon: <FaRegHandshake size={22} />,
     component: Sponsor,
-    layout: "/organizer",
+    layout: "/organizer"
   },
   {
     path: "/events",
     name: "Eventos de Partida",
     icon: <FaRegFlag size={18} />,
     component: Event,
-    layout: "/organizer",
+    layout: "/organizer"
   },
   {
     path: "/statute",
     name: "Estatuto",
     icon: <FaBook size={18} />,
     component: Statute,
-    layout: "/organizer",
+    layout: "/organizer"
   },
   {
     path: "/payments",
     name: "Financeiro",
     icon: <FaDollarSign size={18} />,
     component: Payment,
-    layout: "/admin",
-  },
+    layout: "/admin"
+  }
 ];
 
 export { admin, organizer };

@@ -1,4 +1,4 @@
-import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
+import { convertFromRaw, EditorState } from "draft-js";
 import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -6,14 +6,7 @@ import { Button, Col, Form, Row } from "reactstrap";
 
 import Modal from "../../../components/Modal";
 
-const ModalCreate = ({
-  data,
-  opened,
-  setOpened,
-  createAction,
-  updateAction,
-  handleSubmitForm,
-}) => {
+const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
   const [id] = useState(data ? data.id : "");
   const [description] = useState(data ? data.description : "");
   const [editorState, setEditorState] = useState(
@@ -35,12 +28,12 @@ const ModalCreate = ({
           size="lg"
         >
           <Form
-            onSubmit={(evt) =>
+            onSubmit={evt =>
               handleSubmitForm(
                 evt,
                 {
                   id,
-                  description,
+                  description
                 },
                 editorState
               )
@@ -53,7 +46,7 @@ const ModalCreate = ({
                   toolbarClassName="toolbarClassName"
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
-                  onEditorStateChange={(editorState) =>
+                  onEditorStateChange={editorState =>
                     setEditorState(editorState)
                   }
                 />

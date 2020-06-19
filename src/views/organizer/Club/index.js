@@ -4,7 +4,7 @@ import { CardBody } from "reactstrap";
 import { toast } from "react-toastify";
 import { FaPencilAlt } from "react-icons/fa";
 
-import './styles.css';
+import "./styles.css";
 import EmptyState from "./EmptyState";
 import ModalCreate from "./ModalCreate";
 import Container from "../../../components/Container";
@@ -40,12 +40,6 @@ const Club = ({
     }
   }, [club.loading]);
 
-  useEffect(() => {
-    return () => {
-      clearAction();
-    };
-  }, []);
-
   function handleSubmitForm(evt, data) {
     if (data.id) {
       updateAction(data);
@@ -72,7 +66,12 @@ const Club = ({
               <div className="block block-three"></div>
               <div className="block block-four"></div>
               <img className="avatar" src={club.data.logo_url} alt="..." />
-              <h2 className="description" style={{ marginTop: 25, marginBottom: 25 }}>{club.data.name}</h2>
+              <h2
+                className="description"
+                style={{ marginTop: 25, marginBottom: 25 }}
+              >
+                {club.data.name}
+              </h2>
             </div>
             <div className="card-description">
               <h5>
@@ -93,8 +92,8 @@ const Club = ({
             </div>
           </>
         ) : (
-            <EmptyState setModalCreateOpened={setModalCreateOpened} />
-          )}
+          <EmptyState setModalCreateOpened={setModalCreateOpened} />
+        )}
       </CardBody>
       {modalCreateOpened && (
         <ModalCreate
@@ -114,21 +113,21 @@ const Club = ({
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   club: state.club,
   ufs: state.location.data.ufs,
   ufs_loading: state.location.loading,
   cities: state.location.data.cities
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchAction: (payload) => dispatch(ClubActions.fetch(payload)),
+const mapDispatchToProps = dispatch => ({
+  fetchAction: payload => dispatch(ClubActions.fetch(payload)),
   fetchUFS: () => dispatch(LocationActions.fetchUFS()),
-  fetchCities: (payload) => dispatch(LocationActions.fetchCities(payload)),
-  createAction: (payload) => dispatch(ClubActions.create(payload)),
-  updateAction: (payload) => dispatch(ClubActions.update(payload)),
-  removeAction: (payload) => dispatch(ClubActions.remove(payload)),
-  clearAction: () => dispatch(ClubActions.clear()),
+  fetchCities: payload => dispatch(LocationActions.fetchCities(payload)),
+  createAction: payload => dispatch(ClubActions.create(payload)),
+  updateAction: payload => dispatch(ClubActions.update(payload)),
+  removeAction: payload => dispatch(ClubActions.remove(payload)),
+  clearAction: () => dispatch(ClubActions.clear())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Club);

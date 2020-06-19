@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { CardHeader, CardTitle } from "reactstrap";
 import Switch from "react-switch";
 
@@ -7,12 +7,14 @@ function CustomCardHeader({ switchValue, handleSwicthChange }) {
     <CardHeader className="card-header-with-button">
       <CardTitle tag="h4">Financeiro</CardTitle>
       <div className="payment-switch-container">
-        {switchValue ? "Jogadores visualizam os pagamentos de todos" : "Jogadores visualizam somente os próprios pagamentos"}
+        {switchValue
+          ? "Jogadores visualizam os pagamentos de todos"
+          : "Jogadores visualizam somente os próprios pagamentos"}
         <Switch
-          className="payment-switch"
+          className="react-switch payment-switch"
           checked={switchValue}
-          onChange={(value) => {
-            handleSwicthChange(value)
+          onChange={value => {
+            handleSwicthChange(value);
           }}
           onColor="#86d3ff"
           onHandleColor="#2693e6"
@@ -23,7 +25,6 @@ function CustomCardHeader({ switchValue, handleSwicthChange }) {
           activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
           height={20}
           width={48}
-          className="react-switch"
           id="material-switch"
         />
       </div>
