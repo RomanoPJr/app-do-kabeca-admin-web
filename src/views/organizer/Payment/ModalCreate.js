@@ -12,7 +12,7 @@ const ModalUpdatePayment = ({
   opened,
   loading,
   setOpened,
-  confirmAction,
+  confirmAction
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
@@ -26,9 +26,9 @@ const ModalUpdatePayment = ({
       setId(data.id);
       setName(data.name);
       setPhone(data.phone);
-      setDueValue(data.position === 'COLABORADOR' ? 0 : data.due_value);
-      setPaidValue(data.paid_value);
-      setClubPlayerID(data.club_player_id)
+      setDueValue(data.position === "COLABORADOR" ? 0 : Number(data.due_value));
+      setPaidValue(Number(data.paid_value));
+      setClubPlayerID(data.club_player_id);
     }
   }, [data]);
 
@@ -42,11 +42,17 @@ const ModalUpdatePayment = ({
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) => {
+            onSubmit={evt => {
               confirmAction(evt, {
                 id,
-                due_value: String(due_value).replace('R$ ', '').replace('.', '').replace(',', '.'),
-                paid_value: String(paid_value).replace('R$ ', '').replace('.', '').replace(',', '.'),
+                due_value: String(due_value)
+                  .replace("R$ ", "")
+                  .replace(".", "")
+                  .replace(",", "."),
+                paid_value: String(paid_value)
+                  .replace("R$ ", "")
+                  .replace(".", "")
+                  .replace(",", "."),
                 club_player_id
               });
               evt.preventDefault();
@@ -71,8 +77,8 @@ const ModalUpdatePayment = ({
                   decimalSeparator=","
                   thousandSeparator="."
                   value={due_value}
-                  onChangeEvent={(event) => {
-                    setDueValue(event.target.value)
+                  onChangeEvent={event => {
+                    setDueValue(event.target.value);
                   }}
                 />
               </Col>
@@ -84,8 +90,8 @@ const ModalUpdatePayment = ({
                   decimalSeparator=","
                   thousandSeparator="."
                   value={paid_value}
-                  onChangeEvent={(event) => {
-                    setPaidValue(event.target.value)
+                  onChangeEvent={event => {
+                    setPaidValue(event.target.value);
                   }}
                 />
               </Col>

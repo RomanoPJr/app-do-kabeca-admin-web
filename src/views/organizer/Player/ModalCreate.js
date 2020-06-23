@@ -16,7 +16,7 @@ const ModalCreate = ({
   setOpened,
   confirmAction,
   handleFetchOneUser,
-  resetPasswordAction,
+  resetPasswordAction
 }) => {
   const [id, setId] = useState(null);
   const [name, setName] = useState();
@@ -34,7 +34,7 @@ const ModalCreate = ({
       setId(data.ClubPlayers.id);
       setInvite(data.ClubPlayers.invite);
       setPosition(data.ClubPlayers.position);
-      setMonthlyPayment(data.ClubPlayers.monthly_payment);
+      setMonthlyPayment(Number(data.ClubPlayers.monthly_payment));
     }
   }, [data]);
 
@@ -49,7 +49,7 @@ const ModalCreate = ({
       if (phone && phone.length >= 14) {
         handleFetchOneUser({
           field: "phone",
-          value: phone.replace(/\D/g, ""),
+          value: phone.replace(/\D/g, "")
         });
       } else if (phone && phone.length < 14) {
         setName();
@@ -67,14 +67,17 @@ const ModalCreate = ({
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) => {
+            onSubmit={evt => {
               confirmAction(evt, {
                 id,
                 name,
                 invite,
                 position,
                 phone: clearPhone(phone),
-                monthly_payment: String(monthly_payment).replace('R$ ', '').replace('.', '').replace(',', '.'),
+                monthly_payment: String(monthly_payment)
+                  .replace("R$ ", "")
+                  .replace(".", "")
+                  .replace(",", ".")
               });
             }}
           >
@@ -88,7 +91,7 @@ const ModalCreate = ({
                   required={true}
                   disabled={data && data.id}
                   placeholder="Informe o telefone"
-                  onChange={(event) => {
+                  onChange={event => {
                     setPhone(formatPhone(event));
                   }}
                 />
@@ -101,7 +104,7 @@ const ModalCreate = ({
                   type="text"
                   value={name || ""}
                   onChange={event => setName(event.target.value.toUpperCase())}
-                  disabled={(data && data.id) || (user)}
+                  disabled={(data && data.id) || user}
                 />
               </Col>
             </Row>
@@ -112,7 +115,7 @@ const ModalCreate = ({
                   name="select"
                   className="form-control"
                   value={position || "GOLEIRO"}
-                  onChange={(event) =>
+                  onChange={event =>
                     setPosition(event.target.value.toUpperCase())
                   }
                 >
@@ -123,17 +126,17 @@ const ModalCreate = ({
                   <option value="COLABORADOR">COLABORADOR</option>
                 </select>
               </Col>
-              {position && position !== 'COLABORADOR' && (
+              {position && position !== "COLABORADOR" && (
                 <Col md="6">
                   <label>Valor da Mensalidade</label>
                   <CurrencyInput
-                    prefix="R$ "
                     className="form-control"
+                    prefix="R$ "
                     decimalSeparator=","
                     thousandSeparator="."
                     value={monthly_payment}
-                    onChangeEvent={(event) => {
-                      setMonthlyPayment(event.target.value)
+                    onChangeEvent={event => {
+                      setMonthlyPayment(event.target.value);
                     }}
                   />
                 </Col>
@@ -149,7 +152,7 @@ const ModalCreate = ({
                         <Input
                           type="checkbox"
                           checked={invite === "BLOQUEADO" || false}
-                          onChange={(event) => {
+                          onChange={event => {
                             setInvite(
                               event.target.checked ? "BLOQUEADO" : "ACEITO"
                             );
@@ -167,7 +170,7 @@ const ModalCreate = ({
                 <Col
                   md="6"
                   style={{
-                    display: "block",
+                    display: "block"
                   }}
                 >
                   <Button

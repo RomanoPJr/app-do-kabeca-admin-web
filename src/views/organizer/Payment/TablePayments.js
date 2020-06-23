@@ -1,12 +1,17 @@
 import React from "react";
-import moment from 'moment';
+import moment from "moment";
 import { FaEdit, FaTimes } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
 
-const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateOpened, removeAction }) => {
-
+const PaymentsTable = ({
+  payment,
+  setPageNumber,
+  setCurrentData,
+  setModalCreateOpened,
+  removeAction
+}) => {
   return (
     <Table
       setPageNumber={setPageNumber}
@@ -14,24 +19,33 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
       data={payment.data}
       columns={[
         { name: "Nome", attribute: "name" },
-        { name: "Valor a Receber", render: ({ data }) => formatMoney(data.due_value || 0) },
+        {
+          name: "Valor a Receber",
+          render: ({ data }) => formatMoney(data.due_value || 0)
+        },
         {
           name: "Valor Recebido",
           render: ({ data }) => (
-            <p style={{ color: data.due_value === data.paid_value ? '#ffffffb3' : "red" }}>{formatMoney(data.paid_value | 0)}</p>
-          ),
+            <p
+              style={{
+                color: data.due_value === data.paid_value ? "#ffffffb3" : "red"
+              }}
+            >
+              {formatMoney(data.paid_value || 0)}
+            </p>
+          )
         },
         {
           name: "PAGO EM",
-          render: ({ data }) => moment(data.createdAt).format('DD/MM/YYYY'),
+          render: ({ data }) => moment(data.createdAt).format("DD/MM/YYYY")
         },
         {
           name: "",
           render: ({ data }) => {
-            if (data.position && data.position === 'COLABORADOR') {
-              return <div className="positionTag">{data.position}</div >
+            if (data.position && data.position === "COLABORADOR") {
+              return <div className="positionTag">{data.position}</div>;
             }
-          },
+          }
         },
         {
           name: <b className="action-column">Editar Pagamento</b>,
@@ -42,14 +56,19 @@ const PaymentsTable = ({ payment, setPageNumber, setCurrentData, setModalCreateO
               setCurrentData={setCurrentData}
               setModalCreateOpened={setModalCreateOpened}
             />
-          ),
-        },
+          )
+        }
       ]}
     />
   );
 };
 
-const ActionColumn = ({ data, setCurrentData, setModalCreateOpened, removeAction }) => (
+const ActionColumn = ({
+  data,
+  setCurrentData,
+  setModalCreateOpened,
+  removeAction
+}) => (
   <div className="action-column">
     <button
       style={{ marginRight: 15 }}
@@ -72,6 +91,5 @@ const ActionColumn = ({ data, setCurrentData, setModalCreateOpened, removeAction
     </button>
   </div>
 );
-
 
 export default PaymentsTable;
