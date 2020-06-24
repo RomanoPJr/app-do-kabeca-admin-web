@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { CardBody } from "reactstrap";
 import { toast } from "react-toastify";
-import { FaPencilAlt } from "react-icons/fa";
+import {
+  FaPencilAlt,
+  FaMoneyBillWave,
+  FaUsersCog,
+  FaUsers,
+  FaHandPaper,
+  FaRegAddressCard
+} from "react-icons/fa";
 
 import "./styles.css";
 import EmptyState from "./EmptyState";
@@ -25,6 +32,7 @@ const Club = ({
   ufs_loading
 }) => {
   const [modalCreateOpened, setModalCreateOpened] = useState();
+  const [counters, setCounters] = useState([]);
 
   useEffect(() => {
     fetchAction();
@@ -39,6 +47,44 @@ const Club = ({
       toast.error(club.error);
     }
   }, [club.loading]);
+
+  useEffect(() => {
+    if (club.data) {
+      const size = 30;
+      setCounters([
+        {
+          name: "TOTAL DE ASSOCIADOS",
+          value: club.data.totals.total_associados,
+          icon: <FaUsers className="card-counter-icon" size={size} />,
+          color: "#1d7a91"
+        },
+        {
+          name: "TOTAL DE GOLEIROS",
+          value: club.data.totals.total_goleiros,
+          icon: <FaHandPaper className="card-counter-icon" size={size} />,
+          color: "#c9761c"
+        },
+        {
+          name: "TOTAL DE COLABORADORES",
+          value: club.data.totals.total_colaboradores,
+          icon: <FaUsersCog className="card-counter-icon" size={size} />,
+          color: "#bd3c3c"
+        },
+        {
+          name: "TOTAL DE PAGANTES",
+          value: club.data.totals.total_pagantes,
+          icon: <FaMoneyBillWave className="card-counter-icon" size={size} />,
+          color: "#991f4b"
+        },
+        {
+          name: "MÉDIA DE IDADE",
+          value: club.data.totals.average_age,
+          icon: <FaRegAddressCard className="card-counter-icon" size={size} />,
+          color: "#389421"
+        }
+      ]);
+    }
+  }, [club.data]);
 
   function handleSubmitForm(evt, data) {
     if (data.id) {
@@ -89,6 +135,24 @@ const Club = ({
                 <b>LOCAL:</b>
                 {` ${club.data.city}/${club.data.state}`}
               </h5>
+            </div>
+            <div class="row">
+              {counters.map(item => (
+                <div class="col-lg-4">
+                  <div
+                    class="card-chart card card-counter"
+                    style={{ backgroundColor: item.color }}
+                  >
+                    <div class="card-header card-counter-header">
+                      <div>{item.icon}</div>
+                      <div>
+                        <h5 class="card-category">{item.name}</h5>
+                        <h3 class="card-title">{item.value}</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </>
         ) : (
