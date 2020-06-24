@@ -78,7 +78,7 @@ const Club = ({
         },
         {
           name: "MÉDIA DE IDADE",
-          value: club.data.totals.average_age,
+          value: Math.round(Number(club.data.totals.average_age)),
           icon: <FaRegAddressCard className="card-counter-icon" size={size} />,
           color: "#389421"
         }
