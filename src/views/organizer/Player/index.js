@@ -8,6 +8,7 @@ import ModalCreate from "./ModalCreate";
 import ModalDelete from "./ModalDelete";
 import Table from "../../../components/Table";
 import { formatPhone } from "../../../utils/Phone";
+import { formatMoney } from "../../../utils/Currency";
 import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
 import UserAction from "../../../store/user/user.actions";
@@ -26,7 +27,7 @@ const Player = ({
   removeAction,
   fetchOneUser,
   clearFindOneAction,
-  resetPasswordAction,
+  resetPasswordAction
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -46,7 +47,7 @@ const Player = ({
   useEffect(() => {
     if (!modalCreateOpened && !modalDeleteOpened) {
       setCurrentData({});
-      clearFindOneAction()
+      clearFindOneAction();
     }
   }, [modalCreateOpened, modalDeleteOpened]);
 
@@ -83,7 +84,8 @@ const Player = ({
     <Container loading={player.loading}>
       <CardHeader
         setModalCreateOpened={setModalCreateOpened}
-        title={`Jogadores (Cadastre até ${club.data && club.data.plan_type} Jogadores)`}
+        title={`Jogadores (Cadastre até ${club.data &&
+          club.data.plan_type} Jogadores)`}
       />
       <CardBody>
         <Table
@@ -94,14 +96,24 @@ const Player = ({
             { name: "Nome", attribute: "name" },
             {
               name: "Telefone",
-              render: ({ data }) => formatPhone(data.phone),
+              render: ({ data }) => formatPhone(data.phone)
             },
             { name: "Posição", attribute: "ClubPlayers.position" },
             { name: "Status do Convite", attribute: "ClubPlayers.invite" },
             {
               name: "Entrou Em:",
               render: ({ data }) =>
-                moment(data.ClubPlayers.created_at).format("DD/MM/YYYY"),
+                moment(data.ClubPlayers.created_at).format("DD/MM/YYYY")
+            },
+            {
+              name: "Mensalidade",
+              render: ({ data }) => {
+                if (data.ClubPlayers) {
+                  return data.ClubPlayers.position === "COLABORADOR"
+                    ? formatMoney()
+                    : formatMoney(data.ClubPlayers.monthly_payment);
+                }
+              }
             },
             {
               name: <b className="action-column">Acões</b>,
@@ -112,8 +124,8 @@ const Player = ({
                   setModalDeleteOpened={setModalDeleteOpened}
                   setModalCreateOpened={setModalCreateOpened}
                 />
-              ),
-            },
+              )
+            }
           ]}
         />
       </CardBody>
@@ -146,40 +158,39 @@ const ActionColumn = ({
   data,
   setCurrentData,
   setModalDeleteOpened,
-  setModalCreateOpened,
+  setModalCreateOpened
 }) => (
-    <div className="action-column">
-      <DeleteButton
-        onClick={() => {
-          setCurrentData(data);
-          setModalDeleteOpened(true);
-        }}
-      />
-      <EditButton
-        onClick={() => {
-          setCurrentData(data);
-          setModalCreateOpened(true);
-        }}
-      />
-    </div>
-  );
+  <div className="action-column">
+    <DeleteButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalDeleteOpened(true);
+      }}
+    />
+    <EditButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalCreateOpened(true);
+      }}
+    />
+  </div>
+);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user,
   player: state.player,
   club: state.club
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearAction: () => dispatch(PlayerActions.clear()),
   clearFindOneAction: () => dispatch(UserAction.clearFindOne()),
-  fetchAction: (payload) => dispatch(PlayerActions.fetch(payload)),
-  createAction: (payload) => dispatch(PlayerActions.create(payload)),
-  updateAction: (payload) => dispatch(PlayerActions.update(payload)),
-  removeAction: (payload) => dispatch(PlayerActions.remove(payload)),
-  fetchOneUser: (payload) => dispatch(UserAction.fetchOne(payload)),
-  resetPasswordAction: (payload) =>
-    dispatch(PlayerActions.resetPassword(payload)),
+  fetchAction: payload => dispatch(PlayerActions.fetch(payload)),
+  createAction: payload => dispatch(PlayerActions.create(payload)),
+  updateAction: payload => dispatch(PlayerActions.update(payload)),
+  removeAction: payload => dispatch(PlayerActions.remove(payload)),
+  fetchOneUser: payload => dispatch(UserAction.fetchOne(payload)),
+  resetPasswordAction: payload => dispatch(PlayerActions.resetPassword(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
