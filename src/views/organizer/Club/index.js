@@ -8,7 +8,8 @@ import {
   FaUsersCog,
   FaUsers,
   FaHandPaper,
-  FaRegAddressCard
+  FaRegAddressCard,
+  FaUserMinus
 } from "react-icons/fa";
 
 import "./styles.css";
@@ -75,6 +76,12 @@ const Club = ({
           value: club.data.totals.total_pagantes,
           icon: <FaMoneyBillWave className="card-counter-icon" size={size} />,
           color: "#991f4b"
+        },
+        {
+          name: "TOTAL DE NÃO PAGANTES",
+          value: club.data.totals.total_nao_pagantes,
+          icon: <FaUserMinus className="card-counter-icon" size={size} />,
+          color: "#e0c422"
         },
         {
           name: "MÉDIA DE IDADE",
