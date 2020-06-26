@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Row, Input, Label, FormGroup } from "reactstrap";
 import CurrencyInput from "react-currency-input";
@@ -23,9 +24,13 @@ const ModalCreate = ({
   const [phone, setPhone] = useState();
   const [invite, setInvite] = useState();
   const [position, setPosition] = useState("GOLEIRO");
+  const [createdAt, setCreatedAt] = useState();
   const [monthly_payment, setMonthlyPayment] = useState(0);
   const [modalConfirmOpened, setModalConfirmOpened] = useState(false);
 
+  useEffect(() => {
+    setCreatedAt(moment(Date.now()).format("yyyy-MM-DD"));
+  }, []);
   useEffect(() => {
     if (data.id) {
       setName(data.name);
@@ -35,6 +40,7 @@ const ModalCreate = ({
       setInvite(data.ClubPlayers.invite);
       setPosition(data.ClubPlayers.position);
       setMonthlyPayment(Number(data.ClubPlayers.monthly_payment));
+      setCreatedAt(moment(data.ClubPlayers.created_at).format("yyyy-MM-DD"));
     }
   }, [data]);
 
@@ -73,6 +79,7 @@ const ModalCreate = ({
                 name,
                 invite,
                 position,
+                created_at: createdAt,
                 phone: clearPhone(phone),
                 monthly_payment: String(monthly_payment)
                   .replace("R$ ", "")
@@ -141,6 +148,16 @@ const ModalCreate = ({
                   />
                 </Col>
               )}
+              <Col md="6">
+                <label>Data de entrada:</label>
+                <Input
+                  type="date"
+                  value={createdAt || ""}
+                  onChange={event =>
+                    setCreatedAt(event.target.value.toUpperCase())
+                  }
+                />
+              </Col>
             </Row>
             <Row>
               {data.id &&

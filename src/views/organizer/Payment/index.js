@@ -197,11 +197,11 @@ const Payment = ({
                   color="white"
                   style={{
                     color: "white",
-                    background: "#e0c422"
+                    background: "#ac971e"
                   }}
                   type="submit"
                 >
-                  Registrar Não Pagantes
+                  REGISTRAR NÃO PAGANTES
                 </Button>
               </div>
               <Tabs

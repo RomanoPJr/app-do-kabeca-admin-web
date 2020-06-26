@@ -44,11 +44,13 @@
 }
 
 .btn-green {
-  background: #65cf65;
+  background: #ac971e;
 }
 .positionTag {
-  background-color: green;
   padding: 5px;
   border-radius: 5px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #ac971e;
   display: inherit !important;
 }
