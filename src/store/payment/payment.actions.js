@@ -5,8 +5,8 @@ import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
-  CREATE_REQUEST,
   CREATE_SUCCESS,
+  CREATE_REQUEST,
   CREATE_FAILURE,
   DELETE_REQUEST,
   DELETE_SUCCESS,
@@ -15,48 +15,51 @@ import {
   UPDATE_SUCCESS,
   UPDATE_FAILURE,
   CLEAR_STORE,
+  CREATE_ALL_REQUEST,
+  CREATE_ALL_SUCCESS,
+  CREATE_ALL_FAILURE
 } from "./payment.types";
 
 const endpoint = "/payment";
 
-const fetch = (payload) => {
-  return function (dispatch) {
+const fetch = payload => {
+  return function(dispatch) {
     const { month, year, type, pageNumber, pageSize } = payload;
-    var queryString = '';
-    queryString += `${pageNumber ? `pageNumber=${pageNumber}&` : ""}`
-    queryString += `${pageSize ? `pageSize=${pageSize}&` : ""}`
-    queryString += `${year ? `year=${year}&` : ""}`
+    var queryString = "";
+    queryString += `${pageNumber ? `pageNumber=${pageNumber}&` : ""}`;
+    queryString += `${pageSize ? `pageSize=${pageSize}&` : ""}`;
+    queryString += `${year ? `year=${year}&` : ""}`;
     queryString += `${month ? `month=${month}&` : ""}`;
 
-    const paymentType = type || 'paid';
+    const paymentType = type || "paid";
     dispatch({ type: FETCH_REQUEST });
     axios()
       .get(`${endpoint}/${paymentType}?${queryString}`)
-      .then((response) => {
+      .then(response => {
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
       });
   };
 };
 
-const create = (payload) => {
-  return async function (dispatch) {
+const create = payload => {
+  return async function(dispatch) {
     dispatch({ type: CREATE_REQUEST });
     axios()
       .post(endpoint, payload)
-      .then((response) => {
+      .then(response => {
         dispatch({ type: CREATE_SUCCESS });
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch({ type: CREATE_FAILURE, payload: getError(error) });
       });
   };
 };
 
-const update = (payload) => {
-  return async function (dispatch) {
+const update = payload => {
+  return async function(dispatch) {
     dispatch({ type: UPDATE_REQUEST });
     if (
       payload.banner_url &&
@@ -69,32 +72,47 @@ const update = (payload) => {
 
     axios()
       .put(endpoint, payload)
-      .then((response) => {
+      .then(response => {
         dispatch({ type: UPDATE_SUCCESS, payload: response.data });
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch({ type: UPDATE_FAILURE, payload: getError(error) });
       });
   };
 };
 
+const createAllNonPaying = (payload, page) => {
+  return async function(dispatch) {
+    dispatch({ type: CREATE_ALL_REQUEST });
+    axios()
+      .post("/payment_non_paying", {}, { params: payload })
+      .then(response => {
+        dispatch({ type: CREATE_ALL_SUCCESS });
+        dispatch(fetch(page));
+      })
+      .catch(error => {
+        dispatch({ type: CREATE_ALL_FAILURE });
+      });
+  };
+};
+
 const remove = (payload, fetchPayload) => {
-  return function (dispatch) {
+  return function(dispatch) {
     dispatch({ type: DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)
       .then(() => {
         dispatch({ type: DELETE_SUCCESS });
-        dispatch(fetch(fetchPayload))
+        dispatch(fetch(fetchPayload));
       })
-      .catch((error) => {
+      .catch(error => {
         dispatch({ type: DELETE_FAILURE, payload: getError(error) });
       });
   };
 };
 
-const clear = (payload) => {
-  return function (dispatch) {
+const clear = payload => {
+  return function(dispatch) {
     dispatch({ type: CLEAR_STORE });
   };
 };
@@ -105,4 +123,5 @@ export default {
   remove,
   update,
   clear,
+  createAllNonPaying
 };

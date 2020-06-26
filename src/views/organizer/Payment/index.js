@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import {
-  TabContent,
-  TabPane,
   Nav,
-  NavItem,
-  NavLink,
-  Card,
   Row,
   Col,
-  CardBody
+  Card,
+  Button,
+  TabPane,
+  NavItem,
+  NavLink,
+  CardBody,
+  TabContent
 } from "reactstrap";
 import classnames from "classnames";
 
@@ -31,7 +32,8 @@ const Payment = ({
   fetchAction,
   createAction,
   updateAction,
-  removeAction
+  removeAction,
+  createAllNonPayingAction
 }) => {
   const [totalizers, setTotalizers] = useState();
   const [filterYear, setFilterYear] = useState();
@@ -172,6 +174,36 @@ const Payment = ({
             />
             <CardBody>
               <Counters totalizers={totalizers} />
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button
+                  onClick={() => {
+                    createAllNonPayingAction(
+                      {
+                        month: filterMonth,
+                        year: filterYear
+                      },
+                      {
+                        month: filterMonth,
+                        year: filterYear,
+                        type: activeTab === "1" ? "paid" : "debit",
+                        pageNumber:
+                          activeTab === "1"
+                            ? pageNumberPayments
+                            : pageNumberDebits
+                      }
+                    );
+                  }}
+                  className="btn-all-registers"
+                  color="white"
+                  style={{
+                    color: "white",
+                    background: "#e0c422"
+                  }}
+                  type="submit"
+                >
+                  Registrar Não Pagantes
+                </Button>
+              </div>
               <Tabs
                 filterYear={filterYear}
                 filterMonth={filterMonth}
@@ -287,6 +319,8 @@ const mapDispatchToProps = dispatch => ({
   updateClub: payload => dispatch(ClubActions.update(payload)),
   fetchAction: payload => dispatch(PaymentActions.fetch(payload)),
   createAction: payload => dispatch(PaymentActions.create(payload)),
+  createAllNonPayingAction: (payload, page) =>
+    dispatch(PaymentActions.createAllNonPaying(payload, page)),
   updateAction: payload => dispatch(PaymentActions.update(payload)),
   removeAction: (payload, fetchPayload) =>
     dispatch(PaymentActions.remove(payload, fetchPayload))

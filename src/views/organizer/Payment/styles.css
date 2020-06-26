@@ -35,18 +35,18 @@
   font-size: 0.75rem;
 }
 
-.payment-switch-container{
+.payment-switch-container {
   display: flex;
   align-items: center;
 }
-.payment-switch-container>.react-switch{
+.payment-switch-container > .react-switch {
   margin-left: 15px !important;
 }
 
-.btn-green{
+.btn-green {
   background: #65cf65;
 }
-.positionTag{
+.positionTag {
   background-color: green;
   padding: 5px;
   border-radius: 5px;
