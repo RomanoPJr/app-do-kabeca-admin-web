@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { CardBody, Badge } from "reactstrap";
 import { toast } from "react-toastify";
-import moment from 'moment'
+import moment from "moment";
 
 import "./styles.css";
 import ModalCreate from "./ModalCreate";
@@ -20,7 +20,7 @@ const Event = ({
   fetchAction,
   createAction,
   updateAction,
-  removeAction,
+  removeAction
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -72,7 +72,7 @@ const Event = ({
     <Container loading={event.loading}>
       <CardHeader
         setModalCreateOpened={setModalCreateOpened}
-        title="Eventos de Partida (Crie até 10 eventos)"
+        title="CRITÉRIOS DE PONTUAÇÃO (Crie até 10 eventos)"
       />
       <CardBody>
         <Table
@@ -82,21 +82,22 @@ const Event = ({
           columns={[
             { name: "Evento", attribute: "description" },
             {
-              name: "Valor",
+              name: "Pontos",
               render: ({ data }) => {
                 const sign = Math.sign(data.value);
                 return sign === -1 ? (
                   <Badge className="event-value-badge red">{data.value}</Badge>
                 ) : (
-                    <Badge className="event-value-badge green">
-                      +{data.value}
-                    </Badge>
-                  );
-              },
+                  <Badge className="event-value-badge green">
+                    +{data.value}
+                  </Badge>
+                );
+              }
             },
             {
               name: "Atualizado Em:",
-              render: ({ data }) => moment(data.updatedAt).format('DD/MM/YYYY HH:mm'),
+              render: ({ data }) =>
+                moment(data.updatedAt).format("DD/MM/YYYY HH:mm")
             },
             {
               name: <b className="action-column">Acões</b>,
@@ -107,8 +108,8 @@ const Event = ({
                   setModalDeleteOpened={setModalDeleteOpened}
                   setModalCreateOpened={setModalCreateOpened}
                 />
-              ),
-            },
+              )
+            }
           ]}
         />
       </CardBody>
@@ -136,35 +137,35 @@ const ActionColumn = ({
   data,
   setCurrentData,
   setModalDeleteOpened,
-  setModalCreateOpened,
+  setModalCreateOpened
 }) => (
-    <div className="action-column">
-      <DeleteButton
-        onClick={() => {
-          setCurrentData(data);
-          setModalDeleteOpened(true);
-        }}
-      />
-      <EditButton
-        onClick={() => {
-          setCurrentData(data);
-          setModalCreateOpened(true);
-        }}
-      />
-    </div>
-  );
+  <div className="action-column">
+    <DeleteButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalDeleteOpened(true);
+      }}
+    />
+    <EditButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalCreateOpened(true);
+      }}
+    />
+  </div>
+);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   event: state.event,
-  suggestion_event: state.suggestion_event,
+  suggestion_event: state.suggestion_event
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearAction: () => dispatch(EventActions.clear()),
-  fetchAction: (payload) => dispatch(EventActions.fetch(payload)),
-  createAction: (payload) => dispatch(EventActions.create(payload)),
-  updateAction: (payload) => dispatch(EventActions.update(payload)),
-  removeAction: (payload) => dispatch(EventActions.remove(payload)),
+  fetchAction: payload => dispatch(EventActions.fetch(payload)),
+  createAction: payload => dispatch(EventActions.create(payload)),
+  updateAction: payload => dispatch(EventActions.update(payload)),
+  removeAction: payload => dispatch(EventActions.remove(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Event);

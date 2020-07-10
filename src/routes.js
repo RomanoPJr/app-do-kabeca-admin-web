@@ -76,7 +76,7 @@ var organizer = [
   },
   {
     path: "/events",
-    name: "Eventos de Partida",
+    name: "CRITÉRIOS DE PONTUAÇÃO",
     icon: <FaRegFlag size={18} />,
     component: Event,
     layout: "/organizer"
