@@ -12,6 +12,7 @@ import {
 
 import Club from "./views/organizer/Club";
 import Event from "./views/organizer/Event";
+import Match from "./views/organizer/Match";
 import Player from "./views/organizer/Player";
 import Statute from "./views/organizer/Statute";
 import Sponsor from "./views/organizer/Sponsor";
@@ -56,8 +57,15 @@ var organizer = [
   {
     path: "/club",
     name: "Clube",
-    icon: <FaFutbol size={18} />,
+    icon: <FaUsers size={18} />,
     component: Club,
+    layout: "/organizer"
+  },
+  {
+    path: "/matches",
+    name: "Partidas",
+    icon: <FaFutbol size={18} />,
+    component: Match,
     layout: "/organizer"
   },
   {
@@ -93,7 +101,7 @@ var organizer = [
     name: "Financeiro",
     icon: <FaDollarSign size={18} />,
     component: Payment,
-    layout: "/admin"
+    layout: "/organizer"
   }
 ];
 

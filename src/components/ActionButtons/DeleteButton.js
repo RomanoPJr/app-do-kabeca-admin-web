@@ -1,16 +1,11 @@
 import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
+import "./styles.css";
+
 const DeleteButton = ({ onClick }) => {
   return (
-    <button
-      className="btn btn-danger btn-icon delete-button"
-      // onClick={() => {
-      //   setCurrentData();
-      //   setModalDeleteOpened();
-      // }}
-      onClick={onClick}
-    >
+    <button className="btn btn-danger btn-icon delete-button" onClick={onClick}>
       <FaTrashAlt />
     </button>
   );

@@ -9,7 +9,7 @@ const ModalCreate = ({ action, loading, opened, setOpened }) => {
   return (
     opened && (
       <Modal
-        class="modal fade"
+        className="modal fade"
         title="Confirmar"
         opened={opened}
         setOpened={setOpened}

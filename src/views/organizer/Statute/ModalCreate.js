@@ -29,19 +29,19 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
     <>
       {opened && (
         <Modal
-          class="modal fade bd-example-modal-lg"
+          className="modal fade bd-example-modal-lg"
           title="Estatuto"
           opened={opened}
           setOpened={setOpened}
           size="lg"
         >
           <Form
-            onSubmit={(evt) =>
+            onSubmit={evt =>
               handleSubmitForm(evt, {
                 id,
                 description: JSON.stringify(
                   convertToRaw(editorState.getCurrentContent())
-                ),
+                )
               })
             }
           >
@@ -52,7 +52,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   toolbarClassName="toolbarClassName"
                   wrapperClassName="wrapperClassName"
                   editorClassName="editorClassName"
-                  onEditorStateChange={(editorState) =>
+                  onEditorStateChange={editorState =>
                     setEditorState(editorState)
                   }
                 />

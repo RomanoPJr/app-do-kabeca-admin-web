@@ -3,12 +3,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Button, Col, Form, Row, Input } from "reactstrap";
 import Modal from "../../../components/Modal";
 
-const ModalCreate = ({
-  data,
-  opened,
-  setOpened,
-  handleSubmitForm,
-}) => {
+const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
   const [id, setId] = useState();
   const [value, setValue] = useState();
   const [description, setDescription] = useState();
@@ -25,18 +20,14 @@ const ModalCreate = ({
     <>
       {opened && (
         <Modal
-          class="modal fade"
+          className="modal fade"
           title="Evento de Partida"
           opened={opened}
           setOpened={setOpened}
         >
-          <p className="text-center">
-            INSERIR EVENTOS DE PARTIDA.
-          </p>
+          <p className="text-center">INSERIR EVENTOS DE PARTIDA.</p>
           <Form
-            onSubmit={(evt) =>
-              handleSubmitForm(evt, { id, value, description })
-            }
+            onSubmit={evt => handleSubmitForm(evt, { id, value, description })}
           >
             <Row>
               <Col md="12">
@@ -45,7 +36,7 @@ const ModalCreate = ({
                   required={true}
                   placeholder="Informe o nome do evento"
                   type="text"
-                  onChange={(event) =>
+                  onChange={event =>
                     setDescription(event.target.value.toUpperCase())
                   }
                   value={description || ""}
@@ -57,7 +48,7 @@ const ModalCreate = ({
                   required={true}
                   type="number"
                   placeholder="Informe o valor do evento"
-                  onChange={(event) => {
+                  onChange={event => {
                     setValue(event.target.value.toUpperCase());
                   }}
                   value={value}

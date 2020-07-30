@@ -20,13 +20,13 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
     <>
       {opened && (
         <Modal
-          class="modal fade"
+          className="modal fade"
           title="Patrocinador"
           opened={opened}
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) =>
+            onSubmit={evt =>
               confirmAction(evt, { id, value, name, status, banner_url })
             }
           >
@@ -38,9 +38,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                   placeholder="Informe o nome do patrocinador"
                   type="text"
                   value={name || ""}
-                  onChange={(event) =>
-                    setName(event.target.value.toUpperCase())
-                  }
+                  onChange={event => setName(event.target.value.toUpperCase())}
                 />
               </Col>
               <Col md="12">
@@ -51,7 +49,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                   placeholder="Informe o valor de patrocínio"
                   value={value}
                   step="0.01"
-                  onChange={(event) => {
+                  onChange={event => {
                     setValue(event.target.value.toUpperCase());
                   }}
                 />
@@ -61,7 +59,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                 <select
                   name="select"
                   className="form-control"
-                  onChange={(event) => {
+                  onChange={event => {
                     setStatus(event.target.value.toUpperCase());
                   }}
                 >
@@ -73,7 +71,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                 <label>Banner do Patrocinador</label>
                 <UploadInput
                   imagePreview={banner_url}
-                  onLoad={(base64) => {
+                  onLoad={base64 => {
                     setBannerUrl(base64);
                   }}
                   text="Upload"

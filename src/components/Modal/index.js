@@ -6,16 +6,10 @@ const ModalComponent = ({
   opened,
   setOpened,
   children,
-  unmountOnClose,
   size = "md"
 }) => {
   return (
-    <Modal
-      isOpen={opened}
-      toggle={() => setOpened(!opened)}
-      // unmountOnClose={unmountOnClose}
-      size={size}
-    >
+    <Modal isOpen={opened} toggle={() => setOpened(!opened)} size={size}>
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">
           {title}

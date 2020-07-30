@@ -6,7 +6,18 @@ import Modal from "../../../components/Modal";
 import UploadInput from "../../../components/UploadInput";
 import LoadingSpinner from "../../../components/LoadingSpinner";
 
-const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS, fetchCities, ufs, cities, ufs_loading }) => {
+const ModalCreate = ({
+  data,
+  opened,
+  loading,
+  setOpened,
+  confirmAction,
+  fetchUFS,
+  fetchCities,
+  ufs,
+  cities,
+  ufs_loading
+}) => {
   const [id, setId] = useState();
   const [name, setName] = useState();
   const [city, setCity] = useState();
@@ -17,8 +28,8 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
   const [payment_module_view_type, setPaymentModuleViewType] = useState("ALL");
 
   useEffect(() => {
-    fetchUFS()
-  }, [])
+    fetchUFS();
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -35,33 +46,33 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
 
   useEffect(() => {
     if (state) {
-      const selectedState = ufs.find(uf => uf.nome.toUpperCase() === state)
+      const selectedState = ufs.find(uf => uf.nome.toUpperCase() === state);
       if (selectedState) {
-        fetchCities(selectedState.sigla)
+        fetchCities(selectedState.sigla);
         // setCity()
       }
     }
-  }, [state, ufs])
+  }, [state, ufs]);
 
   useEffect(() => {
-    if ((state && data) && state !== data.state) {
+    if (state && data && state !== data.state) {
       if (cities.length > 0) {
-        setCity(cities[0].nome.toUpperCase())
+        setCity(cities[0].nome.toUpperCase());
       }
     }
-  }, [cities])
+  }, [cities]);
 
   return (
     <>
       {opened && (
         <Modal
-          class="modal fade"
+          className="modal fade"
           title="Clube"
           opened={opened}
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) =>
+            onSubmit={evt =>
               confirmAction(evt, {
                 id,
                 day,
@@ -70,7 +81,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                 time,
                 state,
                 logo_url,
-                payment_module_view_type,
+                payment_module_view_type
               })
             }
           >
@@ -82,7 +93,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                   required={true}
                   value={name || ""}
                   placeholder="Informe o nome"
-                  onChange={(event) => {
+                  onChange={event => {
                     setName(event.target.value.toUpperCase());
                   }}
                 />
@@ -93,7 +104,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                   value={day || "SEGUNDA-FEIRA"}
                   name="select"
                   className="form-control"
-                  onChange={(event) => setDay(event.target.value.toUpperCase())}
+                  onChange={event => setDay(event.target.value.toUpperCase())}
                 >
                   <option value="SEGUNDA-FEIRA">SEGUNDA-FEIRA</option>
                   <option value="TERCA-FEIRA">TERÇA-FEIRA</option>
@@ -111,9 +122,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                   type="time"
                   value={time || ""}
                   placeholder="Informe o horário"
-                  onChange={(event) =>
-                    setTime(event.target.value.toUpperCase())
-                  }
+                  onChange={event => setTime(event.target.value.toUpperCase())}
                 />
               </Col>
               <Col md="6">
@@ -122,13 +131,16 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                   value={state}
                   name="select"
                   className="form-control"
-                  onChange={(event) => {
-                    setState(event.target.value.toUpperCase())
+                  onChange={event => {
+                    setState(event.target.value.toUpperCase());
                   }}
                 >
-                  {ufs && ufs.map(uf => (
-                    <option key={uf.id} value={uf.nome.toUpperCase()}>{uf.nome.toUpperCase()}</option>
-                  ))}
+                  {ufs &&
+                    ufs.map(uf => (
+                      <option key={uf.id} value={uf.nome.toUpperCase()}>
+                        {uf.nome.toUpperCase()}
+                      </option>
+                    ))}
                 </select>
               </Col>
               <Col md="6">
@@ -138,13 +150,16 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                   value={city}
                   name="select"
                   className="form-control"
-                  onChange={(event) => {
-                    setCity(event.target.value.toUpperCase())
+                  onChange={event => {
+                    setCity(event.target.value.toUpperCase());
                   }}
                 >
-                  {cities && cities.map(city => (
-                    <option key={city.id} value={city.nome.toUpperCase()}>{city.nome.toUpperCase()}</option>
-                  ))}
+                  {cities &&
+                    cities.map(city => (
+                      <option key={city.id} value={city.nome.toUpperCase()}>
+                        {city.nome.toUpperCase()}
+                      </option>
+                    ))}
                 </select>
               </Col>
               <Col md="12" style={{ display: "flex", flexDirection: "column" }}>
@@ -153,7 +168,7 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction, fetchUFS
                 </label>
                 <UploadInput
                   text="Upload"
-                  onLoad={(base64) => {
+                  onLoad={base64 => {
                     setLogoUrl(base64);
                   }}
                 />

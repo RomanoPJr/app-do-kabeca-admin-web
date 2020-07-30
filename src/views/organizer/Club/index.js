@@ -143,18 +143,18 @@ const Club = ({
                 {` ${club.data.city}/${club.data.state}`}
               </h5>
             </div>
-            <div class="row">
+            <div className="row">
               {counters.map(item => (
-                <div class="col-lg-4">
+                <div className="col-lg-4">
                   <div
-                    class="card-chart card card-counter"
+                    className="card-chart card card-counter"
                     style={{ backgroundColor: item.color }}
                   >
-                    <div class="card-header card-counter-header">
+                    <div className="card-header card-counter-header">
                       <div>{item.icon}</div>
                       <div>
-                        <h5 class="card-category">{item.name}</h5>
-                        <h3 class="card-title">{item.value}</h3>
+                        <h5 className="card-category">{item.name}</h5>
+                        <h3 className="card-title">{item.value}</h3>
                       </div>
                     </div>
                   </div>

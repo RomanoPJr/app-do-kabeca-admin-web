@@ -1,0 +1,16 @@
+.delete-button {
+  background-image: none;
+  background-color: #bd3c3c;
+}
+.btn-edit {
+  background-image: none;
+  background-color: #e0c422;
+}
+.btn-edit:hover {
+  background-image: linear-gradient(
+    to bottom left,
+    #dac96e,
+    #e0c422,
+    #e0c422
+  ) !important;
+}

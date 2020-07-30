@@ -21,7 +21,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
     <>
       {opened && (
         <Modal
-          class="modal fade bd-example-modal-lg"
+          className="modal fade bd-example-modal-lg"
           title="Sugestão de Estatuto"
           opened={opened}
           setOpened={setOpened}

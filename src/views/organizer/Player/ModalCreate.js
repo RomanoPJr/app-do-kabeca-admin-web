@@ -67,7 +67,7 @@ const ModalCreate = ({
     <>
       {opened && (
         <Modal
-          class="modal fade"
+          className="modal fade"
           title="Jogador"
           opened={opened}
           setOpened={setOpened}

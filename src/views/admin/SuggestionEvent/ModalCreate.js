@@ -13,15 +13,13 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
     <>
       {opened && (
         <Modal
-          class="modal fade bd-example-modal-lg"
+          className="modal fade bd-example-modal-lg"
           title="Sugestão de Evento"
           opened={opened}
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) =>
-              handleSubmitForm(evt, { id, description, value })
-            }
+            onSubmit={evt => handleSubmitForm(evt, { id, description, value })}
           >
             <Row>
               <Col md="12">
@@ -30,7 +28,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   required={true}
                   placeholder="Informe o nome do evento"
                   type="text"
-                  onChange={(event) =>
+                  onChange={event =>
                     setDescription(event.target.value.toUpperCase())
                   }
                   value={description}
@@ -42,7 +40,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   required={true}
                   type="number"
                   placeholder="Informe o valor do evento"
-                  onChange={(event) => {
+                  onChange={event => {
                     setValue(event.target.value.toUpperCase());
                   }}
                   value={value}

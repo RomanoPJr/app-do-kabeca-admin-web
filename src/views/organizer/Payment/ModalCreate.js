@@ -36,7 +36,7 @@ const ModalUpdatePayment = ({
     <>
       {opened && (
         <Modal
-          class="modal fade"
+          className="modal fade"
           title="Pagamento"
           opened={opened}
           setOpened={setOpened}
