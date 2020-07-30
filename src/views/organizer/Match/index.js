@@ -17,8 +17,6 @@ const Match = ({ match, history }) => {
         date: "2020-01-01",
         team_a: "TIME A",
         team_b: "TIME B",
-        time_start: "18:00:00",
-        time_end: "18:00:00",
         type: "PARTIDA INTERNA",
         duration: 30,
         modality: "2 TEMPOS",

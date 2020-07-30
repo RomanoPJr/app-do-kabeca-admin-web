@@ -84,8 +84,7 @@ const Event = ({
             {
               name: "Pontos",
               render: ({ data }) => {
-                const sign = Math.sign(data.value);
-                return sign === -1 ? (
+                return data.value < 0 ? (
                   <Badge className="event-value-badge red">{data.value}</Badge>
                 ) : (
                   <Badge className="event-value-badge green">
@@ -140,16 +139,16 @@ const ActionColumn = ({
   setModalCreateOpened
 }) => (
   <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
     <EditButton
       onClick={() => {
         setCurrentData(data);
         setModalCreateOpened(true);
+      }}
+    />
+    <DeleteButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalDeleteOpened(true);
       }}
     />
   </div>

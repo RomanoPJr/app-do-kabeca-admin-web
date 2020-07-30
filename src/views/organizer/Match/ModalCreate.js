@@ -54,14 +54,6 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
                 <Input type="date" />
               </Col>
               <Col md="6">
-                <label>HORÁRIO DE INÍCIO</label>
-                <Input type="time" />
-              </Col>
-              <Col md="6">
-                <label>HORÁRIO FINAL</label>
-                <Input type="time" placeholder="00:00" />
-              </Col>
-              <Col md="6">
                 <label>MODALIDADE</label>
                 <select type="select" className="form-control">
                   <option disabled selected>

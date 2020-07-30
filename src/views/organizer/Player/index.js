@@ -161,16 +161,16 @@ const ActionColumn = ({
   setModalCreateOpened
 }) => (
   <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
     <EditButton
       onClick={() => {
         setCurrentData(data);
         setModalCreateOpened(true);
+      }}
+    />
+    <DeleteButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalDeleteOpened(true);
       }}
     />
   </div>

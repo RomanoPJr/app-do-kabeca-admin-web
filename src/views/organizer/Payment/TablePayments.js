@@ -4,6 +4,8 @@ import { FaEdit, FaTimes } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
+import EditButton from "../../../components/ActionButtons/EditButton";
+import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const PaymentsTable = ({
   payment,
@@ -70,25 +72,17 @@ const ActionColumn = ({
   removeAction
 }) => (
   <div className="action-column">
-    <button
-      style={{ marginRight: 15 }}
-      className="btn btn-default btn-icon"
+    <EditButton
       onClick={() => {
         setCurrentData(data);
         setModalCreateOpened(true);
       }}
-    >
-      <FaEdit />
-    </button>
-    <button
-      style={{ marginRight: 15 }}
-      className="btn btn-danger btn-icon"
+    />
+    <DeleteButton
       onClick={() => {
         removeAction(data.id);
       }}
-    >
-      <FaTimes />
-    </button>
+    />
   </div>
 );
 

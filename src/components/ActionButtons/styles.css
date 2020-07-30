@@ -1,16 +1,17 @@
-.delete-button {
-  background-image: none;
-  background-color: #bd3c3c;
+.delete-button,
+.delete-button:hover,
+.delete-button:active,
+.delete-button:focus,
+.delete-button:focus:active {
+  background-image: none !important;
+  background-color: #bd3c3c !important;
 }
-.btn-edit {
-  background-image: none;
-  background-color: #e0c422;
-}
-.btn-edit:hover {
-  background-image: linear-gradient(
-    to bottom left,
-    #dac96e,
-    #e0c422,
-    #e0c422
-  ) !important;
+.btn-edit,
+.btn-edit:hover,
+.btn-edit:active,
+.btn-edit:focus,
+.btn-edit:focus:active {
+  margin-right: 10px !important;
+  background-image: none !important;
+  background-color: #e0c422 !important;
 }

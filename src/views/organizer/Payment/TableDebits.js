@@ -3,6 +3,8 @@ import { FaEdit, FaCheck } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
+import EditButton from "../../../components/ActionButtons/EditButton";
+import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const TableDebits = ({
   filterYear,
@@ -72,9 +74,7 @@ const ActionColumn = ({
   setModalCreateOpened
 }) => (
   <div className="action-column">
-    <button
-      style={{ marginRight: 15 }}
-      className="btn btn-default btn-icon"
+    <EditButton
       onClick={() => {
         setCurrentData({
           club_player_id: data.ClubPlayers[0].id,
@@ -86,9 +86,7 @@ const ActionColumn = ({
         });
         setModalCreateOpened(true);
       }}
-    >
-      <FaEdit />
-    </button>
+    />
     <button
       className="btn btn-icon btn-green"
       onClick={() => {

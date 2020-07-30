@@ -4,16 +4,17 @@ import { toast } from "react-toastify";
 import { CardBody } from "reactstrap";
 
 import "./styles.css";
+import moment from "moment";
 import ModalDelete from "./ModalDelete";
 import ModalCreate from "./ModalCreate";
-import ModalConfirmated from "./ModalConfirmatedPlayers";
+import { FaUserCheck } from "react-icons/fa";
 import Table from "../../../components/Table";
 import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
+import ModalConfirmated from "./ModalConfirmatedPlayers";
 import SponsorActions from "../../../store/sponsor/sponsor.actions";
 import EditButton from "../../../components/ActionButtons/EditButton";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton";
-import { FaUserCheck } from "react-icons/fa";
 
 const MatchList = ({
   data,
@@ -79,21 +80,31 @@ const MatchList = ({
           isLoading={sponsor.loading}
           data={data}
           columns={[
-            { name: "Data", attribute: "date" },
+            {
+              name: "Data",
+              render: ({ data }) => moment(data.date).format("DD/MM/YYYY")
+            },
             {
               name: "Times",
               render: ({ data }) => `${data.team_a} X ${data.team_b}`
             },
-            {
-              name: "Início",
-              attribute: "time_start"
-            },
-            {
-              name: "Término",
-              attribute: "time_end"
-            },
             { name: "Pontuação", attribute: "score_type" },
             { name: "Status", attribute: "status" },
+            {
+              name: "Jogadores Confirmados",
+              render: ({ data }) => {
+                return (
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <ConfirmatedButton
+                      onClick={() => {
+                        setCurrentData(data);
+                        setModalConfirmatedOpened(true);
+                      }}
+                    />
+                  </div>
+                );
+              }
+            },
             {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (
@@ -103,7 +114,6 @@ const MatchList = ({
                   setCurrentData={setCurrentData}
                   setModalDeleteOpened={setModalDeleteOpened}
                   setModalCreateOpened={setModalCreateOpened}
-                  setModalConfirmatedOpened={setModalConfirmatedOpened}
                 />
               )
             }
@@ -149,26 +159,19 @@ const ActionColumn = ({
   data,
   history,
   setCurrentData,
-  setModalDeleteOpened,
-  setModalConfirmatedOpened
+  setModalDeleteOpened
 }) => (
   <div className="action-column">
-    <ConfirmatedButton
+    <EditButton
       onClick={() => {
         setCurrentData(data);
-        setModalConfirmatedOpened(true);
+        history.replace("/organizer/matches/details", { data });
       }}
     />
     <DeleteButton
       onClick={() => {
         setCurrentData(data);
         setModalDeleteOpened(true);
-      }}
-    />
-    <EditButton
-      onClick={() => {
-        setCurrentData(data);
-        history.replace("/organizer/matches/details", { data });
       }}
     />
   </div>

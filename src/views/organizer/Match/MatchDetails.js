@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { CardBody, Button, Col, Input, Row } from "reactstrap";
+import { CardBody, Button, Col, Input, Row, Card } from "reactstrap";
 
 import "./styles.css";
 import Escalation from "./Escalation";
@@ -76,25 +76,23 @@ const MatchDetails = ({ setCurrentData, currentData, history }) => {
 
   return (
     <>
-      <StepOne
-        setData={handleSetData}
-        setEscalation={setEscalation}
-        currentData={data}
-        setPlayers={setPlayers}
-      />
-      <Container className="escalation-super-container">
-        <CardHeader title="2º Passo - Escalação" />
-        <CardBody>
-          <Escalation
-            data={data}
-            escalation={escalation}
-            setModalOpened={setModalOpened}
-            setCurrentClimb={setCurrentClimb}
-            removePlayer={removePlayer}
-          />
-        </CardBody>
+      <Container className="super-container">
+        <StepThree setModalStartMatchOpened={setModalStartMatchOpened} />
+        <StepOne
+          setData={handleSetData}
+          setEscalation={setEscalation}
+          currentData={data}
+          setPlayers={setPlayers}
+        />
+        <StepTwo
+          data={data}
+          escalation={escalation}
+          setModalOpened={setModalOpened}
+          setCurrentClimb={setCurrentClimb}
+          removePlayer={removePlayer}
+        />
       </Container>
-      <StepThree setModalStartMatchOpened={setModalStartMatchOpened} />
+
       {modalOpened && (
         <Modal
           data={players}
@@ -118,7 +116,7 @@ const MatchDetails = ({ setCurrentData, currentData, history }) => {
 const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
   return (
     !currentData !== undefined && (
-      <Container loading={currentData === undefined}>
+      <Card loading={currentData === undefined}>
         <CardHeader title="1º Passo - Detalhes da Partida" />
         <CardBody>
           <div className="input-container ">
@@ -181,7 +179,7 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
                   <option value="PARDTIDA_EXTERNA">PARDTIDA EXTERNA</option>
                 </select>
               </Col>
-              <Col md="2">
+              <Col md="3">
                 <label>MODALIDADE</label>
                 <select
                   type="select"
@@ -198,7 +196,7 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
                   <option value="2_TEMPO">2 TEMPOS</option>
                 </select>
               </Col>
-              <Col md="2">
+              <Col md="3">
                 <label>DATA</label>
                 <Input
                   type="date"
@@ -210,31 +208,7 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
                   }}
                 />
               </Col>
-              <Col md="2">
-                <label>HORÁRIO DE INÍCIO</label>
-                <Input
-                  type="time"
-                  value={currentData.time_start}
-                  onChange={v => {
-                    setData({
-                      time_start: v.target.value
-                    });
-                  }}
-                />
-              </Col>
-              <Col md="2">
-                <label>HORÁRIO FINAL</label>
-                <Input
-                  type="time"
-                  value={currentData.time_end}
-                  onChange={v => {
-                    setData({
-                      time_end: v.target.value
-                    });
-                  }}
-                />
-              </Col>
-              <Col md="2">
+              <Col md="3">
                 <label>DURAÇÃO (MINUTOS)</label>
                 <Input
                   type="number"
@@ -247,7 +221,7 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
                   }}
                 />
               </Col>
-              <Col md="2">
+              <Col md="3">
                 <label>JOGADORES POR TIME</label>
                 <Input
                   type="number"
@@ -269,15 +243,36 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
             </Row>
           </div>
         </CardBody>
-      </Container>
+      </Card>
     )
   );
 };
 
+const StepTwo = ({
+  data,
+  escalation,
+  setModalOpened,
+  setCurrentClimb,
+  removePlayer
+}) => {
+  return (
+    <Card>
+      <CardHeader title="2º Passo - Escalação" />
+      <CardBody>
+        <Escalation
+          data={data}
+          escalation={escalation}
+          setModalOpened={setModalOpened}
+          setCurrentClimb={setCurrentClimb}
+          removePlayer={removePlayer}
+        />
+      </CardBody>
+    </Card>
+  );
+};
 const StepThree = ({ setModalStartMatchOpened }) => {
   return (
-    <Container className="step-three-container">
-      <CardHeader title="3º Passo - Opções" />
+    <Card className="step-three-container">
       <CardBody>
         <div className="step-three-btn-container">
           <button className="btn btn-save">
@@ -297,7 +292,7 @@ const StepThree = ({ setModalStartMatchOpened }) => {
           </button>
         </div>
       </CardBody>
-    </Container>
+    </Card>
   );
 };
 

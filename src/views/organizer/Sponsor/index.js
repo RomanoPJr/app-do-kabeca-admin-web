@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { CardBody } from "reactstrap";
-import moment from 'moment';
+import moment from "moment";
 
 import ModalDelete from "./ModalDelete";
 import ModalCreate from "./ModalCreate";
@@ -19,7 +19,7 @@ const Sponsor = ({
   createAction,
   updateAction,
   removeAction,
-  clearAction,
+  clearAction
 }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [currentData, setCurrentData] = useState({});
@@ -76,16 +76,20 @@ const Sponsor = ({
             { name: "Patrocinador", attribute: "name" },
             {
               name: "Valor",
-              render: ({ data }) => <p>R$ {data.value}</p>,
+              render: ({ data }) => <p>R$ {data.value}</p>
             },
             { name: "Status", attribute: "status" },
-            { name: "Início do Patrocínio", render: ({ data }) => moment(data.created_at).format('DD/MM/YYYY') },
             {
-              name: "Tempo de Patrocínio", render: ({ data }) => {
+              name: "Início do Patrocínio",
+              render: ({ data }) => moment(data.created_at).format("DD/MM/YYYY")
+            },
+            {
+              name: "Tempo de Patrocínio",
+              render: ({ data }) => {
                 if (data.sponsorship_time === 1) {
-                  return `${data.sponsorship_time} Mês`
+                  return `${data.sponsorship_time} Mês`;
                 }
-                return `${data.sponsorship_time} Meses`
+                return `${data.sponsorship_time} Meses`;
               }
             },
             {
@@ -97,8 +101,8 @@ const Sponsor = ({
                   setModalDeleteOpened={setModalDeleteOpened}
                   setModalCreateOpened={setModalCreateOpened}
                 />
-              ),
-            },
+              )
+            }
           ]}
         />
       </CardBody>
@@ -128,34 +132,34 @@ const ActionColumn = ({
   data,
   setCurrentData,
   setModalDeleteOpened,
-  setModalCreateOpened,
+  setModalCreateOpened
 }) => (
-    <div className="action-column">
-      <DeleteButton
-        onClick={() => {
-          setCurrentData(data);
-          setModalDeleteOpened(true);
-        }}
-      />
-      <EditButton
-        onClick={() => {
-          setCurrentData(data);
-          setModalCreateOpened(true);
-        }}
-      />
-    </div>
-  );
+  <div className="action-column">
+    <EditButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalCreateOpened(true);
+      }}
+    />
+    <DeleteButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalDeleteOpened(true);
+      }}
+    />
+  </div>
+);
 
-const mapStateToProps = (state) => ({
-  sponsor: state.sponsor,
+const mapStateToProps = state => ({
+  sponsor: state.sponsor
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   clearAction: () => dispatch(SponsorActions.clear()),
-  fetchAction: (payload) => dispatch(SponsorActions.fetch(payload)),
-  createAction: (payload) => dispatch(SponsorActions.create(payload)),
-  updateAction: (payload) => dispatch(SponsorActions.update(payload)),
-  removeAction: (payload) => dispatch(SponsorActions.remove(payload)),
+  fetchAction: payload => dispatch(SponsorActions.fetch(payload)),
+  createAction: payload => dispatch(SponsorActions.create(payload)),
+  updateAction: payload => dispatch(SponsorActions.update(payload)),
+  removeAction: payload => dispatch(SponsorActions.remove(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sponsor);
