@@ -3,7 +3,13 @@ import moment from "moment";
 
 import "./styles.css";
 import Modal from "../../../components/Modal";
-import { FaUserCheck, FaUserClock } from "react-icons/fa";
+import {
+  FaUserCheck,
+  FaUserClock,
+  FaShare,
+  FaPaperPlane,
+  FaShareAlt
+} from "react-icons/fa";
 import { Button } from "reactstrap";
 
 const ModalConfirmatedPlayers = ({ data, opened, setOpened }) => {
@@ -16,7 +22,7 @@ const ModalConfirmatedPlayers = ({ data, opened, setOpened }) => {
           opened={opened}
           setOpened={setOpened}
         >
-          <div>
+          <div style={{ overflowY: "scroll", height: 400, paddingRight: 8 }}>
             {data.players.map(player => (
               <Card player={player} />
             ))}
@@ -26,10 +32,11 @@ const ModalConfirmatedPlayers = ({ data, opened, setOpened }) => {
               className="button-close-modal"
               onClick={() => setOpened(!opened)}
             >
-              Fechar
+              FECHAR
             </Button>
             <Button type="submit" color="primary">
-              Compartilhar Lista
+              COMPARTILHAR
+              <FaShareAlt style={{ marginLeft: 10 }} />
             </Button>
           </div>
         </Modal>

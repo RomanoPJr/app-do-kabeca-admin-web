@@ -13,7 +13,7 @@ const CardHeader = ({ setModalCreateOpened, title, btnText, btnIcon }) => {
             onClick={() => setModalCreateOpened(true)}
           >
             {btnIcon || <FaPlus />}
-            {btnText || "Novo"}
+            {btnText || "NOVO"}
           </Button>
         )}
       </div>

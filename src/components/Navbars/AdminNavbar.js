@@ -11,7 +11,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  UncontrolledDropdown,
+  UncontrolledDropdown
 } from "reactstrap";
 
 import history from "../../history";
@@ -22,7 +22,7 @@ class AdminNavbar extends React.Component {
     this.state = {
       collapseOpen: false,
       modalSearch: false,
-      color: "navbar-transparent",
+      color: "navbar-transparent"
     };
   }
   componentDidMount() {
@@ -34,31 +34,31 @@ class AdminNavbar extends React.Component {
   updateColor = () => {
     if (window.innerWidth < 993 && this.state.collapseOpen) {
       this.setState({
-        color: "bg-white",
+        color: "bg-white"
       });
     } else {
       this.setState({
-        color: "navbar-transparent",
+        color: "navbar-transparent"
       });
     }
   };
   toggleCollapse = () => {
     if (this.state.collapseOpen) {
       this.setState({
-        color: "navbar-transparent",
+        color: "navbar-transparent"
       });
     } else {
       this.setState({
-        color: "bg-white",
+        color: "bg-white"
       });
     }
     this.setState({
-      collapseOpen: !this.state.collapseOpen,
+      collapseOpen: !this.state.collapseOpen
     });
   };
   toggleModalSearch = () => {
     this.setState({
-      modalSearch: !this.state.modalSearch,
+      modalSearch: !this.state.modalSearch
     });
   };
 
@@ -74,7 +74,7 @@ class AdminNavbar extends React.Component {
             <div className="navbar-wrapper">
               <div
                 className={classNames("navbar-toggle d-inline", {
-                  toggled: this.props.sidebarOpened,
+                  toggled: this.props.sidebarOpened
                 })}
               >
                 <button
@@ -87,7 +87,7 @@ class AdminNavbar extends React.Component {
                   <span className="navbar-toggler-bar bar3" />
                 </button>
               </div>
-              <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
+              <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
                 {this.props.brandText}
               </NavbarBrand>
             </div>
@@ -107,14 +107,14 @@ class AdminNavbar extends React.Component {
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar style={{ alignItems: "center" }}>
-                <p>Olá, {session && session.name}</p>
+                <p>OLÁ, {session && session.name}</p>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
                     color="default"
                     data-toggle="dropdown"
                     nav
-                    onClick={(e) => e.preventDefault()}
+                    onClick={e => e.preventDefault()}
                   >
                     <div className="photo">
                       <img alt="..." src={require("assets/img/anime3.png")} />
@@ -146,10 +146,10 @@ class AdminNavbar extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 
-const mapStateToProps = (state) => ({
-  session: state.session.data,
+const mapStateToProps = state => ({
+  session: state.session.data
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

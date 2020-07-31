@@ -117,7 +117,7 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
   return (
     !currentData !== undefined && (
       <Card loading={currentData === undefined}>
-        <CardHeader title="1º Passo - Detalhes da Partida" />
+        <CardHeader title="1º PASSO - DETALHES DA PARTIDA" />
         <CardBody>
           <div className="input-container ">
             <Row>
@@ -240,6 +240,15 @@ const StepOne = ({ currentData, setData, setEscalation, setPlayers }) => {
                   }}
                 />
               </Col>
+              <Col
+                md="12"
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <button className="btn btn-save">
+                  <FaSave style={{ marginRight: 10 }} />
+                  {`SALVAR`}
+                </button>
+              </Col>
             </Row>
           </div>
         </CardBody>
@@ -257,7 +266,7 @@ const StepTwo = ({
 }) => {
   return (
     <Card>
-      <CardHeader title="2º Passo - Escalação" />
+      <CardHeader title="2º PASSO - ESCALAÇÃO" />
       <CardBody>
         <Escalation
           data={data}
@@ -275,14 +284,7 @@ const StepThree = ({ setModalStartMatchOpened }) => {
     <Card className="step-three-container">
       <CardBody>
         <div className="step-three-btn-container">
-          <button className="btn btn-save">
-            <FaSave />
-            {`SALVAR`}
-          </button>
-          <button className="btn btn-invite-players">
-            <FaPaperPlane />
-            {`CONVIDAR JOGADORES`}
-          </button>
+          <h4 class="card-title">DETALHES DE PARTIDA</h4>
           <button
             className="btn btn-start"
             onClick={() => setModalStartMatchOpened(true)}
@@ -293,21 +295,6 @@ const StepThree = ({ setModalStartMatchOpened }) => {
         </div>
       </CardBody>
     </Card>
-  );
-};
-
-const Footer = ({ onClickBack, onClickNext }) => {
-  return (
-    <div className="btn-container" onClick={onClickBack}>
-      <Button className="btn btn-primary">
-        <FaArrowLeft />
-        {` Anterior`}
-      </Button>
-      <Button className="btn btn-primary" onClick={onClickNext}>
-        {`Próximo `}
-        <FaArrowRight />
-      </Button>
-    </div>
   );
 };
 

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { CardBody } from "reactstrap";
+import { CardBody, Button, Tooltip } from "reactstrap";
 
 import "./styles.css";
 import moment from "moment";
 import ModalDelete from "./ModalDelete";
 import ModalCreate from "./ModalCreate";
-import { FaUserCheck } from "react-icons/fa";
+import {
+  FaUserCheck,
+  FaShareAlt,
+  FaPaperPlane,
+  FaListOl
+} from "react-icons/fa";
 import Table from "../../../components/Table";
 import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
@@ -32,6 +37,11 @@ const MatchList = ({
   const [modalCreateOpened, setModalCreateOpened] = useState();
   const [modalDeleteOpened, setModalDeleteOpened] = useState();
   const [modalConfirmatedOpened, setModalConfirmatedOpened] = useState();
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipShareOpen, setShareTooltipOpen] = useState(false);
+
+  const toggle = () => setTooltipOpen(!tooltipOpen);
+  const toggleShare = () => setShareTooltipOpen(!tooltipShareOpen);
 
   useEffect(() => {
     fetchAction({ pageNumber });
@@ -72,7 +82,7 @@ const MatchList = ({
     <Container loading={sponsor.loading}>
       <CardHeader
         setModalCreateOpened={setModalCreateOpened}
-        title="Partidas"
+        title="PARTIDAS"
       />
       <CardBody>
         <Table
@@ -91,29 +101,19 @@ const MatchList = ({
             { name: "Pontuação", attribute: "score_type" },
             { name: "Status", attribute: "status" },
             {
-              name: "Jogadores Confirmados",
-              render: ({ data }) => {
-                return (
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <ConfirmatedButton
-                      onClick={() => {
-                        setCurrentData(data);
-                        setModalConfirmatedOpened(true);
-                      }}
-                    />
-                  </div>
-                );
-              }
-            },
-            {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (
                 <ActionColumn
                   data={data}
+                  toggle={toggle}
                   history={history}
+                  toggleShare={toggleShare}
+                  tooltipOpen={tooltipOpen}
                   setCurrentData={setCurrentData}
+                  tooltipShareOpen={tooltipShareOpen}
                   setModalDeleteOpened={setModalDeleteOpened}
                   setModalCreateOpened={setModalCreateOpened}
+                  setModalConfirmatedOpened={setModalConfirmatedOpened}
                 />
               )
             }
@@ -149,19 +149,50 @@ const MatchList = ({
   );
 };
 
-const ConfirmatedButton = ({ onClick }) => (
-  <button className="btn btn-icon btn-confirmated" onClick={onClick}>
-    <FaUserCheck />
-  </button>
-);
-
 const ActionColumn = ({
   data,
+  toggle,
   history,
+  tooltipOpen,
+  toggleShare,
   setCurrentData,
-  setModalDeleteOpened
+  tooltipShareOpen,
+  setModalDeleteOpened,
+  setModalConfirmatedOpened
 }) => (
   <div className="action-column">
+    <Tooltip
+      placement="top"
+      target="btn-confirmated"
+      toggle={toggleShare}
+      isOpen={tooltipShareOpen}
+    >
+      LISTA DE CONFIRMAÇÕES
+    </Tooltip>
+    <Button
+      id="btn-confirmated"
+      className="btn-icon btn-confirmated"
+      onClick={() => {
+        setCurrentData(data);
+        setModalConfirmatedOpened(true);
+      }}
+    >
+      <FaListOl />
+    </Button>
+    <Tooltip
+      placement="top"
+      target="btn-invite"
+      toggle={toggle}
+      isOpen={tooltipOpen}
+    >
+      CONVIDAR JOGADORES
+    </Tooltip>
+    <Button id="btn-invite" className="btn-icon btn-invite" onClick={() => {}}>
+      <FaPaperPlane />
+    </Button>
+    {/* <Button id="btn-share" className="btn-icon btn-share">
+      <FaShareAlt />
+    </Button> */}
     <EditButton
       onClick={() => {
         setCurrentData(data);

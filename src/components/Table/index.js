@@ -74,7 +74,7 @@ const TableContent = ({ columns, data, setPageNumber }) => (
         onClick={() => handlePreviousPage(data, setPageNumber)}
       >
         <FaArrowLeft />
-        Anterior
+        ANTERIOR
       </button>
       <p style={{ margin: 20 }}>
         {data.pageNumber} / {data.pageTotal}
@@ -83,7 +83,7 @@ const TableContent = ({ columns, data, setPageNumber }) => (
         className="btn-fill btn btn-info"
         onClick={() => handleNextPage(data, setPageNumber)}
       >
-        Próximo
+        PRÓXIMO
         <FaArrowRight />
       </button>
     </div>
