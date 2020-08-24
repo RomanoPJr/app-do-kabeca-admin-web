@@ -16,16 +16,16 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
 
   useEffect(() => {
     if (data) {
-      setId(data.id)
-      setName(data.name)
-      setPhone(formatPhone(data.phone))
-      setStatus(data.status)
-      setPlanType(data.Club.plan_type)
-      setCity(data.Club && data.Club.city)
-      setState(data.Club && data.Club.state)
-      setClubName(data.Club && data.Club.name)
+      setId(data.id);
+      setName(data.name);
+      setPhone(formatPhone(data.phone));
+      setStatus(data.status);
+      setPlanType(data.Club.plan_type);
+      setCity(data.Club && data.Club.city);
+      setState(data.Club && data.Club.state);
+      setClubName(data.Club && data.Club.name);
     }
-  }, [data])
+  }, [data]);
 
   return (
     <>
@@ -37,7 +37,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) =>
+            onSubmit={evt =>
               handleSubmitForm(evt, {
                 id,
                 status,
@@ -53,7 +53,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   disabled={true}
                   placeholder="Informe o nome"
                   type="text"
-                  defaultValue={name || ''}
+                  defaultValue={name || ""}
                 />
               </Col>
               <Col md="6">
@@ -63,7 +63,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   autoComplete="off"
                   placeholder="Informe o Telefone"
                   type="text"
-                  defaultValue={phone || ''}
+                  defaultValue={phone || ""}
                 />
               </Col>
               <Col md="12">
@@ -71,24 +71,16 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                 <Input
                   disabled={true}
                   type="text"
-                  defaultValue={club_name || ''}
+                  defaultValue={club_name || ""}
                 />
               </Col>
               <Col md="6">
                 <label>Cidade</label>
-                <Input
-                  disabled={true}
-                  type="text"
-                  defaultValue={city || ''}
-                />
+                <Input disabled={true} type="text" defaultValue={city || ""} />
               </Col>
               <Col md="6">
                 <label>Estado</label>
-                <Input
-                  disabled={true}
-                  type="text"
-                  defaultValue={state || ''}
-                />
+                <Input disabled={true} type="text" defaultValue={state || ""} />
               </Col>
               {data.id && data.Club && (
                 <Col md="6">
@@ -96,10 +88,10 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   <select
                     name="select"
                     className="form-control"
-                    onChange={(event) =>
+                    onChange={event =>
                       setPlanType(event.target.value.toUpperCase())
                     }
-                    value={plan_type || '30'}
+                    value={plan_type || "30"}
                   >
                     <option value="30">30 JOGADORES</option>
                     <option value="60">60 JOGADORES</option>
@@ -111,10 +103,10 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                 <select
                   name="select"
                   className="form-control"
-                  onChange={(event) =>
+                  onChange={event =>
                     setStatus(event.target.value.toUpperCase())
                   }
-                  value={status || 'TESTE'}
+                  value={status || "TESTE"}
                 >
                   <option value="ATIVO">ATIVO</option>
                   <option value="INATIVO">INATIVO</option>
@@ -124,10 +116,10 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>
-                Fechar
+                FECHAR
               </Button>
               <Button type="submit" color="primary">
-                Salvar
+                SALVAR
               </Button>
             </div>
           </Form>

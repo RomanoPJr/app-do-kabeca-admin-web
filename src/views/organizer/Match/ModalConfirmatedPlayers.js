@@ -29,7 +29,7 @@ const ModalConfirmatedPlayers = ({ data, opened, setOpened }) => {
           </div>
           <div className="custom-modal-footer">
             <Button
-              className="button-close-modal"
+              className="btn-close-modal"
               onClick={() => setOpened(!opened)}
             >
               FECHAR

@@ -1,0 +1,30 @@
+.options-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.option-card {
+  display: flex;
+  border-radius: 10px;
+  padding: 15px;
+  align-items: center;
+  border-style: solid;
+  border-width: 2px;
+  margin-bottom: 15px;
+  border-color: rgb(211, 211, 211);
+  cursor: pointer;
+}
+
+.option-text {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: rgb(141, 140, 140) !important;
+}
+
+.option-icon {
+  -webkit-transform: rotate(-45deg);
+  margin-right: 25px;
+  font-size: 30px;
+  color: rgb(141, 140, 140);
+}

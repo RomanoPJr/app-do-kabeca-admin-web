@@ -80,11 +80,11 @@ const ModalCreate = ({ data, opened, loading, setOpened, confirmAction }) => {
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>
-                Fechar
+                FECHAR
               </Button>
               <Button type="submit" color="primary" disabled={loading}>
                 {loading && <LoadingSpinner />}
-                Salvar
+                SALVAR
               </Button>
             </div>
           </Form>

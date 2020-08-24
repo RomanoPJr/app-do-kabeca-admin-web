@@ -1,17 +1,11 @@
 import React from "react";
 
 import "./styles.css";
-import Modal from "../../../components/Modal";
+import Modal from "../../../../../../components/Modal";
 import { Button, Badge } from "reactstrap";
 import { FaCheck } from "react-icons/fa";
 
-const ModalEvents = ({
-  events,
-  opened,
-  setOpened,
-  handleSelectEvent,
-  currentPlayerEvent
-}) => {
+const ModalEvents = ({ events = [], opened, setOpened, handleEventAction }) => {
   return (
     <>
       {opened && (
@@ -26,18 +20,17 @@ const ModalEvents = ({
               <Card
                 event={event}
                 key={`event-${i}`}
-                handleSelectEvent={handleSelectEvent}
-                currentPlayerEvent={currentPlayerEvent}
+                handleEventAction={handleEventAction}
                 setOpened={setOpened}
               />
             ))}
           </div>
           <div className="custom-modal-footer">
             <Button
-              className="button-close-modal"
+              className="btn-close-modal"
               onClick={() => setOpened(!opened)}
             >
-              Fechar
+              FECHAR
             </Button>
           </div>
         </Modal>
@@ -46,7 +39,7 @@ const ModalEvents = ({
   );
 };
 
-const Card = ({ event, setOpened, handleSelectEvent, currentPlayerEvent }) => {
+const Card = ({ event, setOpened, handleEventAction }) => {
   return (
     <div className="user-card">
       <div className="user-card-container1">
@@ -65,8 +58,7 @@ const Card = ({ event, setOpened, handleSelectEvent, currentPlayerEvent }) => {
           <button
             className="btn btn-icon confirm-button"
             onClick={() => {
-              handleSelectEvent({ event, player: currentPlayerEvent });
-              setOpened(false);
+              handleEventAction(event);
             }}
           >
             <FaCheck />

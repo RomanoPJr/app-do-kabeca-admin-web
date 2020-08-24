@@ -22,6 +22,7 @@ import Admins from "./views/admin/Admins";
 import Organizer from "./views/admin/Organizer";
 import SuggestionEvent from "./views/admin/SuggestionEvent";
 import SuggestionStatute from "./views/admin/SuggestionStatute";
+import MatchDetails from "./views/organizer/Match/MatchDetails/index";
 
 var admin = [
   {
@@ -67,6 +68,14 @@ var organizer = [
     icon: <FaFutbol size={18} />,
     component: Match,
     layout: "/organizer"
+  },
+  {
+    path: "/matches/:id",
+    name: "Partida",
+    icon: <FaFutbol size={18} />,
+    component: MatchDetails,
+    layout: "/organizer",
+    showOnMenu: false
   },
   {
     path: "/players",

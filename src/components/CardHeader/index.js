@@ -2,9 +2,15 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { Button, CardHeader as Header, CardTitle } from "reactstrap";
 
-const CardHeader = ({ setModalCreateOpened, title, btnText, btnIcon }) => {
+const CardHeader = ({
+  setModalCreateOpened,
+  title,
+  btnText,
+  btnIcon,
+  style
+}) => {
   return (
-    <Header className="card-header-with-button">
+    <Header className="card-header-with-button" style={style}>
       <CardTitle tag="h4">{title}</CardTitle>
       <div>
         {setModalCreateOpened && (

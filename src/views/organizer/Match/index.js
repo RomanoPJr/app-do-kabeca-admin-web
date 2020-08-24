@@ -1,177 +1,188 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
+import { connect } from "react-redux";
+import { CardBody, Tooltip, Button } from "reactstrap";
+import { FaListOl, FaPaperPlane } from "react-icons/fa";
+
 import "./styles.css";
+import ModalCreate from "./ModalCreate.js";
+import ModalDelete from "./ModalDeleteEvent.js";
+import Container from "../../../components/Container";
+import Table from "../../../components/Table/index.js";
+import MatchActions from "../../../store/match/match.actions.js";
+import CardHeader from "../../../components/CardHeader/index.js";
+import ModalConfirmatedPlayers from "./ModalConfirmatedPlayers.js";
+import EditButton from "../../../components/ActionButtons/EditButton.js";
+import DeleteButton from "../../../components/ActionButtons/DeleteButton.js";
 
-import MatchList from "./MatchList";
-import MatchDetails from "./MatchDetails";
-import MatchStarted from "./MatchStarted";
-
-const Match = ({ match, history }) => {
-  const [route, setRoute] = useState("");
+const Match = ({
+  history,
+  matchDetail,
+  createMatch,
+  removeMatch,
+  fetchMatchList
+}) => {
   const [currentData, setCurrentData] = useState();
-  const [matchEvents, setMatchEvents] = useState({ data: [] });
-
-  const data = {
-    data: [
-      {
-        id: 1,
-        date: "2020-01-01",
-        team_a: "TIME A",
-        team_b: "TIME B",
-        type: "PARTIDA INTERNA",
-        duration: 30,
-        modality: "2 TEMPOS",
-        score_type: "RANKEADA",
-        players_quantity: 5,
-        status: "PRÉ-PARTIDA",
-        players: [
-          {
-            id: 1,
-            name: "Caio Deambrosio",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 2,
-            name: "Ana Luiza",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 3,
-            name: "Jorge",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 4,
-            name: "Luis",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 5,
-            name: "Kleber",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 6,
-            name: "João",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 7,
-            name: "Fernando",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 8,
-            name: "Henrique",
-            matchConfimation: {
-              createdAt: "2020-06-20 11:20:12"
-            }
-          },
-          {
-            id: 9,
-            name: "Carlos"
-          },
-          {
-            id: 10,
-            name: "Junior"
-          }
-        ]
-      }
-    ]
-  };
-
-  const events = {
-    data: [
-      {
-        id: 1,
-        description: "CANETA",
-        value: 1,
-        updatedAt: "2020-07-29T22:29:28.532Z"
-      },
-      {
-        id: 2,
-        description: "CHAPÉU",
-        value: 1,
-        updatedAt: "2020-07-29T22:29:40.054Z"
-      },
-      {
-        id: 3,
-        description: "DRIBLE",
-        value: 1,
-        updatedAt: "2020-07-29T22:29:46.486Z"
-      },
-      {
-        id: 3,
-        description: "CARTÃO VERMELHO",
-        value: -2,
-        updatedAt: "2020-07-29T22:29:46.486Z"
-      }
-    ]
-  };
-
-  const handleSelectEvent = ({ event, player }) => {
-    const newEvent = {
-      event_id: event.id,
-      user_id: player.id,
-      event_value: event.value,
-      user_team: player.team,
-      user_team_name: player.teamName,
-      event_description: event.description
-    };
-
-    setMatchEvents({
-      data: [...matchEvents.data, { ...newEvent }]
-    });
-  };
+  const [pageNumber, setPageNumber] = useState(1);
+  const [modalCreateOpened, setModalCreateOpened] = useState();
+  const [modalDeleteOpened, setModalDeleteOpened] = useState();
+  const [modalConfirmatedOpened, setModalConfirmatedOpened] = useState();
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipShareOpen, setShareTooltipOpen] = useState(false);
 
   useEffect(() => {
-    setRoute(window.location.pathname);
-  }, [window.location.pathname]);
+    fetchMatchList({
+      pageNumber
+    });
+  }, []);
 
-  switch (route) {
-    case "/organizer/matches":
-      return (
-        <MatchList
-          data={data}
-          history={history}
-          currentData={currentData}
-          setCurrentData={setCurrentData}
+  const toggle = () => setTooltipOpen(!tooltipOpen);
+  const toggleShare = () => setShareTooltipOpen(!tooltipShareOpen);
+
+  const handleSaveAction = async data => {
+    await createMatch(data);
+  };
+
+  const handleDelete = async id => {
+    await removeMatch(id);
+    await fetchMatchList({
+      pageNumber
+    });
+    setModalDeleteOpened(false);
+  };
+
+  return (
+    <Container>
+      <CardHeader
+        setModalCreateOpened={setModalCreateOpened}
+        title="PARTIDAS"
+      />
+      <CardBody>
+        <Table
+          setPageNumber={setPageNumber}
+          isLoading={matchDetail.loading}
+          data={matchDetail.list}
+          columns={[
+            {
+              name: "Data",
+              render: ({ data }) => moment(data.date).format("DD/MM/YYYY")
+            },
+            {
+              name: "Times",
+              render: ({ data }) => `${data.team_a} X ${data.team_b}`
+            },
+            { name: "Pontuação", attribute: "score_type" },
+            {
+              name: <b className="action-column">Acões</b>,
+              render: ({ data }) => (
+                <ActionColumn
+                  data={data}
+                  toggle={toggle}
+                  history={history}
+                  toggleShare={toggleShare}
+                  tooltipOpen={tooltipOpen}
+                  setCurrentData={setCurrentData}
+                  tooltipShareOpen={tooltipShareOpen}
+                  setModalDeleteOpened={setModalDeleteOpened}
+                  setModalCreateOpened={setModalCreateOpened}
+                  setModalConfirmatedOpened={setModalConfirmatedOpened}
+                />
+              )
+            }
+          ]}
         />
-      );
-    case "/organizer/matches/details":
-      return (
-        <MatchDetails
-          history={history}
-          currentData={currentData}
-          setCurrentData={setCurrentData}
-        />
-      );
-    case "/organizer/matches/details/started":
-      return (
-        <MatchStarted
+      </CardBody>
+      {modalConfirmatedOpened && (
+        <ModalConfirmatedPlayers
           data={currentData}
-          events={events.data}
-          matchEvents={matchEvents}
-          handleSelectEvent={handleSelectEvent}
+          opened={modalConfirmatedOpened}
+          setOpened={setModalConfirmatedOpened}
         />
-      );
-
-    default:
-      return <></>;
-  }
+      )}
+      {modalCreateOpened && (
+        <ModalCreate
+          data={currentData}
+          opened={modalCreateOpened}
+          setOpened={setModalCreateOpened}
+          confirmAction={handleSaveAction}
+        />
+      )}
+      {modalDeleteOpened && (
+        <ModalDelete
+          data={currentData}
+          loading={matchDetail.loading}
+          opened={modalDeleteOpened}
+          setOpened={setModalDeleteOpened}
+          confirmAction={handleDelete}
+        />
+      )}
+    </Container>
+  );
 };
 
-export default Match;
+const ActionColumn = ({
+  data,
+  toggle,
+  history,
+  tooltipOpen,
+  toggleShare,
+  setCurrentData,
+  tooltipShareOpen,
+  setModalDeleteOpened,
+  setModalConfirmatedOpened
+}) => (
+  <div className="action-column">
+    <Tooltip
+      placement="top"
+      target="btn-confirmated"
+      toggle={toggleShare}
+      isOpen={tooltipShareOpen}
+    >
+      LISTA DE CONFIRMAÇÕES
+    </Tooltip>
+    <Button
+      id="btn-confirmated"
+      className="btn-icon btn-confirmated"
+      onClick={() => {
+        setCurrentData(data);
+        setModalConfirmatedOpened(true);
+      }}
+    >
+      <FaListOl />
+    </Button>
+    <Tooltip
+      placement="top"
+      target="btn-invite"
+      toggle={toggle}
+      isOpen={tooltipOpen}
+    >
+      CONVIDAR JOGADORES
+    </Tooltip>
+    <Button id="btn-invite" className="btn-icon btn-invite" onClick={() => {}}>
+      <FaPaperPlane />
+    </Button>
+    <EditButton
+      onClick={() => {
+        history.push(`/organizer/matches/${data.id}`);
+      }}
+    />
+    <DeleteButton
+      onClick={() => {
+        setCurrentData(data);
+        setModalDeleteOpened(true);
+      }}
+    />
+  </div>
+);
+
+const mapStateToProps = state => ({
+  matchDetail: state.match
+});
+
+const mapDispatchToProps = dispatch => ({
+  removeMatch: id => MatchActions.remove(id),
+  createMatch: payload => MatchActions.create(payload),
+  fetchMatchList: payload => dispatch(MatchActions.fetchList(payload))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Match);

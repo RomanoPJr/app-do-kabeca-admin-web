@@ -18,7 +18,7 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
       setRoutes(admin);
     } else if (session.data && session.data.type === "ORGANIZER") {
       setRoutes(organizer);
-      fetchClub()
+      fetchClub();
     }
   }, [session.data]);
 
@@ -41,6 +41,7 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
     return routes.map((prop, key) => {
       return (
         <Route
+          exact
           path={prop.layout + prop.path}
           component={prop.component}
           key={key}
@@ -77,13 +78,13 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   fetchSession: () => dispatch(SessionActions.fetch(dispatch)),
-  fetchClub: () => dispatch(ClubActions.fetch(dispatch)),
+  fetchClub: () => dispatch(ClubActions.fetch(dispatch))
 });
 
-const mapStateToProps = (state) => ({
-  session: state.session,
+const mapStateToProps = state => ({
+  session: state.session
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

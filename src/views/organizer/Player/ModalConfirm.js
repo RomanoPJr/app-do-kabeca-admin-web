@@ -23,7 +23,7 @@ const ModalCreate = ({ action, loading, opened, setOpened }) => {
         </p>
         <div className="custom-modal-footer">
           <Button color="secondary" onClick={() => setOpened(!opened)}>
-            Fechar
+            FECHAR
           </Button>
           <Button
             type="submit"
@@ -32,7 +32,7 @@ const ModalCreate = ({ action, loading, opened, setOpened }) => {
             onClick={action}
           >
             {loading && <LoadingSpinner />}
-            Salvar
+            SALVAR
           </Button>
         </div>
       </Modal>

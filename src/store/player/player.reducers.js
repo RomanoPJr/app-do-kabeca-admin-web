@@ -1,122 +1,123 @@
-import {
-  FETCH_REQUEST,
-  FETCH_SUCCESS,
-  FETCH_FAILURE,
-  CREATE_REQUEST,
-  CREATE_SUCCESS,
-  CREATE_FAILURE,
-  DELETE_REQUEST,
-  DELETE_SUCCESS,
-  DELETE_FAILURE,
-  UPDATE_REQUEST,
-  UPDATE_SUCCESS,
-  UPDATE_FAILURE,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILURE,
-  CLEAR_STORE,
-} from "./player.types";
+import types from "./player.types";
 
 const INITIAL_STATE = {
   loading: false,
   data: [],
-  error: "",
+  error: ""
 };
 
 function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_REQUEST:
+    case types.FETCH_REQUEST:
       return {
         ...state,
-        loading: true,
+        loading: true
       };
-    case FETCH_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        data: action.payload,
-        error: "",
-      };
-    case FETCH_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case CREATE_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case CREATE_SUCCESS:
+    case types.FETCH_SUCCESS:
       return {
         ...state,
         loading: false,
         data: action.payload,
-        error: "",
+        error: ""
       };
-    case CREATE_FAILURE:
+    case types.FETCH_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload
       };
-    case DELETE_REQUEST:
+    case types.FETCH_ALL_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case types.FETCH_ALL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+        error: ""
+      };
+    case types.FETCH_ALL_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case types.CREATE_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case types.CREATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+        error: ""
+      };
+    case types.CREATE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case types.DELETE_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case types.DELETE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: ""
+      };
+    case types.DELETE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case types.UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
+        error: ""
       };
-    case DELETE_SUCCESS:
+    case types.UPDATE_SUCCESS:
       return {
         ...state,
         loading: false,
-        error: "",
+        error: ""
       };
-    case DELETE_FAILURE:
+    case types.UPDATE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload
       };
-    case UPDATE_REQUEST:
+    case types.RESET_PASSWORD_REQUEST:
       return {
         ...state,
         loading: true,
-        error: "",
+        error: ""
       };
-    case UPDATE_SUCCESS:
+    case types.RESET_PASSWORD_SUCCESS:
       return {
         ...state,
         loading: false,
-        error: "",
+        error: ""
       };
-    case UPDATE_FAILURE:
+    case types.RESET_PASSWORD_FAILURE:
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        error: action.payload
       };
-    case RESET_PASSWORD_REQUEST:
+    case types.CLEAR_STORE:
       return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case RESET_PASSWORD_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: "",
-      };
-    case RESET_PASSWORD_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case CLEAR_STORE:
-      return {
-        ...INITIAL_STATE,
+        ...INITIAL_STATE
       };
     default:
       return state;

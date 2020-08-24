@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.sidebar, {
         suppressScrollX: true,
-        suppressScrollY: false,
+        suppressScrollY: false
       });
     }
   }
@@ -49,21 +49,24 @@ class Sidebar extends React.Component {
             </a>
           </div>
           <Nav>
-            {routes.map((prop, key) => (
-              <li className={this.activeRoute(prop.path)} key={key}>
-                <NavLink
-                  to={prop.layout + prop.path}
-                  className="nav-link"
-                  activeClassName="active"
-                  onClick={this.props.toggleSidebar}
-                >
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    {prop.icon}
-                    <div style={{ marginLeft: "8px" }}>{prop.name}</div>
-                  </div>
-                </NavLink>
-              </li>
-            ))}
+            {routes.map(
+              (prop, key) =>
+                prop.showOnMenu !== false && (
+                  <li className={this.activeRoute(prop.path)} key={key}>
+                    <NavLink
+                      to={prop.layout + prop.path}
+                      className="nav-link"
+                      activeClassName="active"
+                      onClick={this.props.toggleSidebar}
+                    >
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        {prop.icon}
+                        <div style={{ marginLeft: "8px" }}>{prop.name}</div>
+                      </div>
+                    </NavLink>
+                  </li>
+                )
+            )}
           </Nav>
         </div>
       </div>
@@ -72,11 +75,11 @@ class Sidebar extends React.Component {
 }
 
 Sidebar.defaultProps = {
-  routes: [{}],
+  routes: [{}]
 };
 
 Sidebar.propTypes = {
-  routes: PropTypes.arrayOf(PropTypes.object),
+  routes: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default Sidebar;

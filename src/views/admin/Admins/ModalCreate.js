@@ -26,7 +26,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
           setOpened={setOpened}
         >
           <Form
-            onSubmit={(evt) =>
+            onSubmit={evt =>
               handleSubmitForm(evt, {
                 id,
                 name,
@@ -35,7 +35,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                 status,
                 password,
                 birth_date,
-                confirmPassword,
+                confirmPassword
               })
             }
             autoComplete="off"
@@ -47,9 +47,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   required={true}
                   placeholder="Informe o nome"
                   type="text"
-                  onChange={(event) =>
-                    setName(event.target.value.toUpperCase())
-                  }
+                  onChange={event => setName(event.target.value.toUpperCase())}
                   value={name}
                 />
               </Col>
@@ -59,9 +57,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   required={true}
                   placeholder="Informe o E-mail"
                   type="email"
-                  onChange={(event) =>
-                    setEmail(event.target.value.toUpperCase())
-                  }
+                  onChange={event => setEmail(event.target.value.toUpperCase())}
                   value={email}
                 />
               </Col>
@@ -72,7 +68,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   required={true}
                   value={birth_date || ""}
                   placeholder="Informe a data de nascimento"
-                  onChange={(event) => {
+                  onChange={event => {
                     setBirthDate(event.target.value.toUpperCase());
                   }}
                 />
@@ -84,7 +80,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   autoComplete="off"
                   placeholder="Informe o Telefone"
                   type="text"
-                  onChange={(event) => setPhone(formatPhone(event))}
+                  onChange={event => setPhone(formatPhone(event))}
                   value={phone}
                 />
               </Col>
@@ -93,7 +89,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                 <select
                   name="select"
                   className="form-control"
-                  onChange={(event) =>
+                  onChange={event =>
                     setStatus(event.target.value.toUpperCase())
                   }
                   value={status}
@@ -111,7 +107,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                       : "Informe a senha"
                   }
                   type="password"
-                  onChange={(event) =>
+                  onChange={event =>
                     setPassword(event.target.value.toUpperCase())
                   }
                 />
@@ -126,7 +122,7 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                       : "Informe a senha"
                   }
                   type="password"
-                  onChange={(event) =>
+                  onChange={event =>
                     setConfirmPassword(event.target.value.toUpperCase())
                   }
                 />
@@ -134,10 +130,10 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>
-                Fechar
+                FECHAR
               </Button>
               <Button type="submit" color="primary">
-                Salvar
+                SALVAR
               </Button>
             </div>
           </Form>

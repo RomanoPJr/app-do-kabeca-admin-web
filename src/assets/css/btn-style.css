@@ -1,0 +1,83 @@
+.btn svg {
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+.btn-icon svg {
+  margin: 0px !important;
+}
+
+.btn-close-modal,
+.btn-close-modal:hover,
+.btn-close-modal:focus,
+.btn-close-modal:focus:active {
+  background-image: none !important;
+  background-color: rgb(179, 179, 179) !important;
+}
+
+.btn-confirmated,
+.btn-confirmated:hover,
+.btn-confirmated:active,
+.btn-confirmated:focus,
+.btn-confirmated:active:hover {
+  margin-right: 10px !important;
+  background-image: none !important;
+  background-color: rgb(201, 118, 28) !important;
+}
+
+.btn-invite,
+.btn-invite:hover,
+.btn-invite:active,
+.btn-invite:focus,
+.btn-invite:active:hover {
+  margin-right: 10px !important;
+  background-image: none !important;
+  background-color: rgb(29, 122, 145) !important;
+}
+
+.btn-invite-players {
+  background-image: none !important;
+  background-color: #c9761c !important;
+}
+
+.btn-invite-players:hover,
+.btn-start:focus,
+.btn-start:focus:active {
+  background-image: none !important;
+  background-color: #c9761c !important;
+}
+
+.btn-save,
+.btn-save:hover,
+.btn-save:active,
+.btn-save:focus,
+.btn-save:focus:active {
+  background-image: none !important;
+  background-color: #2578f7 !important;
+}
+
+.btn-start,
+.btn-start:hover,
+.btn-start:focus,
+.btn-start:focus:active {
+  background-image: none !important;
+  background-color: #e0c422 !important;
+}
+
+.delete-button,
+.delete-button:hover,
+.delete-button:active,
+.delete-button:focus,
+.delete-button:focus:active {
+  background-image: none !important;
+  background-color: #bd3c3c !important;
+}
+.btn-edit,
+.btn-edit:hover,
+.btn-edit:active,
+.btn-edit:focus,
+.btn-edit:focus:active {
+  margin-right: 10px !important;
+  background-image: none !important;
+  background-color: #e0c422 !important;
+}

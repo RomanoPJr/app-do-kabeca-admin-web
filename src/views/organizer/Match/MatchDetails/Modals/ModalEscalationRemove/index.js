@@ -1,41 +1,31 @@
 import React from "react";
 import moment from "moment";
-
-import "./styles.css";
-import Modal from "../../../components/Modal";
 import { Button } from "reactstrap";
 import { FaUserCheck } from "react-icons/fa";
 
-const ModalEscalationPlayers = ({
-  data,
-  opened,
-  setOpened,
-  handleSetPlayer
-}) => {
+import "./styles.css";
+import Modal from "../../../../../../components/Modal";
+
+export default ({ opened, setOpened, handleDeleteAction }) => {
   return (
     <>
       {opened && (
         <Modal
           className="modal fade"
-          title="Escolha um Jogador"
+          title="ATENÇÃO!"
           opened={opened}
           setOpened={setOpened}
         >
-          <div>
-            {data.map(player => (
-              <Card
-                player={player}
-                handleSetPlayer={handleSetPlayer}
-                setOpened={setOpened}
-              />
-            ))}
-          </div>
+          <h4 style={{ color: "#000" }}>DESEJA MESMO REMOVER ESTE JOGADOR?</h4>
           <div className="custom-modal-footer">
             <Button
-              className="button-close-modal"
+              className="btn-close-modal"
               onClick={() => setOpened(!opened)}
             >
-              Fechar
+              FECHAR
+            </Button>
+            <Button className="btn delete-button" onClick={handleDeleteAction}>
+              REMOVER
             </Button>
           </div>
         </Modal>
@@ -44,7 +34,7 @@ const ModalEscalationPlayers = ({
   );
 };
 
-const Card = ({ player, handleSetPlayer, setOpened }) => {
+const Card = ({ player, handleSelectPlayer, setOpened }) => {
   return (
     <div className="user-card">
       <div className="user-card-container1">
@@ -61,20 +51,18 @@ const Card = ({ player, handleSetPlayer, setOpened }) => {
                 )}
               </i>
             </div>
-            <button
-              className="btn btn-icon confirm-button"
-              onClick={() => {
-                handleSetPlayer({ player });
-                setOpened(false);
-              }}
-            >
-              <FaUserCheck />
-            </button>
           </div>
         )}
+        <button
+          className="btn btn-icon confirm-button"
+          onClick={() => {
+            handleSelectPlayer(player);
+            setOpened(false);
+          }}
+        >
+          <FaUserCheck />
+        </button>
       </div>
     </div>
   );
 };
-
-export default ModalEscalationPlayers;

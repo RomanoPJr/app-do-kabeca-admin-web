@@ -37,10 +37,16 @@
 }
 
 .modal input,
-select {
-  border-color: #949494 !important;
-  color: rgb(83, 83, 83);
+.modal select {
+  border-color: #7b86a7 !important;
+  color: rgb(83, 83, 83) !important;
   margin-bottom: 10px;
+}
+
+.modal input::placeholder,
+.modal select::placeholder {
+  color: #b9bbc0 !important;
+  opacity: 1;
 }
 
 .modal select:after {
@@ -113,4 +119,17 @@ label.btn {
 .rdw-dropdownoption-default {
   color: #7b7b7b;
   font-weight: 300;
+}
+
+label {
+  color: white !important;
+}
+
+.modal-body label {
+  color: #525f7f !important;
+}
+
+input,
+select {
+  color: white !important;
 }

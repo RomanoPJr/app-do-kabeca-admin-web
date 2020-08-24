@@ -60,10 +60,10 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>
-                Fechar
+                FECHAR
               </Button>
               <Button type="submit" color="primary">
-                Salvar
+                SALVAR
               </Button>
             </div>
           </Form>

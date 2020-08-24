@@ -5,6 +5,7 @@ import user from "../store/user/user.reducers";
 import club from "../store/club/club.reducers";
 import event from "../store/event/event.reducers";
 import admin from "../store/admin/admin.reducers";
+import match from "../store/match/match.reducers";
 import player from "../store/player/player.reducers";
 import session from "../store/session/session.reducers";
 import payment from "../store/payment/payment.reducers";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   club,
   admin,
   event,
+  match,
   player,
   session,
   payment,
@@ -28,7 +30,7 @@ const rootReducer = combineReducers({
   location,
   organizer,
   suggestion_event,
-  suggestion_statute,
+  suggestion_statute
 });
 
 var store;
@@ -39,7 +41,7 @@ if (process.env.NODE_ENV === "development") {
     compose(
       applyMiddleware(thunk),
       window.__REDUX_DEVTOOLS_EXTENSION__ &&
-      window.__REDUX_DEVTOOLS_EXTENSION__()
+        window.__REDUX_DEVTOOLS_EXTENSION__()
     )
   );
 } else {

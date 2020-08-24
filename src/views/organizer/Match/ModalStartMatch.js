@@ -18,7 +18,7 @@ const ModalStartMatch = ({
         DEPOIS DE INICIAR PARTIDA OS DADOS NÃO PODEM SER ALTERADOS
       </h4>
       <div className="custom-modal-footer">
-        <button className="btn button-close-modal">CANCELAR</button>
+        <button className="btn btn-close-modal">CANCELAR</button>
         <Button
           className="btn-start"
           onClick={() => confirmAction(data.id)}

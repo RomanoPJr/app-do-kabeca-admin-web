@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { CardBody, Col, Badge, Button } from "reactstrap";
+import { CardBody, Col, Button } from "reactstrap";
 
 import "./styles.css";
 import history from "../../../history";
-import ModalEvents from "./ModalEvents";
+// import ModalEvents from "./ModalEvents";
 import EscalationEvent from "./EscalationEvent";
-import ModalDeleteEvent from "./ModalDeleteEvent";
 import Container from "../../../components/Container";
 import CardHeader from "../../../components/CardHeader";
-import Table from "../../../components/Table";
-import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
-const MatchStarted = ({ data, events, handleSelectEvent, matchEvents }) => {
+const MatchStarted = ({ data, events, handleSelectEvent }) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [currentPlayerEvent, setCurrentPlayerEvent] = useState();
-  const [currentModalDeleteData, setCurrentModalDeleteData] = useState();
-  const [modalDeleteOpened, setModalDeleteOpened] = useState();
-
   useEffect(() => {
     if (data && data !== undefined && data.escalation) {
     } else {
@@ -50,81 +44,26 @@ const MatchStarted = ({ data, events, handleSelectEvent, matchEvents }) => {
         </Col>
         {data && data.escalation && (
           <div className="match-started-escalation-container">
-            <EscalationEvent
+            {/* <EscalationEvent
               escalation={data.escalation}
               setModalOpened={setModalOpened}
               setCurrentPlayerEvent={setCurrentPlayerEvent}
-            />
+            /> */}
           </div>
         )}
-        <div style={{ marginTop: 35 }} />
-        <CardHeader title="EVENTOS" />
-        <Table
-          // setPageNumber={setPageNumber}
-          // isLoading={matchEvents.loading}
-          data={matchEvents}
-          columns={[
-            { name: "Jogador", render: () => "Nome do Jogador" },
-            { name: "Time", attribute: "user_team_name" },
-            { name: "Evento", attribute: "event_description" },
-            {
-              name: "Pontos",
-              render: ({ data }) => (
-                <Badge
-                  style={{ marginLeft: 15 }}
-                  className={`event-value-badge ${
-                    data.event_value > 0 ? "green" : "red"
-                  }`}
-                >
-                  {`${data.event_value > 0 ? "+" : ""}`}
-                  {data.event_value}
-                </Badge>
-              )
-            },
-            {
-              name: <b className="action-column">Acões</b>,
-              render: ({ data }) => (
-                <ActionColumn
-                  data={data}
-                  setCurrentData={setCurrentModalDeleteData}
-                  setModalDeleteOpened={setModalDeleteOpened}
-                />
-              )
-            }
-          ]}
-        />
       </CardBody>
-      {modalDeleteOpened && (
-        <ModalDeleteEvent
-          removeAction={() => {}}
-          opened={modalDeleteOpened}
-          data={currentModalDeleteData}
-          setOpened={setModalDeleteOpened}
-        />
-      )}
       {modalOpened && (
-        <ModalEvents
-          events={events}
-          opened={modalOpened}
-          setOpened={setModalOpened}
-          handleSelectEvent={handleSelectEvent}
-          currentPlayerEvent={currentPlayerEvent}
-        />
+        // <ModalEvents
+        //   events={events}
+        //   opened={modalOpened}
+        //   setOpened={setModalOpened}
+        //   handleSelectEvent={handleSelectEvent}
+        //   currentPlayerEvent={currentPlayerEvent}
+        // />
       )}
     </Container>
   );
 };
-
-const ActionColumn = ({ data, setCurrentData, setModalDeleteOpened }) => (
-  <div className="action-column">
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
-  </div>
-);
 
 const mapStateToProps = state => ({});
 
