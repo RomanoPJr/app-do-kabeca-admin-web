@@ -59,20 +59,19 @@ const Event = ({
     }
   }, [event.loading]);
 
-  function handleSubmitForm(evt, data) {
+  function handleSubmitForm(data) {
     if (!data.id) {
       createAction(data);
     } else {
       updateAction(data);
     }
-    evt.preventDefault();
   }
 
   return (
     <Container loading={event.loading}>
       <CardHeader
         setModalCreateOpened={setModalCreateOpened}
-        title="CRITÉRIOS DE PONTUAÇÃO (Crie até 10 eventos)"
+        title="CRITÉRIOS DE PONTUAÇÃO (Crie até 5 eventos)"
       />
       <CardBody>
         <Table
@@ -80,6 +79,72 @@ const Event = ({
           isLoading={event.loading}
           data={event.data}
           columns={[
+            {
+              name: "",
+              render: ({ data }) => {
+                const size = {
+                  width: 15,
+                  height: 15,
+                  borderRadius: 100
+                };
+                switch (data.type) {
+                  case "EVENTO 1":
+                    return (
+                      <div
+                        style={{
+                          ...size,
+                          backgroundColor: "yellow"
+                        }}
+                      />
+                    );
+                  case "EVENTO 2":
+                    return (
+                      <div
+                        style={{
+                          ...size,
+                          backgroundColor: "red"
+                        }}
+                      />
+                    );
+                  case "EVENTO 3":
+                    return (
+                      <div
+                        style={{
+                          ...size,
+                          backgroundColor: "blue"
+                        }}
+                      />
+                    );
+                  case "EVENTO 4":
+                    return (
+                      <div
+                        style={{
+                          ...size,
+                          backgroundColor: "green"
+                        }}
+                      />
+                    );
+                  case "EVENTO 5":
+                    return (
+                      <div
+                        style={{
+                          ...size,
+                          backgroundColor: "orange"
+                        }}
+                      />
+                    );
+                  default:
+                    return <></>;
+                }
+                return data.value < 0 ? (
+                  <Badge className="event-value-badge red">{data.value}</Badge>
+                ) : (
+                  <Badge className="event-value-badge green">
+                    +{data.value}
+                  </Badge>
+                );
+              }
+            },
             { name: "Evento", attribute: "description" },
             {
               name: "Pontos",

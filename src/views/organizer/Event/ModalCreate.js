@@ -1,21 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Button, Col, Form, Row, Input } from "reactstrap";
+import { Button, Col, Row, Input } from "reactstrap";
 import Modal from "../../../components/Modal";
+import Form from "../../../components/Form";
 
 const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
-  const [id, setId] = useState();
-  const [value, setValue] = useState();
-  const [description, setDescription] = useState();
-
-  useEffect(() => {
-    if (data.id) {
-      setId(data.id);
-      setValue(data.value);
-      setDescription(data.description);
-    }
-  }, [data]);
-
   return (
     <>
       {opened && (
@@ -25,35 +14,53 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
           opened={opened}
           setOpened={setOpened}
         >
-          <p className="text-center">INSERIR EVENTOS DE PARTIDA.</p>
           <Form
-            onSubmit={evt => handleSubmitForm(evt, { id, value, description })}
+            onSubmit={form => {
+              if (data) {
+                handleSubmitForm({ ...form, id: data.id });
+              } else {
+                handleSubmitForm(form);
+              }
+            }}
           >
             <Row>
               <Col md="12">
-                <label>Descrição</label>
+                <label>DESCRIÇÃO</label>
                 <Input
+                  id="description"
                   required={true}
-                  placeholder="Informe o nome do evento"
+                  placeholder="DESCRIÇÃO"
                   type="text"
-                  onChange={event =>
-                    setDescription(event.target.value.toUpperCase())
+                  defaultValue={data.description || ""}
+                  onChange={v =>
+                    (v.target.value = v.target.value.toUpperCase())
                   }
-                  value={description || ""}
                 />
               </Col>
               <Col md="12">
-                <label>Valor</label>
+                <label>VALOR</label>
                 <Input
+                  id="value"
                   required={true}
                   type="number"
-                  placeholder="Informe o valor do evento"
-                  onChange={event => {
-                    setValue(event.target.value.toUpperCase());
-                  }}
-                  value={value}
+                  placeholder="VALOR"
+                  defaultValue={data.value}
                   step="0.01"
                 />
+              </Col>
+              <Col md="12">
+                <label>COR</label>
+                <select
+                  id="type"
+                  defaultValue={data.type || "EVENTO 1"}
+                  className="form-control"
+                >
+                  <option value="EVENTO 1">AMARELO</option>
+                  <option value="EVENTO 2">VERMELHO</option>
+                  <option value="EVENTO 3">AZUL</option>
+                  <option value="EVENTO 4">VERDE</option>
+                  <option value="EVENTO 5">LARANJA</option>
+                </select>
               </Col>
             </Row>
             <div className="custom-modal-footer">

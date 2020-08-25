@@ -4,10 +4,10 @@ import Modal from "../../../components/Modal";
 
 const ModalDelete = ({ opened, setOpened, removeAction, data }) => {
   return (
-    <Modal title="Atenção!" opened={opened} setOpened={setOpened}>
+    <Modal title="ATENÇÃO!" opened={opened} setOpened={setOpened}>
       <h4 style={{ color: "#000" }}>
-        Atenção! Ao deletar um evento, ele será também removido das estatísticas
-        dos jogadores.
+        ATENÇÃO! AO DELETAR UM EVENTO, ELE SERÁ TAMBÉM REMOVIDO DAS ESTATÍSTICAS
+        DOS JOGADORES.
       </h4>
       <div className="custom-modal-footer">
         <Button color="success" onClick={() => setOpened(!opened)}>
