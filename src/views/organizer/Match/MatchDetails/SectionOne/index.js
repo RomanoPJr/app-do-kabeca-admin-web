@@ -1,6 +1,7 @@
-import React from 'react';
+import React from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { FaEdit, FaFutbol } from 'react-icons/fa';
+import { FaEdit } from "react-icons/fa";
+import { GiWhistle } from "react-icons/gi";
 
 export default ({ setModalStartMatchOpened, setModalCreateOpened }) => {
   return (
@@ -19,8 +20,8 @@ export default ({ setModalStartMatchOpened, setModalCreateOpened }) => {
             className="btn btn-start"
             onClick={() => setModalStartMatchOpened(true)}
           >
-            <FaFutbol />
-            {`INICIAR PARTIDA`}
+            <GiWhistle size={20} />
+            {`FINALIZAR PARTIDA`}
           </button>
         </CardBody>
       </div>

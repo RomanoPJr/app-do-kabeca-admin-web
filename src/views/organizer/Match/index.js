@@ -6,7 +6,7 @@ import { FaListOl, FaPaperPlane } from "react-icons/fa";
 
 import "./styles.css";
 import ModalCreate from "./ModalCreate.js";
-import ModalDelete from "./ModalDeleteEvent.js";
+import ModalDelete from "./ModalDelete.js";
 import Container from "../../../components/Container";
 import Table from "../../../components/Table/index.js";
 import MatchActions from "../../../store/match/match.actions.js";
@@ -64,14 +64,16 @@ const Match = ({
           data={matchDetail.list}
           columns={[
             {
-              name: "Data",
+              name: "DATA",
               render: ({ data }) => moment(data.date).format("DD/MM/YYYY")
             },
             {
-              name: "Times",
+              name: "TIMES",
               render: ({ data }) => `${data.team_a} X ${data.team_b}`
             },
-            { name: "Pontuação", attribute: "score_type" },
+            { name: "TIPO", attribute: "type" },
+            { name: "PONTUAÇÃO", attribute: "score_type" },
+            { name: "MODALIDADE", attribute: "modality" },
             {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (

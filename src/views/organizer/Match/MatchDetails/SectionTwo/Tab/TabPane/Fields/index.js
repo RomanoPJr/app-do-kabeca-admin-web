@@ -24,7 +24,12 @@ const formatName = name => {
   return formattedName;
 };
 
-export default ({ round, matchDetails, handlePlayerClick }) => {
+export default ({
+  round,
+  matchDetails,
+  handlePlayerClick,
+  handleExternalGoal
+}) => {
   return (
     <Row>
       <Field
@@ -38,10 +43,12 @@ export default ({ round, matchDetails, handlePlayerClick }) => {
       <Field
         round={round}
         team={teams.team_b}
+        matchType={matchDetails.type}
         teamName={matchDetails.team_b}
         matchEscalation={matchDetails.MatchEscalations}
         playerQuantity={matchDetails.players_quantity}
         handlePlayerClick={handlePlayerClick}
+        handleExternalGoal={handleExternalGoal}
       />
     </Row>
   );
@@ -51,9 +58,11 @@ const Field = ({
   team,
   round,
   teamName,
+  matchType,
   playerQuantity,
   matchEscalation,
-  handlePlayerClick
+  handlePlayerClick,
+  handleExternalGoal
 }) => {
   const findPlayer = useCallback(({ i, team, round }) => {
     if (!matchEscalation) {
@@ -70,34 +79,40 @@ const Field = ({
 
     return escalation;
   });
+
+  console.log(matchType);
   return (
     <Col md={6}>
       <div className="field-container">
         <p className="field-team-name">{teamName}</p>
         <div className="field-background">
-          <Row>
-            {[...Array(playerQuantity)].map((_, i) => {
-              const escalation = findPlayer({ i, team, round });
-              return escalation ? (
-                <Player
-                  team={team}
-                  position={i}
-                  round={round}
-                  key={`player-${i}`}
-                  escalation={escalation}
-                  onClick={handlePlayerClick}
-                />
-              ) : (
-                <AddPlayer
-                  team={team}
-                  position={i}
-                  round={round}
-                  key={`player-${i}`}
-                  onClick={handlePlayerClick}
-                />
-              );
-            })}
-          </Row>
+          {matchType === undefined || matchType === "PARTIDA INTERNA" ? (
+            <Row style={{ justifyContent: "center" }}>
+              {[...Array(playerQuantity)].map((_, i) => {
+                const escalation = findPlayer({ i, team, round });
+                return escalation ? (
+                  <Player
+                    team={team}
+                    position={i}
+                    round={round}
+                    key={`player-${i}`}
+                    escalation={escalation}
+                    onClick={handlePlayerClick}
+                  />
+                ) : (
+                  <AddPlayer
+                    team={team}
+                    position={i}
+                    round={round}
+                    key={`player-${i}`}
+                    onClick={handlePlayerClick}
+                  />
+                );
+              })}
+            </Row>
+          ) : (
+            <ExternalPlayer handleExternalGoal={handleExternalGoal} />
+          )}
         </div>
       </div>
     </Col>
@@ -113,6 +128,21 @@ const Player = ({ team, round, onClick, position, escalation }) => {
       >
         <div className="field-player-name">
           {formatName(escalation.User.name)}
+        </div>
+      </div>
+    </Col>
+  );
+};
+
+const ExternalPlayer = ({ handleExternalGoal }) => {
+  return (
+    <Col className="field-col" md={12}>
+      <div
+        className={`field-player field-player-edit`}
+        onClick={handleExternalGoal}
+      >
+        <div className="field-player-name" style={{ fontSize: 25 }}>
+          GOL
         </div>
       </div>
     </Col>

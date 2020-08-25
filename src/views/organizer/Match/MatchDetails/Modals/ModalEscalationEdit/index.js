@@ -1,7 +1,14 @@
 import React from "react";
 import moment from "moment";
 import { Button } from "reactstrap";
-import { FaUserCheck, FaSync, FaFlagCheckered, FaPlus } from "react-icons/fa";
+import {
+  FaUserCheck,
+  FaSync,
+  FaFlagCheckered,
+  FaPlus,
+  FaFootballBall,
+  FaFutbol
+} from "react-icons/fa";
 
 import "./styles.css";
 import Modal from "../../../../../../components/Modal";
@@ -12,7 +19,8 @@ export default ({
   setOpened,
   handleEventOption,
   handleReplaceOption,
-  handleRemoveOption
+  handleRemoveOption,
+  handleGoalOption
 }) => {
   return (
     <>
@@ -24,6 +32,12 @@ export default ({
           setOpened={setOpened}
         >
           <div className="options-container">
+            <div className="option-card" onClick={handleGoalOption}>
+              <div className="option-icon-container">
+                <FaFutbol className="option-icon" />
+              </div>
+              <p className="option-text">GOL</p>
+            </div>
             <div className="option-card" onClick={handleEventOption}>
               <div className="option-icon-container">
                 <FaFlagCheckered className="option-icon" />

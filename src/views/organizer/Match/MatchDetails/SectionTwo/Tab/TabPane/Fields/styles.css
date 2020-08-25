@@ -15,7 +15,9 @@
   width: 300px;
   height: 400px;
   padding: 20px;
+  display: flex;
   align-self: center;
+  justify-content: center;
   background-image: url("../../../../../../../../assets/img/field.png");
 }
 

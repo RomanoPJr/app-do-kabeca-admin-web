@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Nav, TabContent } from "reactstrap";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Nav,
+  TabContent,
+  Col,
+  Row
+} from "reactstrap";
 
 import TabHeader from "./Tab/TabHeader";
 import TabPane from "./Tab/TabPane";
@@ -9,7 +17,8 @@ export default ({
   setActiveTab,
   matchDetails,
   handlePlayerClick,
-  handleDeleteEventAction
+  onDeleteEventClick,
+  handleExternalGoal
 }) => {
   const rounds = {
     round_1: "1º TEMPO",
@@ -21,6 +30,7 @@ export default ({
       <Card>
         <CardHeader title="DETALHES DA PARTIDA" />
         <CardBody>
+          <Scoreboard />
           <Nav tabs>
             <TabHeader
               round={rounds.round_1}
@@ -41,7 +51,8 @@ export default ({
               matchDetails={matchDetails}
               handlePlayerClick={handlePlayerClick}
               playerQuantity={matchDetails.players_quantity}
-              handleDeleteEventAction={handleDeleteEventAction}
+              onDeleteEventClick={onDeleteEventClick}
+              handleExternalGoal={handleExternalGoal}
             />
             {matchDetails.modality === "2 TEMPOS" && (
               <TabPane
@@ -49,12 +60,31 @@ export default ({
                 playerQuantity={matchDetails.players_quantity}
                 matchDetails={matchDetails}
                 handlePlayerClick={handlePlayerClick}
-                handleDeleteEventAction={handleDeleteEventAction}
+                onDeleteEventClick={onDeleteEventClick}
+                handleExternalGoal={handleExternalGoal}
               />
             )}
           </TabContent>
         </CardBody>
       </Card>
     )
+  );
+};
+
+const Scoreboard = () => {
+  return (
+    <Row>
+      <Col
+        md={12}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column"
+        }}
+      >
+        <p>PLACAR</p>
+        <h1 style={{ fontSize: 55 }}>3x2</h1>
+      </Col>
+    </Row>
   );
 };

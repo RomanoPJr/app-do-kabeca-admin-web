@@ -6,6 +6,7 @@ import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo";
 import ModalEvents from "./Modals/ModalEvents";
 import ModalEscalation from "./Modals/ModalEscalation";
+import ModalEventRemove from "./Modals/ModalEventRemove";
 import Container from "../../../../components/Container";
 import ModalEscalationEdit from "./Modals/ModalEscalationEdit";
 import MatchActions from "../../../../store/match/match.actions";
@@ -28,7 +29,8 @@ const MatchDetails = ({
   removeEscalation,
   createEscalation,
   updateEscalation,
-  createMatchEvent
+  createMatchEvent,
+  removeMatchEvent
 }) => {
   const [modalStartMatchOpened, setModalStartMatchOpened] = useState(false);
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
@@ -40,12 +42,12 @@ const MatchDetails = ({
   const [modalEventsOpened, setModalEventsOpened] = useState(false);
   const [modalReplaceOpened, setModalReplaceOpened] = useState(false);
   const [modalEscalationOpened, setModalEscalationOpened] = useState(false);
+  const [modalEventRemoveOpened, setModalEventRemoveOpened] = useState(false);
 
   useEffect(() => {
     loadMatchDetails();
   }, []);
 
-  //TODO: ORGANIZAR
   const loadMatchDetails = async () => {
     if (match.params && match.params.id) {
       await fetchOne(match.params.id);
@@ -78,7 +80,6 @@ const MatchDetails = ({
     await createEscalation(escalation);
     loadMatchDetails();
   };
-  //TODO: ORGANIZAR
 
   const handleEventOption = useCallback(async () => {
     await fetchEvents();
@@ -97,15 +98,25 @@ const MatchDetails = ({
     setModalRemoveOpened(true);
   });
 
+  const handleGoalOption = useCallback(async () => {
+    await createMatchEvent({
+      type: "GOL",
+      user_id: currentPosition.escalation.User.id,
+      escalation_id: currentPosition.escalation.id,
+      match_id: currentPosition.escalation.match_id
+    });
+
+    await loadMatchDetails();
+    setModalEventsOpened(false);
+    setModalEditOpened(false);
+  });
+
   const handleEventAction = useCallback(async event => {
     await createMatchEvent({
-      description: event.description,
-      value: event.value,
-      user_id: currentPosition.escalation.User.id,
       event_id: event.id,
-      match_id: currentPosition.escalation.match_id,
+      user_id: currentPosition.escalation.User.id,
       escalation_id: currentPosition.escalation.id,
-      type: event.type
+      match_id: currentPosition.escalation.match_id
     });
 
     await loadMatchDetails();
@@ -131,10 +142,27 @@ const MatchDetails = ({
     fetchOne(match.params.id);
   });
 
-  const handleDeleteEventAction = useCallback(async data => {
-    console.log(data);
+  const onDeleteEventClick = useCallback(async id => {
+    setCurrentPosition(id);
+    setModalEventRemoveOpened(true);
   });
 
+  const handleDeleteEventAction = useCallback(async id => {
+    await removeMatchEvent(currentPosition);
+    await loadMatchDetails();
+    setModalEventRemoveOpened(false);
+  });
+
+  const handleExternalGoal = useCallback(async () => {
+    await createMatchEvent({
+      type: "GOL SOFRIDO",
+      match_id: matchDetails.id
+    });
+
+    await loadMatchDetails();
+    setModalEventsOpened(false);
+    setModalEditOpened(false);
+  });
   return (
     <>
       <Container className="super-container" loading={matchDetails === null}>
@@ -147,7 +175,8 @@ const MatchDetails = ({
           matchDetails={matchDetails}
           setActiveTab={setActiveTab}
           handlePlayerClick={handlePlayerClick}
-          handleDeleteEventAction={handleDeleteEventAction}
+          onDeleteEventClick={onDeleteEventClick}
+          handleExternalGoal={handleExternalGoal}
         />
       </Container>
 
@@ -170,6 +199,7 @@ const MatchDetails = ({
           handleEventOption={handleEventOption}
           handleReplaceOption={handleReplaceOption}
           handleRemoveOption={handleRemoveOption}
+          handleGoalOption={handleGoalOption}
         />
       )}
 
@@ -223,14 +253,13 @@ const MatchDetails = ({
       )} */}
 
       {/* DELETE EVENT */}
-      {/* {modalDeleteOpened && (
-        <ModalDeleteEvent
-          removeAction={() => {}}
-          opened={modalDeleteOpened}
-          data={currentModalDeleteData}
-          setOpened={setModalDeleteOpened}
+      {modalEventRemoveOpened && (
+        <ModalEventRemove
+          confirmAction={handleDeleteEventAction}
+          opened={modalEventRemoveOpened}
+          setOpened={setModalEventRemoveOpened}
         />
-      )} */}
+      )}
     </>
   );
 };
@@ -248,6 +277,7 @@ const mapDispatchToProps = dispatch => ({
   removeEscalation: id => MatchEscalationActions.remove(id),
   createEscalation: payload => MatchEscalationActions.create(payload),
   createMatchEvent: payload => MatchEventActions.create(payload),
+  removeMatchEvent: id => MatchEventActions.remove(id),
   updateEscalation: payload => MatchEscalationActions.update(payload)
 });
 

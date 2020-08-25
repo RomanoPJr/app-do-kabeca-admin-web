@@ -6,7 +6,7 @@ import { FaUserCheck } from "react-icons/fa";
 import "./styles.css";
 import Modal from "../../../../../../components/Modal";
 
-export default ({ data, opened, setOpened, handleSelectPlayer }) => {
+export default ({ data, opened, setOpened, handleReplaceAction }) => {
   return (
     <>
       {opened && (
@@ -22,7 +22,7 @@ export default ({ data, opened, setOpened, handleSelectPlayer }) => {
                 player={player}
                 setOpened={setOpened}
                 key={`list-player-${i}`}
-                handleSelectPlayer={handleSelectPlayer}
+                handleReplaceAction={handleReplaceAction}
               />
             ))}
           </div>
@@ -40,7 +40,7 @@ export default ({ data, opened, setOpened, handleSelectPlayer }) => {
   );
 };
 
-const Card = ({ player, handleSelectPlayer, setOpened }) => {
+const Card = ({ player, handleReplaceAction, setOpened }) => {
   return (
     <div className="user-card">
       <div className="user-card-container1">
@@ -62,7 +62,7 @@ const Card = ({ player, handleSelectPlayer, setOpened }) => {
         <button
           className="btn btn-icon confirm-button"
           onClick={() => {
-            handleSelectPlayer(player);
+            handleReplaceAction(player);
             setOpened(false);
           }}
         >
