@@ -6,8 +6,6 @@ import Table from "../../../../../../../../components/Table";
 import CardHeader from "../../../../../../../../components/CardHeader";
 import DeleteButton from "../../../../../../../../components/ActionButtons/DeleteButton";
 
-// import { Container } from './styles';
-
 function TableEvents({ onDeleteEventClick, matchDetails }) {
   return (
     <>
@@ -37,7 +35,12 @@ function TableEvents({ onDeleteEventClick, matchDetails }) {
                 }
               }
             },
-            { name: "Evento", attribute: "description" },
+            {
+              name: "Evento",
+              render: ({ data }) => {
+                return data.type === "GOL SOFRIDO" ? "GOL" : data.description;
+              }
+            },
             {
               name: "Pontos",
               render: ({ data }) => {

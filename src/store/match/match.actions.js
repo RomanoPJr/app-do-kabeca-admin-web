@@ -67,27 +67,24 @@ const create = async payload => {
     });
 };
 
-const update = payload => {
-  return async function(dispatch) {
-    dispatch({ type: typesMatch.UPDATE_REQUEST });
-    if (
-      payload.banner_url &&
-      payload.banner_url !== "" &&
-      payload.banner_url.search("res.cloudinary.com") === -1
-    ) {
-      const dataUpload = await upload(payload.banner_url);
-      payload.banner_url = dataUpload.url;
-    }
+const update = async payload => {
+  store.dispatch({ type: typesMatch.UPDATE_REQUEST });
 
-    axios()
-      .put(endpoint, payload)
-      .then(response => {
-        dispatch({ type: typesMatch.UPDATE_SUCCESS, payload: response.data });
-      })
-      .catch(error => {
-        dispatch({ type: typesMatch.UPDATE_FAILURE, payload: getError(error) });
+  await axios()
+    .put(endpoint, payload)
+    .then(response => {
+      store.dispatch({
+        type: typesMatch.UPDATE_SUCCESS
       });
-  };
+      toast.success(response.data.message);
+    })
+    .catch(error => {
+      store.dispatch({
+        type: typesMatch.UPDATE_FAILURE,
+        payload: getError(error)
+      });
+      toast.error(error.response.data.error);
+    });
 };
 
 const remove = payload => {

@@ -26,6 +26,7 @@ const MatchDetails = ({
   fetchEvents,
   fetchPlayers,
   matchDetails,
+  updateMatch,
   removeEscalation,
   createEscalation,
   updateEscalation,
@@ -163,6 +164,14 @@ const MatchDetails = ({
     setModalEventsOpened(false);
     setModalEditOpened(false);
   });
+
+  const handleStartTime = useCallback(async round => {
+    await updateMatch({
+      id: matchDetails.id,
+      [round === "1º TEMPO" ? "timer_1" : "timer_2"]: new Date()
+    });
+    await loadMatchDetails();
+  });
   return (
     <>
       <Container className="super-container" loading={matchDetails === null}>
@@ -174,6 +183,7 @@ const MatchDetails = ({
           activeTab={activeTab}
           matchDetails={matchDetails}
           setActiveTab={setActiveTab}
+          handleStartTime={handleStartTime}
           handlePlayerClick={handlePlayerClick}
           onDeleteEventClick={onDeleteEventClick}
           handleExternalGoal={handleExternalGoal}
@@ -278,7 +288,8 @@ const mapDispatchToProps = dispatch => ({
   createEscalation: payload => MatchEscalationActions.create(payload),
   createMatchEvent: payload => MatchEventActions.create(payload),
   removeMatchEvent: id => MatchEventActions.remove(id),
-  updateEscalation: payload => MatchEscalationActions.update(payload)
+  updateEscalation: payload => MatchEscalationActions.update(payload),
+  updateMatch: payload => MatchActions.update(payload)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MatchDetails);

@@ -18,7 +18,8 @@ export default ({
   matchDetails,
   handlePlayerClick,
   onDeleteEventClick,
-  handleExternalGoal
+  handleExternalGoal,
+  handleStartTime
 }) => {
   const rounds = {
     round_1: "1º TEMPO",
@@ -30,7 +31,7 @@ export default ({
       <Card>
         <CardHeader title="DETALHES DA PARTIDA" />
         <CardBody>
-          <Scoreboard />
+          <Scoreboard matchDetails={matchDetails} />
           <Nav tabs>
             <TabHeader
               round={rounds.round_1}
@@ -53,6 +54,7 @@ export default ({
               playerQuantity={matchDetails.players_quantity}
               onDeleteEventClick={onDeleteEventClick}
               handleExternalGoal={handleExternalGoal}
+              handleStartTime={handleStartTime}
             />
             {matchDetails.modality === "2 TEMPOS" && (
               <TabPane
@@ -62,6 +64,7 @@ export default ({
                 handlePlayerClick={handlePlayerClick}
                 onDeleteEventClick={onDeleteEventClick}
                 handleExternalGoal={handleExternalGoal}
+                handleStartTime={handleStartTime}
               />
             )}
           </TabContent>
@@ -71,7 +74,7 @@ export default ({
   );
 };
 
-const Scoreboard = () => {
+const Scoreboard = ({ matchDetails }) => {
   return (
     <Row>
       <Col
@@ -83,7 +86,9 @@ const Scoreboard = () => {
         }}
       >
         <p>PLACAR</p>
-        <h1 style={{ fontSize: 55 }}>3x2</h1>
+        <h1
+          style={{ fontSize: 55 }}
+        >{`${matchDetails.placar.team_a_goals} X ${matchDetails.placar.team_b_goals}`}</h1>
       </Col>
     </Row>
   );

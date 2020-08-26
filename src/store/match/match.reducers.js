@@ -91,7 +91,6 @@ function reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         loading: false,
-        data: action.payload,
         error: null
       };
     case typesMatch.UPDATE_FAILURE:

@@ -7,7 +7,8 @@ export default ({
   matchDetails,
   handlePlayerClick,
   onDeleteEventClick,
-  handleExternalGoal
+  handleExternalGoal,
+  handleStartTime
 }) => {
   return (
     <TabPane tabId={round} style={{ paddingTop: 25 }}>
@@ -16,6 +17,7 @@ export default ({
         matchDetails={matchDetails}
         handlePlayerClick={handlePlayerClick}
         handleExternalGoal={handleExternalGoal}
+        handleStartTime={handleStartTime}
       />
       <TableEvents
         onDeleteEventClick={onDeleteEventClick}
