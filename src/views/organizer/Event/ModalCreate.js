@@ -31,6 +31,11 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   required={true}
                   placeholder="DESCRIÇÃO"
                   type="text"
+                  disabled={
+                    data.type === "VITORIA" ||
+                    data.type === "EMPATE" ||
+                    data.type === "DERROTA"
+                  }
                   defaultValue={data.description || ""}
                   onChange={v =>
                     (v.target.value = v.target.value.toUpperCase())
@@ -48,20 +53,33 @@ const ModalCreate = ({ data, opened, setOpened, handleSubmitForm }) => {
                   step="0.01"
                 />
               </Col>
-              <Col md="12">
-                <label>COR</label>
-                <select
-                  id="type"
-                  defaultValue={data.type || "EVENTO 1"}
-                  className="form-control"
-                >
-                  <option value="EVENTO 1">AMARELO</option>
-                  <option value="EVENTO 2">VERMELHO</option>
-                  <option value="EVENTO 3">AZUL</option>
-                  <option value="EVENTO 4">VERDE</option>
-                  <option value="EVENTO 5">LARANJA</option>
-                </select>
-              </Col>
+              {data.type === "VITORIA" ||
+              data.type === "EMPATE" ||
+              data.type === "DERROTA" ? (
+                <Col md="12">
+                  <input
+                    id="type"
+                    type="hidden"
+                    defaultValue={data.type}
+                    className="form-control"
+                  />
+                </Col>
+              ) : (
+                <Col md="12">
+                  <label>COR</label>
+                  <select
+                    id="type"
+                    defaultValue={data.type || "EVENTO 1"}
+                    className="form-control"
+                  >
+                    <option value="EVENTO 1">AMARELO</option>
+                    <option value="EVENTO 2">VERMELHO</option>
+                    <option value="EVENTO 3">AZUL</option>
+                    <option value="EVENTO 4">VERDE</option>
+                    <option value="EVENTO 5">LARANJA</option>
+                  </select>
+                </Col>
+              )}
             </Row>
             <div className="custom-modal-footer">
               <Button color="secondary" onClick={() => setOpened(!opened)}>

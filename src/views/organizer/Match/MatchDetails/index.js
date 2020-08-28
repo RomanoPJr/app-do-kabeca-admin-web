@@ -16,6 +16,7 @@ import PlayerActions from "../../../../store/player/player.actions";
 import ModalEscalationReplace from "./Modals/ModalEscalationReplace";
 import MatchEventActions from "../../../../store/match_event/match_event.actions";
 import MatchEscalationActions from "../../../../store/match_escalation/match_escalation.actions";
+import ModalEdit from "./Modals/ModalEdit";
 
 const MatchDetails = ({
   match,
@@ -172,6 +173,13 @@ const MatchDetails = ({
     });
     await loadMatchDetails();
   });
+
+  const handleSubmitForm = async form => {
+    await updateMatch(form);
+    setModalCreateOpened(false);
+    await loadMatchDetails();
+  };
+
   return (
     <>
       <Container className="super-container" loading={matchDetails === null}>
@@ -191,14 +199,14 @@ const MatchDetails = ({
       </Container>
 
       {/* EDIT MATCH */}
-      {/* {modalCreateOpened && (
-        <ModalCreate
-          data={data}
+      {modalCreateOpened && (
+        <ModalEdit
+          data={matchDetails}
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
           confirmAction={handleSubmitForm}
         />
-      )} */}
+      )}
 
       {/* LIST ESCALED PLAYER OPTIONS */}
       {modalEditOpened && (

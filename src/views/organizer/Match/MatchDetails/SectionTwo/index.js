@@ -86,9 +86,13 @@ const Scoreboard = ({ matchDetails }) => {
         }}
       >
         <p>PLACAR</p>
-        <h1
-          style={{ fontSize: 55 }}
-        >{`${matchDetails.placar.team_a_goals} X ${matchDetails.placar.team_b_goals}`}</h1>
+        {matchDetails && matchDetails.placar ? (
+          <h1
+            style={{ fontSize: 55 }}
+          >{`${matchDetails.placar.team_a_goals} X ${matchDetails.placar.team_b_goals}`}</h1>
+        ) : (
+          <h1 style={{ fontSize: 55 }}>0 x 0</h1>
+        )}
       </Col>
     </Row>
   );

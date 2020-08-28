@@ -60,33 +60,35 @@ const TableContent = ({ columns, data, setPageNumber }) => (
           ))}
       </tbody>
     </DataTable>
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        padding: "10px 0",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}
-    >
-      <button
-        className="btn btn-info"
-        onClick={() => handlePreviousPage(data, setPageNumber)}
+    {data.pageNumber && data.pageTotal && (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          padding: "10px 0",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
       >
-        <FaArrowLeft />
-        ANTERIOR
-      </button>
-      <p style={{ margin: 20 }}>
-        {data.pageNumber} / {data.pageTotal}
-      </p>
-      <button
-        className="btn-fill btn btn-info"
-        onClick={() => handleNextPage(data, setPageNumber)}
-      >
-        PRÓXIMO
-        <FaArrowRight />
-      </button>
-    </div>
+        <button
+          className="btn btn-info"
+          onClick={() => handlePreviousPage(data, setPageNumber)}
+        >
+          <FaArrowLeft />
+          ANTERIOR
+        </button>
+        <p style={{ margin: 20 }}>
+          {data.pageNumber} / {data.pageTotal}
+        </p>
+        <button
+          className="btn-fill btn btn-info"
+          onClick={() => handleNextPage(data, setPageNumber)}
+        >
+          PRÓXIMO
+          <FaArrowRight />
+        </button>
+      </div>
+    )}
   </>
 );
 

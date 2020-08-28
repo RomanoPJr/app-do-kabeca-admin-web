@@ -76,6 +76,7 @@ const update = async payload => {
       store.dispatch({
         type: typesMatch.UPDATE_SUCCESS
       });
+      console.log(response.data);
       toast.success(response.data.message);
     })
     .catch(error => {
