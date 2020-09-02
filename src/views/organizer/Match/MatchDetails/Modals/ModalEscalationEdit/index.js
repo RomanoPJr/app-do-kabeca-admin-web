@@ -1,13 +1,14 @@
 import React from "react";
 import moment from "moment";
-import { Button } from "reactstrap";
+import { Button, Badge } from "reactstrap";
 import {
   FaUserCheck,
   FaSync,
   FaFlagCheckered,
   FaPlus,
   FaFootballBall,
-  FaFutbol
+  FaFutbol,
+  FaCheck
 } from "react-icons/fa";
 
 import "./styles.css";
@@ -15,9 +16,10 @@ import Modal from "../../../../../../components/Modal";
 
 export default ({
   data,
+  events,
   opened,
   setOpened,
-  handleEventOption,
+  handleEventAction,
   handleReplaceOption,
   handleRemoveOption,
   handleGoalOption
@@ -38,12 +40,17 @@ export default ({
               </div>
               <p className="option-text">GOL</p>
             </div>
-            <div className="option-card" onClick={handleEventOption}>
-              <div className="option-icon-container">
-                <FaFlagCheckered className="option-icon" />
-              </div>
-              <p className="option-text">LANCAR EVENTO</p>
-            </div>
+            {events.map((event, i) => {
+              return (
+                <CardEvents
+                  event={event}
+                  key={`event-${i}`}
+                  handleEventAction={handleEventAction}
+                  setOpened={setOpened}
+                />
+              );
+            })}
+
             <div className="option-card" onClick={handleReplaceOption}>
               <div className="option-icon-container">
                 <FaSync className="option-icon" />
@@ -71,35 +78,20 @@ export default ({
   );
 };
 
-const Card = ({ player, handleSelectPlayer, setOpened }) => {
+const CardEvents = ({ event, setOpened, handleEventAction }) => {
   return (
-    <div className="user-card">
-      <div className="user-card-container1">
-        <div className="user-card-container2">
-          <h4 className="user-card-name">{player.name}</h4>
-        </div>
-        {player.matchConfimation && (
-          <div className="user-card-container3">
-            <div className="user-card-container4">
-              <i className="confirmated-status">Confirmado</i>
-              <i className="confirmated-time">
-                {moment(player.matchConfimation.createdAt).format(
-                  "DD/MM HH:mm"
-                )}
-              </i>
-            </div>
-          </div>
-        )}
-        <button
-          className="btn btn-icon confirm-button"
-          onClick={() => {
-            handleSelectPlayer(player);
-            setOpened(false);
-          }}
-        >
-          <FaUserCheck />
-        </button>
+    <div className="option-card" onClick={() => handleEventAction(event)}>
+      <div className="option-icon-container">
+        <FaFlagCheckered className="option-icon" />
       </div>
+      <Badge
+        style={{ marginRight: 25 }}
+        className={`event-value-badge ${event.value > 0 ? "green" : "red"}`}
+      >
+        {`${event.value > 0 ? "+" : ""}`}
+        {event.value}
+      </Badge>
+      <p className="option-text">{event.description}</p>
     </div>
   );
 };

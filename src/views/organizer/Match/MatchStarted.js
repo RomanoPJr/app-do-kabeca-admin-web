@@ -52,15 +52,6 @@ const MatchStarted = ({ data, events, handleSelectEvent }) => {
           </div>
         )}
       </CardBody>
-      {modalOpened && (
-        // <ModalEvents
-        //   events={events}
-        //   opened={modalOpened}
-        //   setOpened={setModalOpened}
-        //   handleSelectEvent={handleSelectEvent}
-        //   currentPlayerEvent={currentPlayerEvent}
-        // />
-      )}
     </Container>
   );
 };

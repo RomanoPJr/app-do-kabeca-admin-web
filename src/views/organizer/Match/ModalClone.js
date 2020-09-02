@@ -7,7 +7,9 @@ import BtnGreen from "../../../components/Buttons/BtnGreen";
 export default ({ opened, setOpened, confirmAction }) => {
   return (
     <Modal opened={opened} setOpened={setOpened}>
-      <h4 style={{ color: "#000" }}>DESEJA CLONAR ESTA PARTIDA?</h4>
+      <h4 style={{ color: "#000" }}>
+        DESEJA CRIAR UMA NOVA PARTIDA APARTIR DESTA?
+      </h4>
       <div className="custom-modal-footer">
         <BtnGray text="NÃO" onClick={() => setOpened(!opened)} />
         <BtnGreen text="SIM" onClick={() => confirmAction(!opened)} />

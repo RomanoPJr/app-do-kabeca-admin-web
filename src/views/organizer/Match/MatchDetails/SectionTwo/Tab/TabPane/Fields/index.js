@@ -22,7 +22,7 @@ const formatName = name => {
 
   formattedName = [
     formattedName[0],
-    formattedName[formattedName.length - 1]
+    formattedName.length > 1 ? formattedName[formattedName.length - 1] : ""
   ].join(" ");
 
   return formattedName;

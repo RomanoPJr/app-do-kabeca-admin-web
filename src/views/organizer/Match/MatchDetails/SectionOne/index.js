@@ -1,9 +1,13 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaCopy } from "react-icons/fa";
 import { GiWhistle } from "react-icons/gi";
 
-export default ({ setModalStartMatchOpened, setModalCreateOpened }) => {
+export default ({
+  setModalStartMatchOpened,
+  setModalCloneOpened,
+  setModalCreateOpened
+}) => {
   return (
     <Card>
       <div className="step-three-container">
@@ -15,6 +19,13 @@ export default ({ setModalStartMatchOpened, setModalCreateOpened }) => {
           >
             <FaEdit />
             {`EDITAR`}
+          </button>
+          <button
+            className="btn btn-start"
+            onClick={() => setModalCloneOpened(true)}
+          >
+            <FaCopy />
+            {`NOVA PARTIDA`}
           </button>
           <button
             className="btn btn-start"

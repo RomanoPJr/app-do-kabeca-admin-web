@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import "../styles.css";
 import SectionOne from "./SectionOne";
 import SectionTwo from "./SectionTwo";
-import ModalEvents from "./Modals/ModalEvents";
 import ModalEscalation from "./Modals/ModalEscalation";
 import ModalEventRemove from "./Modals/ModalEventRemove";
 import Container from "../../../../components/Container";
@@ -17,6 +16,7 @@ import ModalEscalationReplace from "./Modals/ModalEscalationReplace";
 import MatchEventActions from "../../../../store/match_event/match_event.actions";
 import MatchEscalationActions from "../../../../store/match_escalation/match_escalation.actions";
 import ModalEdit from "./Modals/ModalEdit";
+import ModalClone from "../ModalClone";
 
 const MatchDetails = ({
   match,
@@ -28,6 +28,7 @@ const MatchDetails = ({
   fetchPlayers,
   matchDetails,
   updateMatch,
+  createMatch,
   removeEscalation,
   createEscalation,
   updateEscalation,
@@ -40,6 +41,7 @@ const MatchDetails = ({
   const [activeTab, setActiveTab] = useState("1º TEMPO");
   const [currentPosition, setCurrentPosition] = useState();
   const [modalEditOpened, setModalEditOpened] = useState(false);
+  const [modalCloneOpened, setModalCloneOpened] = useState(false);
   const [modalRemoveOpened, setModalRemoveOpened] = useState(false);
   const [modalEventsOpened, setModalEventsOpened] = useState(false);
   const [modalReplaceOpened, setModalReplaceOpened] = useState(false);
@@ -67,6 +69,10 @@ const MatchDetails = ({
       });
       setModalEscalationOpened(true);
     } else {
+      await fetchEvents({
+        match_id: match.params.id,
+        round: data.round
+      });
       setModalEditOpened(true);
     }
   }, []);
@@ -82,11 +88,6 @@ const MatchDetails = ({
     await createEscalation(escalation);
     loadMatchDetails();
   };
-
-  const handleEventOption = useCallback(async () => {
-    await fetchEvents();
-    setModalEventsOpened(true);
-  });
 
   const handleReplaceOption = useCallback(async () => {
     await fetchPlayers({
@@ -180,10 +181,33 @@ const MatchDetails = ({
     await loadMatchDetails();
   };
 
+  const cloneMatchAction = async () => {
+    const {
+      date,
+      duration,
+      modality,
+      players_quantity,
+      score_type,
+      type
+    } = matchDetails;
+
+    await createMatch({
+      date,
+      duration,
+      modality,
+      players_quantity,
+      score_type,
+      type,
+      team_a: "TIME A",
+      team_b: "TIME B"
+    });
+  };
+
   return (
     <>
       <Container className="super-container" loading={matchDetails === null}>
         <SectionOne
+          setModalCloneOpened={setModalCloneOpened}
           setModalCreateOpened={setModalCreateOpened}
           setModalStartMatchOpened={setModalStartMatchOpened}
         />
@@ -211,23 +235,14 @@ const MatchDetails = ({
       {/* LIST ESCALED PLAYER OPTIONS */}
       {modalEditOpened && (
         <ModalEscalationEdit
+          events={events}
           data={currentPosition}
           opened={modalEditOpened}
           setOpened={setModalEditOpened}
-          handleEventOption={handleEventOption}
-          handleReplaceOption={handleReplaceOption}
-          handleRemoveOption={handleRemoveOption}
           handleGoalOption={handleGoalOption}
-        />
-      )}
-
-      {/* LIST EVENT */}
-      {modalEventsOpened && (
-        <ModalEvents
-          events={events}
-          opened={modalEventsOpened}
-          setOpened={setModalEventsOpened}
           handleEventAction={handleEventAction}
+          handleRemoveOption={handleRemoveOption}
+          handleReplaceOption={handleReplaceOption}
         />
       )}
 
@@ -257,6 +272,14 @@ const MatchDetails = ({
           opened={modalEscalationOpened}
           setOpened={setModalEscalationOpened}
           handleSelectPlayer={handleSelectPlayer}
+        />
+      )}
+      {/* LIST PLAYERS TO ESCALE */}
+      {modalCloneOpened && (
+        <ModalClone
+          opened={modalCloneOpened}
+          setOpened={setModalCloneOpened}
+          confirmAction={cloneMatchAction}
         />
       )}
 
@@ -291,6 +314,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchOne: id => MatchActions.fetchOne(id),
   fetchEvents: () => EventActions.fetchAll(),
+  createMatch: payload => MatchActions.create(payload),
   fetchPlayers: payload => PlayerActions.fetchAll(payload),
   removeEscalation: id => MatchEscalationActions.remove(id),
   createEscalation: payload => MatchEscalationActions.create(payload),
