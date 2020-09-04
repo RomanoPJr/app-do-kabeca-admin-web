@@ -80,12 +80,13 @@ const MatchDetails = ({
   const handleSelectPlayer = async player => {
     const escalation = {
       match_id: matchDetails.id,
-      user_id: player.id,
+      user_id: player.User.id,
       position: currentPosition.position,
       round: currentPosition.round,
       team: currentPosition.team
     };
     await createEscalation(escalation);
+    setModalEscalationOpened(false);
     loadMatchDetails();
   };
 

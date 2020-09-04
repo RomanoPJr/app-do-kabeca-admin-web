@@ -1,10 +1,9 @@
-import React from "react";
 import moment from "moment";
+import React from "react";
+import { FaUserCheck, FaUserClock } from "react-icons/fa";
 import { Button } from "reactstrap";
-import { FaUserCheck } from "react-icons/fa";
-
-import "./styles.css";
 import Modal from "../../../../../../components/Modal";
+import "./styles.css";
 
 export default ({ data, opened, setOpened, handleSelectPlayer }) => {
   return (
@@ -17,14 +16,15 @@ export default ({ data, opened, setOpened, handleSelectPlayer }) => {
           setOpened={setOpened}
         >
           <div className="modal-escalation-list">
-            {data.map((player, i) => (
-              <Card
-                player={player}
-                setOpened={setOpened}
-                key={`list-player-${i}`}
-                handleSelectPlayer={handleSelectPlayer}
-              />
-            ))}
+            {data &&
+              data.map((player, i) => (
+                <Card
+                  player={player}
+                  setOpened={setOpened}
+                  key={`list-player-${i}`}
+                  handleSelectPlayer={handleSelectPlayer}
+                />
+              ))}
           </div>
           <div className="custom-modal-footer">
             <Button
@@ -40,34 +40,55 @@ export default ({ data, opened, setOpened, handleSelectPlayer }) => {
   );
 };
 
-const Card = ({ player, handleSelectPlayer, setOpened }) => {
+const Card = ({ player, handleSelectPlayer }) => {
   return (
-    <div className="user-card">
-      <div className="user-card-container1">
-        <div className="user-card-container2">
-          <h4 className="user-card-name">{player.name}</h4>
-        </div>
-        {player.matchConfimation && (
-          <div className="user-card-container3">
-            <div className="user-card-container4">
-              <i className="confirmated-status">Confirmado</i>
-              <i className="confirmated-time">
-                {moment(player.matchConfimation.createdAt).format(
-                  "DD/MM HH:mm"
-                )}
-              </i>
-            </div>
-          </div>
+    <div
+      className={`option-card ${
+        player.MatchInviteConfirmations ? "check" : ""
+      }`}
+      onClick={() => handleSelectPlayer(player)}
+    >
+      <div className="option-icon-container">
+        {player.MatchInviteConfirmations ? (
+          <FaUserCheck className="option-player-icon check" />
+        ) : (
+          <FaUserClock className="option-player-icon" />
         )}
-        <button
-          className="btn btn-icon confirm-button"
-          onClick={() => {
-            handleSelectPlayer(player);
-            setOpened(false);
-          }}
+      </div>
+      <div>
+        <p
+          className={`option-text ${
+            player.MatchInviteConfirmations ? "check" : ""
+          }`}
         >
-          <FaUserCheck />
-        </button>
+          {player.User.name}
+        </p>
+        {player.MatchInviteConfirmations ? (
+          <p
+            style={{
+              fontSize: 12,
+              margin: 0,
+              marginTop: "-10px",
+              color: "rgb(81, 190, 81)"
+            }}
+          >
+            CONFIRMAÇÃO:{" "}
+            {moment(player.MatchInviteConfirmations.created_at)
+              .utc()
+              .format("DD/MM/YYYY HH:mm")}
+          </p>
+        ) : (
+          <p
+            style={{
+              fontSize: 12,
+              margin: 0,
+              marginTop: "-10px",
+              color: "rgb(141, 140, 140)"
+            }}
+          >
+            SEM CONFIRMAÇÃO
+          </p>
+        )}
       </div>
     </div>
   );
