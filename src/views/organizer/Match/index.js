@@ -68,13 +68,6 @@ const Match = ({
               render: ({ data }) => moment(data.date).format("DD/MM/YYYY")
             },
             {
-              name: "TIMES",
-              render: ({ data }) => `${data.team_a} X ${data.team_b}`
-            },
-            { name: "TIPO", attribute: "type" },
-            { name: "PONTUAÇÃO", attribute: "score_type" },
-            { name: "MODALIDADE", attribute: "modality" },
-            {
               name: <b className="action-column">Acões</b>,
               render: ({ data }) => (
                 <ActionColumn
@@ -165,7 +158,7 @@ const ActionColumn = ({
     </Button>
     <EditButton
       onClick={() => {
-        history.push(`/organizer/matches/${data.id}`);
+        history.push(`/organizer/matches/${data.date}`);
       }}
     />
     <DeleteButton

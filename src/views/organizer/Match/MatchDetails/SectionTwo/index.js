@@ -28,48 +28,45 @@ export default ({
 
   return (
     matchDetails && (
-      <Card>
-        <CardHeader title="DETALHES DA PARTIDA" />
-        <CardBody>
-          <Scoreboard matchDetails={matchDetails} />
-          <Nav tabs>
+      <>
+        <Scoreboard matchDetails={matchDetails} />
+        <Nav tabs>
+          <TabHeader
+            round={rounds.round_1}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+          {matchDetails.modality === "2 TEMPOS" && (
             <TabHeader
-              round={rounds.round_1}
+              round={rounds.round_2}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />
-            {matchDetails.modality === "2 TEMPOS" && (
-              <TabHeader
-                round={rounds.round_2}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-              />
-            )}
-          </Nav>
-          <TabContent activeTab={activeTab}>
+          )}
+        </Nav>
+        <TabContent activeTab={activeTab}>
+          <TabPane
+            round={rounds.round_1}
+            matchDetails={matchDetails}
+            handlePlayerClick={handlePlayerClick}
+            playerQuantity={matchDetails.players_quantity}
+            onDeleteEventClick={onDeleteEventClick}
+            handleExternalGoal={handleExternalGoal}
+            handleStartTime={handleStartTime}
+          />
+          {matchDetails.modality === "2 TEMPOS" && (
             <TabPane
-              round={rounds.round_1}
+              round={rounds.round_2}
+              playerQuantity={matchDetails.players_quantity}
               matchDetails={matchDetails}
               handlePlayerClick={handlePlayerClick}
-              playerQuantity={matchDetails.players_quantity}
               onDeleteEventClick={onDeleteEventClick}
               handleExternalGoal={handleExternalGoal}
               handleStartTime={handleStartTime}
             />
-            {matchDetails.modality === "2 TEMPOS" && (
-              <TabPane
-                round={rounds.round_2}
-                playerQuantity={matchDetails.players_quantity}
-                matchDetails={matchDetails}
-                handlePlayerClick={handlePlayerClick}
-                onDeleteEventClick={onDeleteEventClick}
-                handleExternalGoal={handleExternalGoal}
-                handleStartTime={handleStartTime}
-              />
-            )}
-          </TabContent>
-        </CardBody>
-      </Card>
+          )}
+        </TabContent>
+      </>
     )
   );
 };

@@ -1,6 +1,5 @@
 import axios from "../../axios";
 import { getError } from "../../utils/ErrorResponse";
-import { upload } from "../../utils/Upload";
 import typesMatch from "./match.types";
 import store from "../index";
 import { toast } from "react-toastify";
@@ -25,6 +24,24 @@ const fetchList = payload => {
         });
       });
   };
+};
+
+const fetchByDate = payload => {
+  store.dispatch({ type: typesMatch.FETCH_LIST_REQUEST });
+  axios()
+    .get(`${endpoint}/byDate?date=${payload}`)
+    .then(response => {
+      store.dispatch({
+        type: typesMatch.FETCH_LIST_SUCCESS,
+        payload: response.data.data
+      });
+    })
+    .catch(error => {
+      store.dispatch({
+        type: typesMatch.FETCH_LIST_FAILURE,
+        payload: getError(error)
+      });
+    });
 };
 
 const fetchOne = async id => {
@@ -114,5 +131,6 @@ export default {
   remove,
   update,
   fetchOne,
+  fetchByDate,
   fetchList
 };

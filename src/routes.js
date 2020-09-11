@@ -64,13 +64,13 @@ var organizer = [
   },
   {
     path: "/matches",
-    name: "Partidas",
+    name: "Peladas",
     icon: <FaFutbol size={18} />,
     component: Match,
     layout: "/organizer"
   },
   {
-    path: "/matches/:id",
+    path: "/matches/:date",
     name: "Partida",
     icon: <FaFutbol size={18} />,
     component: MatchDetails,

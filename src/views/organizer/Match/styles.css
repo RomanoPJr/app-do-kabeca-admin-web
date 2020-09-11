@@ -42,9 +42,7 @@ select {
 .step-three-container {
   display: flex;
   flex-direction: row;
-}
-.step-three-btn-container {
-  display: flex;
+  align-items: center;
   justify-content: flex-end;
 }
 
