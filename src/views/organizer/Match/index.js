@@ -53,10 +53,7 @@ const Match = ({
 
   return (
     <Container>
-      <CardHeader
-        setModalCreateOpened={setModalCreateOpened}
-        title="PARTIDAS"
-      />
+      <CardHeader setModalCreateOpened={setModalCreateOpened} title="PELADAS" />
       <CardBody>
         <Table
           setPageNumber={setPageNumber}
