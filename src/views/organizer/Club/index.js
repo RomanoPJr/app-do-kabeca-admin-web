@@ -52,44 +52,48 @@ const Club = ({
   useEffect(() => {
     if (club.data) {
       const size = 30;
-      setCounters([
-        {
-          name: "TOTAL DE ASSOCIADOS",
-          value: club.data.totals.total_associados,
-          icon: <FaUsers className="card-counter-icon" size={size} />,
-          color: "#1d7a91"
-        },
-        {
-          name: "TOTAL DE GOLEIROS",
-          value: club.data.totals.total_goleiros,
-          icon: <FaHandPaper className="card-counter-icon" size={size} />,
-          color: "#c9761c"
-        },
-        {
-          name: "TOTAL DE COLABORADORES",
-          value: club.data.totals.total_colaboradores,
-          icon: <FaUsersCog className="card-counter-icon" size={size} />,
-          color: "#bd3c3c"
-        },
-        {
-          name: "TOTAL DE PAGANTES",
-          value: club.data.totals.total_pagantes,
-          icon: <FaMoneyBillWave className="card-counter-icon" size={size} />,
-          color: "#991f4b"
-        },
-        {
-          name: "TOTAL DE NÃO PAGANTES",
-          value: club.data.totals.total_nao_pagantes,
-          icon: <FaUserMinus className="card-counter-icon" size={size} />,
-          color: "#e0c422"
-        },
-        {
-          name: "MÉDIA DE IDADE",
-          value: Math.round(Number(club.data.totals.average_age)),
-          icon: <FaRegAddressCard className="card-counter-icon" size={size} />,
-          color: "#389421"
-        }
-      ]);
+      if (club.data.totals) {
+        setCounters([
+          {
+            name: "TOTAL DE ASSOCIADOS",
+            value: club.data.totals.total_associados,
+            icon: <FaUsers className="card-counter-icon" size={size} />,
+            color: "#1d7a91"
+          },
+          {
+            name: "TOTAL DE GOLEIROS",
+            value: club.data.totals.total_goleiros,
+            icon: <FaHandPaper className="card-counter-icon" size={size} />,
+            color: "#c9761c"
+          },
+          {
+            name: "TOTAL DE COLABORADORES",
+            value: club.data.totals.total_colaboradores,
+            icon: <FaUsersCog className="card-counter-icon" size={size} />,
+            color: "#bd3c3c"
+          },
+          {
+            name: "TOTAL DE PAGANTES",
+            value: club.data.totals.total_pagantes,
+            icon: <FaMoneyBillWave className="card-counter-icon" size={size} />,
+            color: "#991f4b"
+          },
+          {
+            name: "TOTAL DE NÃO PAGANTES",
+            value: club.data.totals.total_nao_pagantes,
+            icon: <FaUserMinus className="card-counter-icon" size={size} />,
+            color: "#e0c422"
+          },
+          {
+            name: "MÉDIA DE IDADE",
+            value: Math.round(Number(club.data.totals.average_age)),
+            icon: (
+              <FaRegAddressCard className="card-counter-icon" size={size} />
+            ),
+            color: "#389421"
+          }
+        ]);
+      }
     }
   }, [club.data]);
 
