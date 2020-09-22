@@ -148,8 +148,8 @@ const Club = ({
               </h5>
             </div>
             <div className="row">
-              {counters.map(item => (
-                <div className="col-lg-4">
+              {counters.map((item, i) => (
+                <div className="col-lg-4" key={`item` + i}>
                   <div
                     className="card-chart card card-counter"
                     style={{ backgroundColor: item.color }}

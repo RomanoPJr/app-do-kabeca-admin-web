@@ -13,7 +13,7 @@ const UploadInput = ({ text, onLoad, imagePreview }) => {
       <div
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        <label className="btn btn-info" htmlFor="image_uploads">
+        <label className="btn btn-upload" htmlFor="image_uploads">
           <FaUpload />
           {text}
         </label>

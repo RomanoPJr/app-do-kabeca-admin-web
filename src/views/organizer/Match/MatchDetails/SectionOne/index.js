@@ -3,7 +3,6 @@ import { FaEdit, FaCopy } from "react-icons/fa";
 import { GiWhistle } from "react-icons/gi";
 
 export default ({
-  match,
   setModalStartMatchOpened,
   setModalCloneOpened,
   setModalCreateOpened

@@ -32,6 +32,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               type="text"
               placeholder="TIME A"
               onChange={handleToUppercase}
+              required
             />
           </Col>
           <Col md="6">
@@ -41,6 +42,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               type="text"
               placeholder="TIME B"
               onChange={handleToUppercase}
+              required
             />
           </Col>
           <Col md="6">
@@ -50,6 +52,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               type="select"
               defaultValue={""}
               className="form-control"
+              required
             >
               <option hidden value="">
                 SELECIONE
@@ -60,7 +63,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
           </Col>
           <Col md="6">
             <label>DATA</label>
-            <Input id="date" type="date" />
+            <Input id="date" type="date" required />
           </Col>
           <Col md="6">
             <label>MODALIDADE</label>
@@ -69,6 +72,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               type="select"
               className="form-control"
               defaultValue={""}
+              required
             >
               <option disabled hidden value="">
                 SELECIONE
@@ -84,6 +88,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               type="select"
               className="form-control"
               defaultValue={""}
+              required
             >
               <option disabled hidden value="">
                 SELECIONE
@@ -99,6 +104,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               type="number"
               min={0}
               placeholder="DURAÇÃO EM MINUTOS"
+              required
             />
           </Col>
           <Col md="6">
@@ -109,6 +115,7 @@ const ModalCreate = ({ opened, setOpened, confirmAction }) => {
               min={0}
               max={11}
               placeholder="JOGADORES POR TIME"
+              required
             />
           </Col>
         </Row>

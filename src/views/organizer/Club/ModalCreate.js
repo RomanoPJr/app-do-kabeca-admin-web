@@ -107,7 +107,7 @@ const ModalCreate = ({
                   onChange={event => setDay(event.target.value.toUpperCase())}
                 >
                   <option value="SEGUNDA-FEIRA">SEGUNDA-FEIRA</option>
-                  <option value="TERCA-FEIRA">TERÇA-FEIRA</option>
+                  <option value="TERÇA-FEIRA">TERÇA-FEIRA</option>
                   <option value="QUARTA-FEIRA">QUARTA-FEIRA</option>
                   <option value="QUINTA-FEIRA">QUINTA-FEIRA</option>
                   <option value="SEXTA-FEIRA">SEXTA-FEIRA</option>
@@ -167,7 +167,7 @@ const ModalCreate = ({
                   Logotipo da Pelada (Tamanho Recomendado: 512px x 512px)
                 </label>
                 <UploadInput
-                  text="Upload"
+                  text="UPLOAD"
                   onLoad={base64 => {
                     setLogoUrl(base64);
                   }}
@@ -175,10 +175,13 @@ const ModalCreate = ({
               </Col>
             </Row>
             <div className="custom-modal-footer">
-              <Button color="secondary" onClick={() => setOpened(!opened)}>
+              <Button
+                className="btn btn-close-modal"
+                onClick={() => setOpened(!opened)}
+              >
                 FECHAR
               </Button>
-              <Button type="submit" color="primary" disabled={loading}>
+              <Button className="btn btn-save" type="submit" disabled={loading}>
                 {loading && <LoadingSpinner />}
                 SALVAR
               </Button>

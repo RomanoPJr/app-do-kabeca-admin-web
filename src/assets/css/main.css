@@ -133,3 +133,9 @@ input,
 select {
   color: white !important;
 }
+
+.form-control[disabled] {
+  background-color: #e9ecef !important;
+  border-color: #e9ecef !important;
+  color: #979797 !important;
+}

@@ -9,11 +9,11 @@ import "./assets/css/main.css";
 import "./assets/demo/demo.css";
 import "./assets/css/nucleo-icons.css";
 import "./assets/scss/black-dashboard-react.scss";
-import "./assets/css/btn-style.css";
 
 import Login from "./layouts/Login/index";
 import SignIn from "./layouts/SignIn/SignIn.js";
 import AdminLayout from "./layouts/Admin/Admin";
+import "./assets/css/btn-style.css";
 
 import history from "./history";
 

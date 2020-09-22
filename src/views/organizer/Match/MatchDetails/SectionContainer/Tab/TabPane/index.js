@@ -9,7 +9,7 @@ import PlayerActions from "../../../../../../../store/player/player.actions";
 import MatchEscalationActions from "../../../../../../../store/match_escalation/match_escalation.actions";
 import MatchEventActions from "../../../../../../../store/match_event/match_event.actions";
 import ModalEventRemove from "../../../Modals/ModalEventRemove";
-import ModalClone from "../../../../ModalClone";
+import ModalClone from "../../../Modals/ModalClone";
 import ModalEscalation from "../../../Modals/ModalEscalation";
 import ModalEscalationRemove from "../../../Modals/ModalEscalationRemove";
 import ModalEscalationReplace from "../../../Modals/ModalEscalationReplace";
@@ -181,6 +181,7 @@ const TabPaneContainainer = ({
   const handleSubmitForm = async form => {
     await updateMatch(form);
     setModalCreateOpened(false);
+    history.replace("/organizer/matches");
     await loadMatchDetails();
   };
 
@@ -204,6 +205,8 @@ const TabPaneContainainer = ({
       team_a: "TIME A",
       team_b: "TIME B"
     });
+
+    setModalCloneOpened(false);
   };
 
   return (

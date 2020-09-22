@@ -81,3 +81,13 @@
   background-image: none !important;
   background-color: #e0c422 !important;
 }
+
+.btn-upload,
+.btn-upload:hover,
+.btn-upload:active,
+.btn-upload:focus,
+.btn-upload:active:hover {
+  background-image: none !important;
+  background-color: #e9ecef !important;
+  /* color: #979797 !important; */
+}

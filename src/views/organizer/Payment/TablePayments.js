@@ -30,7 +30,10 @@ const PaymentsTable = ({
           render: ({ data }) => (
             <p
               style={{
-                color: data.due_value === data.paid_value ? "#ffffffb3" : "red"
+                color:
+                  parseFloat(data.due_value) === parseFloat(data.paid_value)
+                    ? "#ffffffb3"
+                    : "red"
               }}
             >
               {formatMoney(data.paid_value || 0)}

@@ -72,7 +72,7 @@ const create = async payload => {
         type: typesMatch.CREATE_SUCCESS,
         payload: response.data.data
       });
-      history.push(`/organizer/matches/${response.data.data.id}`);
+      history.push(`/organizer/matches/${response.data.data.date}`);
       toast.success(response.data.message);
     })
     .catch(error => {
@@ -80,7 +80,7 @@ const create = async payload => {
         type: typesMatch.CREATE_FAILURE,
         payload: getError(error)
       });
-      toast.error(error.data.message);
+      toast.error(error.response.data.message);
     });
 };
 
@@ -100,7 +100,7 @@ const update = async payload => {
         type: typesMatch.UPDATE_FAILURE,
         payload: getError(error)
       });
-      toast.error(error.response.data.error);
+      toast.error(error.response.data.message);
     });
 };
 
