@@ -12,7 +12,6 @@ import MatchActions from "../../../store/match/match.actions.js";
 import CardHeader from "../../../components/CardHeader/index.js";
 import ModalConfirmatedPlayers from "./ModalConfirmatedPlayers.js";
 import EditButton from "../../../components/ActionButtons/EditButton.js";
-import DeleteButton from "../../../components/ActionButtons/DeleteButton.js";
 
 const Match = ({ history, matchDetail, createMatch, fetchMatchList }) => {
   const [currentData, setCurrentData] = useState();

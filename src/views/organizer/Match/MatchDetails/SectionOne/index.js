@@ -1,5 +1,11 @@
 import React from "react";
-import { FaEdit, FaCopy, FaTrash } from "react-icons/fa";
+import { FaEdit, FaCopy, FaTrash, FaAlignJustify } from "react-icons/fa";
+import {
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown
+} from "reactstrap";
 
 export default ({
   setModalDeleteMatchOpened,
@@ -8,27 +14,39 @@ export default ({
 }) => {
   return (
     <div className="step-three-container" style={{ marginBottom: 35 }}>
-      <button
-        className="btn btn-save"
-        onClick={() => setModalCreateOpened(true)}
-      >
-        <FaEdit />
-        {`EDITAR`}
-      </button>
-      <button
-        className="btn btn-start"
-        onClick={() => setModalCloneOpened(true)}
-      >
-        <FaCopy />
-        {`CLONAR`}
-      </button>
-      <button
-        className="btn delete-button"
-        onClick={() => setModalDeleteMatchOpened(true)}
-      >
-        <FaTrash />
-        {`DELETAR`}
-      </button>
+      <UncontrolledDropdown>
+        <DropdownToggle
+          caret
+          data-toggle="dropdown"
+          className="btn-match-actions"
+        >
+          <FaAlignJustify />
+          AÇÕES
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem
+            className="dropMatchItem"
+            onClick={() => setModalCreateOpened(true)}
+          >
+            <FaEdit />
+            {` EDITAR`}
+          </DropdownItem>
+          <DropdownItem
+            className="dropMatchItem"
+            onClick={() => setModalCloneOpened(true)}
+          >
+            <FaCopy />
+            {` CLONAR`}
+          </DropdownItem>
+          <DropdownItem
+            className="dropMatchItem"
+            onClick={() => setModalDeleteMatchOpened(true)}
+          >
+            <FaTrash />
+            {` DELETAR`}
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
     </div>
   );
 };

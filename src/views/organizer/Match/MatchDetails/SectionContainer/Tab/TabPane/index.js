@@ -20,6 +20,7 @@ import { useCallback } from "react";
 import history from "../../../../../../../history";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Timer } from "./Timer";
 
 const TabPaneContainainer = ({
   id,
@@ -50,6 +51,26 @@ const TabPaneContainainer = ({
   const [modalEscalationOpened, setModalEscalationOpened] = useState(false);
   const [modalEventRemoveOpened, setModalEventRemoveOpened] = useState(false);
   const [modalDeleteMatchOpened, setModalDeleteMatchOpened] = useState(false);
+  const [minute, setMinute] = useState(50);
+  const [timer, setTimer] = useState();
+  const [formatedTimer, setFormatedTimer] = useState();
+
+  //  useEffect(() => {
+  //    if (round === "1º TEMPO") {
+  //      setTimer(matchDetails.timer_1);
+  //    } else {
+  //      setTimer(matchDetails.timer_2);
+  //    }
+  //  }, []);
+
+  //  useEffect(() => {
+  //    if (timer) {
+  //      let start = moment(timer);
+  //      let end = moment(new Date());
+  //      let diff = end.diff(start);
+  //      setFormatedTimer(moment.utc(diff).format("mm:ss"));
+  //    }
+  //  }, [timer]);
 
   useEffect(() => {
     loadMatchDetails();
@@ -221,6 +242,15 @@ const TabPaneContainainer = ({
           setModalDeleteMatchOpened={setModalDeleteMatchOpened}
           setModalCloneOpened={setModalCloneOpened}
           setModalCreateOpened={setModalCreateOpened}
+        />
+        <Timer
+          timer={timer}
+          round={"1º TEMPO"}
+          matchDetails={matchDetails}
+          handleStartTime={handleStartTime}
+          formatedTimer={formatedTimer}
+          minute={minute}
+          setMinute={setMinute}
         />
         <SectionTwo
           activeTab={activeTab}
