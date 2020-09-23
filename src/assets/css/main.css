@@ -139,3 +139,16 @@ select {
   border-color: #e9ecef !important;
   color: #979797 !important;
 }
+
+.nav-item > .nav-link {
+  cursor: pointer;
+}
+
+.nav-item > .active.nav-link,
+.nav-item > .active.nav-link:hover {
+  cursor: pointer;
+  background-color: white !important;
+  border-color: white !important;
+  color: #27293d;
+  font-weight: 600;
+}

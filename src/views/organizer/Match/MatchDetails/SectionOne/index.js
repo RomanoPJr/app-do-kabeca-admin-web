@@ -1,9 +1,8 @@
 import React from "react";
-import { FaEdit, FaCopy } from "react-icons/fa";
-import { GiWhistle } from "react-icons/gi";
+import { FaEdit, FaCopy, FaTrash } from "react-icons/fa";
 
 export default ({
-  setModalStartMatchOpened,
+  setModalDeleteMatchOpened,
   setModalCloneOpened,
   setModalCreateOpened
 }) => {
@@ -21,14 +20,14 @@ export default ({
         onClick={() => setModalCloneOpened(true)}
       >
         <FaCopy />
-        {`NOVA PARTIDA`}
+        {`CLONAR`}
       </button>
       <button
-        className="btn btn-start"
-        onClick={() => setModalStartMatchOpened(true)}
+        className="btn delete-button"
+        onClick={() => setModalDeleteMatchOpened(true)}
       >
-        <GiWhistle size={20} />
-        {`FINALIZAR PARTIDA`}
+        <FaTrash />
+        {`DELETAR`}
       </button>
     </div>
   );

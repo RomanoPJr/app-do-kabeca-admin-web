@@ -9,6 +9,7 @@ import PlayerActions from "../../../../../../../store/player/player.actions";
 import MatchEscalationActions from "../../../../../../../store/match_escalation/match_escalation.actions";
 import MatchEventActions from "../../../../../../../store/match_event/match_event.actions";
 import ModalEventRemove from "../../../Modals/ModalEventRemove";
+import ModalDeleteMatch from "../../../Modals/ModalDeleteMatch";
 import ModalClone from "../../../Modals/ModalClone";
 import ModalEscalation from "../../../Modals/ModalEscalation";
 import ModalEscalationRemove from "../../../Modals/ModalEscalationRemove";
@@ -35,20 +36,20 @@ const TabPaneContainainer = ({
   createEscalation,
   updateEscalation,
   createMatchEvent,
-  removeMatchEvent
+  removeMatchEvent,
+  removeMatch,
+  matchLoading
 }) => {
-  const [modalStartMatchOpened, setModalStartMatchOpened] = useState(false);
-  const [modalCreateOpened, setModalCreateOpened] = useState(false);
-
   const [activeTab, setActiveTab] = useState("1º TEMPO");
   const [currentPosition, setCurrentPosition] = useState();
   const [modalEditOpened, setModalEditOpened] = useState(false);
   const [modalCloneOpened, setModalCloneOpened] = useState(false);
   const [modalRemoveOpened, setModalRemoveOpened] = useState(false);
-  const [modalEventsOpened, setModalEventsOpened] = useState(false);
+  const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [modalReplaceOpened, setModalReplaceOpened] = useState(false);
   const [modalEscalationOpened, setModalEscalationOpened] = useState(false);
   const [modalEventRemoveOpened, setModalEventRemoveOpened] = useState(false);
+  const [modalDeleteMatchOpened, setModalDeleteMatchOpened] = useState(false);
 
   useEffect(() => {
     loadMatchDetails();
@@ -113,7 +114,6 @@ const TabPaneContainainer = ({
     });
 
     await loadMatchDetails();
-    setModalEventsOpened(false);
     setModalEditOpened(false);
   });
 
@@ -126,7 +126,6 @@ const TabPaneContainainer = ({
     });
 
     await loadMatchDetails();
-    setModalEventsOpened(false);
     setModalEditOpened(false);
   });
 
@@ -166,7 +165,6 @@ const TabPaneContainainer = ({
     });
 
     await loadMatchDetails();
-    setModalEventsOpened(false);
     setModalEditOpened(false);
   });
 
@@ -177,6 +175,12 @@ const TabPaneContainainer = ({
     });
     await loadMatchDetails();
   });
+
+  const handleDeleteMatch = async () => {
+    await removeMatch(match.id);
+    setModalDeleteMatchOpened(false);
+    history.replace("/organizer/matches");
+  };
 
   const handleSubmitForm = async form => {
     await updateMatch(form);
@@ -214,9 +218,9 @@ const TabPaneContainainer = ({
       <TabPane tabId={id} style={{ paddingTop: 25 }}>
         <SectionOne
           match={match}
+          setModalDeleteMatchOpened={setModalDeleteMatchOpened}
           setModalCloneOpened={setModalCloneOpened}
           setModalCreateOpened={setModalCreateOpened}
-          setModalStartMatchOpened={setModalStartMatchOpened}
         />
         <SectionTwo
           activeTab={activeTab}
@@ -299,12 +303,22 @@ const TabPaneContainainer = ({
           setOpened={setModalEventRemoveOpened}
         />
       )}
+
+      {modalDeleteMatchOpened && (
+        <ModalDeleteMatch
+          loading={matchLoading}
+          opened={modalDeleteMatchOpened}
+          setOpened={setModalDeleteMatchOpened}
+          confirmAction={handleDeleteMatch}
+        />
+      )}
     </>
   );
 };
 
 const mapStateToProps = state => ({
   matchDetails: state.match.data,
+  matchLoading: state.match.loading,
   players: state.player.data,
   events: state.event.data,
   matches: state.match.list
@@ -320,6 +334,7 @@ const mapDispatchToProps = dispatch => ({
   createEscalation: payload => MatchEscalationActions.create(payload),
   createMatchEvent: payload => MatchEventActions.create(payload),
   removeMatchEvent: id => MatchEventActions.remove(id),
+  removeMatch: id => MatchActions.remove(id),
   updateEscalation: payload => MatchEscalationActions.update(payload),
   updateMatch: payload => MatchActions.update(payload)
 });

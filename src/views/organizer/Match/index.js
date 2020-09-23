@@ -6,7 +6,6 @@ import { FaListOl, FaPaperPlane } from "react-icons/fa";
 
 import "./styles.css";
 import ModalCreate from "./ModalCreate.js";
-import ModalDelete from "./ModalDelete.js";
 import Container from "../../../components/Container";
 import Table from "../../../components/Table/index.js";
 import MatchActions from "../../../store/match/match.actions.js";
@@ -15,25 +14,16 @@ import ModalConfirmatedPlayers from "./ModalConfirmatedPlayers.js";
 import EditButton from "../../../components/ActionButtons/EditButton.js";
 import DeleteButton from "../../../components/ActionButtons/DeleteButton.js";
 
-const Match = ({
-  history,
-  matchDetail,
-  createMatch,
-  removeMatch,
-  fetchMatchList
-}) => {
+const Match = ({ history, matchDetail, createMatch, fetchMatchList }) => {
   const [currentData, setCurrentData] = useState();
   const [pageNumber, setPageNumber] = useState(1);
   const [modalCreateOpened, setModalCreateOpened] = useState();
-  const [modalDeleteOpened, setModalDeleteOpened] = useState();
   const [modalConfirmatedOpened, setModalConfirmatedOpened] = useState();
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipShareOpen, setShareTooltipOpen] = useState(false);
 
   useEffect(() => {
-    fetchMatchList({
-      pageNumber
-    });
+    fetchMatchList({ pageNumber });
   }, []);
 
   const toggle = () => setTooltipOpen(!tooltipOpen);
@@ -41,14 +31,6 @@ const Match = ({
 
   const handleSaveAction = async data => {
     await createMatch(data);
-  };
-
-  const handleDelete = async id => {
-    await removeMatch(id);
-    await fetchMatchList({
-      pageNumber
-    });
-    setModalDeleteOpened(false);
   };
 
   return (
@@ -75,7 +57,6 @@ const Match = ({
                   tooltipOpen={tooltipOpen}
                   setCurrentData={setCurrentData}
                   tooltipShareOpen={tooltipShareOpen}
-                  setModalDeleteOpened={setModalDeleteOpened}
                   setModalCreateOpened={setModalCreateOpened}
                   setModalConfirmatedOpened={setModalConfirmatedOpened}
                 />
@@ -97,15 +78,6 @@ const Match = ({
           opened={modalCreateOpened}
           setOpened={setModalCreateOpened}
           confirmAction={handleSaveAction}
-        />
-      )}
-      {modalDeleteOpened && (
-        <ModalDelete
-          data={currentData}
-          loading={matchDetail.loading}
-          opened={modalDeleteOpened}
-          setOpened={setModalDeleteOpened}
-          confirmAction={handleDelete}
         />
       )}
     </Container>
@@ -158,12 +130,6 @@ const ActionColumn = ({
         history.push(`/organizer/matches/${data.date}`);
       }}
     />
-    <DeleteButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalDeleteOpened(true);
-      }}
-    />
   </div>
 );
 
@@ -172,7 +138,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  removeMatch: id => MatchActions.remove(id),
   createMatch: payload => MatchActions.create(payload),
   fetchMatchList: payload => dispatch(MatchActions.fetchList(payload))
 });

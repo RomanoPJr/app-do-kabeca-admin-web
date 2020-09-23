@@ -23,13 +23,22 @@ const MatchDetails = ({ match, matches, history, fetchByDate }) => {
       history.replace("/organizer/matches");
     }
   };
+
   const data = moment(match.params.date).format("DD/MM/yyyy");
+
   return (
     <>
       <Container className="super-container" loading={matches.length === 0}>
         {matches.length > 0 && (
           <Card>
-            <h3 style={{ margin: 0, padding: 15, alignSelf: "center" }}>
+            <h3
+              style={{
+                margin: 0,
+                marginTop: 25,
+                padding: 15,
+                alignSelf: "center"
+              }}
+            >
               PARTIDAS EM: {`${data}`}
             </h3>
             <CardBody>
