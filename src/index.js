@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import store from "./store";
 import { Provider } from "react-redux";
 
+import "./assets/fonts/DS-DIGI.ttf";
+import "./assets/fonts/DS-DIGIB.ttf";
 import "./assets/css/main.css";
 import "./assets/demo/demo.css";
 import "./assets/css/nucleo-icons.css";

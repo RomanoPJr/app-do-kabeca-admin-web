@@ -1,0 +1,82 @@
+.section-one-container {
+  /* background-image: url("../../../../../assets/img/campo.jpg"); */
+  background-image: url("../../../../../assets/img/campo.jpg");
+  background-repeat: no-repeat;
+  background-position: center -140px;
+  background-size: cover;
+  padding-top: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin-bottom: 50px;
+}
+
+.container-scoreboard {
+  border-color: yellow;
+  background-color: black;
+  border-style: solid;
+  border-radius: 10px;
+  border-width: 6px;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
+.scoreboard-timer-container {
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  align-items: center;
+  background-color: #27293d;
+  justify-content: space-around;
+}
+
+.scoreboard-score-container {
+  justify-content: space-around;
+  text-align: center;
+}
+
+.scoreboard-timer-1 {
+}
+.scoreboard-timer-2 {
+  font-family: "DsDigi";
+  font-size: 60px;
+  color: red;
+  line-height: 1;
+}
+.scoreboard-timer-3 {
+  font-size: 46px;
+  font-style: italic;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+}
+
+.scoreboard-score-number {
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: yellow;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.scoreboard-score-number-text {
+  font-family: "DsDigi";
+  font-size: 120px;
+  color: #13fd2e !important;
+  line-height: 1;
+}
+
+.scoreboard-score-separator {
+  display: flex;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+}

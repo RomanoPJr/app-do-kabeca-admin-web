@@ -1,52 +1,74 @@
 import React from "react";
-import { FaEdit, FaCopy, FaTrash, FaAlignJustify } from "react-icons/fa";
-import {
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown
-} from "reactstrap";
 
-export default ({
-  setModalDeleteMatchOpened,
-  setModalCloneOpened,
-  setModalCreateOpened
-}) => {
+import "./styles.css";
+import BtnActions from "./BtnAction";
+import { Col, Row } from "reactstrap";
+import { FaPlayCircle } from "react-icons/fa";
+
+export default () => {
   return (
-    <div className="step-three-container" style={{ marginBottom: 35 }}>
-      <UncontrolledDropdown>
-        <DropdownToggle
-          caret
-          data-toggle="dropdown"
-          className="btn-match-actions"
-        >
-          <FaAlignJustify />
-          AÇÕES
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem
-            className="dropMatchItem"
-            onClick={() => setModalCreateOpened(true)}
-          >
-            <FaEdit />
-            {` EDITAR`}
-          </DropdownItem>
-          <DropdownItem
-            className="dropMatchItem"
-            onClick={() => setModalCloneOpened(true)}
-          >
-            <FaCopy />
-            {` CLONAR`}
-          </DropdownItem>
-          <DropdownItem
-            className="dropMatchItem"
-            onClick={() => setModalDeleteMatchOpened(true)}
-          >
-            <FaTrash />
-            {` DELETAR`}
-          </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
+    <div className="section-one-container">
+      <Row style={{ justifyContent: "center" }}>
+        <Col md={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+          <BtnActions />
+        </Col>
+        <Col md={6} style={{ marginTop: 30 }}>
+          <div className="container-scoreboard">
+            <Row className="scoreboard-timer-container">
+              <Col
+                md={3}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: 0
+                }}
+              >
+                <FaPlayCircle color="white" size={40} />
+              </Col>
+              <Col
+                md={6}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: 0
+                }}
+              >
+                <div className="scoreboard-timer-2">00:00</div>
+              </Col>
+              <Col
+                md={3}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: 0
+                }}
+              >
+                <div className="scoreboard-timer-3">1T</div>
+              </Col>
+            </Row>
+            <Row className="scoreboard-score-container">
+              <Col md={5}>
+                <div className="scoreboard-score-number">
+                  <p style={{ fontWeight: "bold" }}>TIME A</p>
+                  <p className="scoreboard-score-number-text">0</p>
+                </div>
+              </Col>
+              <Col md={2} className="scoreboard-score-separator">
+                X
+              </Col>
+              <Col md={5}>
+                <div className="scoreboard-score-number">
+                  <p style={{ fontWeight: "bold" }}>TIME B</p>
+                  <p className="scoreboard-score-number-text">0</p>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };

@@ -39,13 +39,6 @@ select {
   background-color: rgb(208, 255, 137);
 }
 
-.step-three-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
 .timer-container {
   display: flex;
   justify-content: center;

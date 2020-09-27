@@ -29,7 +29,6 @@ export default ({
   return (
     matchDetails && (
       <>
-        <Scoreboard matchDetails={matchDetails} />
         <Nav tabs>
           <TabHeader
             round={rounds.round_1}
@@ -68,29 +67,5 @@ export default ({
         </TabContent>
       </>
     )
-  );
-};
-
-const Scoreboard = ({ matchDetails }) => {
-  return (
-    <Row>
-      <Col
-        md={12}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column"
-        }}
-      >
-        <p>PLACAR</p>
-        {matchDetails && matchDetails.placar ? (
-          <h1
-            style={{ fontSize: 55 }}
-          >{`${matchDetails.placar.team_a_goals} X ${matchDetails.placar.team_b_goals}`}</h1>
-        ) : (
-          <h1 style={{ fontSize: 55 }}>0 x 0</h1>
-        )}
-      </Col>
-    </Row>
   );
 };
