@@ -12,7 +12,7 @@ export default () => {
         <Col md={12} style={{ display: "flex", justifyContent: "flex-end" }}>
           <BtnActions />
         </Col>
-        <Col md={6} style={{ marginTop: 30 }}>
+        <Col md={5} style={{ marginTop: 30 }}>
           <div className="container-scoreboard">
             <Row className="scoreboard-timer-container">
               <Col
@@ -24,7 +24,7 @@ export default () => {
                   margin: 0
                 }}
               >
-                <FaPlayCircle color="white" size={40} />
+                <FaPlayCircle color="white" size={35} />
               </Col>
               <Col
                 md={6}
@@ -52,7 +52,6 @@ export default () => {
             <Row className="scoreboard-score-container">
               <Col md={5}>
                 <div className="scoreboard-score-number">
-                  <p style={{ fontWeight: "bold" }}>TIME A</p>
                   <p className="scoreboard-score-number-text">0</p>
                 </div>
               </Col>
@@ -61,7 +60,6 @@ export default () => {
               </Col>
               <Col md={5}>
                 <div className="scoreboard-score-number">
-                  <p style={{ fontWeight: "bold" }}>TIME B</p>
                   <p className="scoreboard-score-number-text">0</p>
                 </div>
               </Col>
