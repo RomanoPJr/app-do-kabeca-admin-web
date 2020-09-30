@@ -4,8 +4,18 @@ import "./styles.css";
 import BtnActions from "./BtnAction";
 import { Col, Row } from "reactstrap";
 import { FaPlayCircle } from "react-icons/fa";
+import { useState } from "react";
+import { useEffect } from "react";
 
-export default () => {
+export default ({ matchDetails }) => {
+  const [placar, setPlacar] = useState();
+
+  useEffect(() => {
+    if (matchDetails) {
+      setPlacar(matchDetails.placar);
+    }
+  }, [matchDetails]);
+
   return (
     <div className="section-one-container">
       <Row style={{ justifyContent: "center" }}>
@@ -52,7 +62,9 @@ export default () => {
             <Row className="scoreboard-score-container">
               <Col md={5}>
                 <div className="scoreboard-score-number">
-                  <p className="scoreboard-score-number-text">0</p>
+                  <p className="scoreboard-score-number-text">
+                    {placar ? placar.team_a_goals : 0}
+                  </p>
                 </div>
               </Col>
               <Col md={2} className="scoreboard-score-separator">
@@ -60,7 +72,9 @@ export default () => {
               </Col>
               <Col md={5}>
                 <div className="scoreboard-score-number">
-                  <p className="scoreboard-score-number-text">0</p>
+                  <p className="scoreboard-score-number-text">
+                    {placar ? placar.team_b_goals : 0}
+                  </p>
                 </div>
               </Col>
             </Row>

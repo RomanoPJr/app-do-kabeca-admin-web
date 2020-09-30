@@ -216,12 +216,7 @@ const TabPaneContainainer = ({
   return (
     <>
       <TabPane tabId={id}>
-        <SectionOne
-          match={match}
-          setModalDeleteMatchOpened={setModalDeleteMatchOpened}
-          setModalCloneOpened={setModalCloneOpened}
-          setModalCreateOpened={setModalCreateOpened}
-        />
+        <SectionOne matchDetails={matchDetails} />
         <SectionTwo
           activeTab={activeTab}
           matchDetails={matchDetails}
