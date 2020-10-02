@@ -1,82 +1,51 @@
 .section-one-container {
-  /* background-image: url("../../../../../assets/img/campo.jpg"); */
-  background-image: url("../../../../../assets/img/campo.jpg");
-  background-repeat: no-repeat;
-  background-position: center -170px;
-  background-size: cover;
   padding-top: 25px;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-bottom: 50px;
-}
-
-.container-scoreboard {
-  border-color: yellow;
-  background-color: black;
-  border-style: solid;
-  border-radius: 10px;
-  border-width: 6px;
-  overflow: hidden;
-  margin-bottom: 50px;
-}
-
-.scoreboard-timer-container {
-  display: flex;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  align-items: center;
-  background-color: #27293d;
-  justify-content: space-around;
-}
-
-.scoreboard-score-container {
-  justify-content: space-around;
-  text-align: center;
-}
-
-.scoreboard-timer-1 {
-}
-.scoreboard-timer-2 {
-  font-family: "DsDigi";
-  font-size: 55px;
-  color: red;
-  line-height: 1;
-}
-.scoreboard-timer-3 {
-  font-size: 35px;
-  font-style: italic;
-  font-weight: bold;
-  color: white;
-  line-height: 1;
-}
-
-.scoreboard-score-number {
-  display: inline-flex;
-  flex-direction: column;
-  border-radius: 10px;
-  padding-top: 5px;
-  border-style: solid;
-  border-width: 4px;
-  border-color: yellow;
-  margin-top: 25px;
   margin-bottom: 25px;
-  text-align: center;
-  min-width: 100px;
-  max-width: 130px;
 }
 
-.scoreboard-score-number-text {
-  font-family: "DsDigi";
-  font-size: 110px;
-  color: #13fd2e !important;
-  line-height: 1;
+.team_a_container {
+  height: 50px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(42, 42, 42, 1) 37%,
+    rgba(0, 0, 0, 1) 39%
+  );
+  margin-bottom: 30px;
 }
-
-.scoreboard-score-separator {
-  display: flex;
-  color: white;
-  font-size: 40px;
-  font-weight: bold;
+.vs_container {
+  height: 65px;
+  position: absolute;
+  width: 150px;
+  border-radius: 5px;
+  z-index: 999999999999;
+  background: linear-gradient(
+    130deg,
+    rgba(240, 203, 108, 1) 0%,
+    rgba(183, 126, 38, 1) 50%,
+    rgba(240, 203, 108, 1) 100%
+  );
+  margin-bottom: 30px;
   justify-content: center;
   align-items: center;
+  display: flex;
+  font-weight: bold;
+  font-size: 25px;
+  color: linear-gradient(
+    130deg,
+    rgba(240, 203, 108, 1) 0%,
+    rgba(183, 126, 38, 1) 50%,
+    rgba(240, 203, 108, 1) 100%
+  );
+}
+.vs-text {
+  text-transform: uppercase;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgb(66, 66, 66) 50%,
+    rgba(0, 0, 0, 1) 40%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
