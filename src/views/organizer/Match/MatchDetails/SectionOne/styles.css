@@ -1,13 +1,16 @@
 .section-one-container {
-  /* background-image: url("../../../../../assets/img/campo.jpg"); */
-  background-image: url("../../../../../assets/img/campo.jpg");
   background-repeat: no-repeat;
   background-position: center -170px;
   background-size: cover;
   padding-top: 25px;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-bottom: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media screen and (max-width: 600px) {
+  .container-scoreboard {
+    width: 300px;
+  }
 }
 
 .container-scoreboard {
@@ -15,15 +18,16 @@
   background-color: black;
   border-style: solid;
   border-radius: 10px;
-  border-width: 6px;
+  border-width: 4px;
   overflow: hidden;
-  margin-bottom: 50px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  width: 300px;
 }
 
 .scoreboard-timer-container {
   display: flex;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
   align-items: center;
   background-color: #27293d;
   justify-content: space-around;
@@ -32,18 +36,18 @@
 .scoreboard-score-container {
   justify-content: space-around;
   text-align: center;
+  display: flex;
+  flex-direction: row;
 }
 
-.scoreboard-timer-1 {
-}
 .scoreboard-timer-2 {
   font-family: "DsDigi";
-  font-size: 55px;
+  font-size: 30px;
   color: red;
   line-height: 1;
 }
 .scoreboard-timer-3 {
-  font-size: 35px;
+  font-size: 25px;
   font-style: italic;
   font-weight: bold;
   color: white;
@@ -51,32 +55,36 @@
 }
 
 .scoreboard-score-number {
-  display: inline-flex;
-  flex-direction: column;
   border-radius: 10px;
   padding-top: 5px;
   border-style: solid;
-  border-width: 4px;
+  border-width: 2px;
   border-color: yellow;
   margin-top: 25px;
   margin-bottom: 25px;
-  text-align: center;
-  min-width: 100px;
-  max-width: 130px;
 }
 
 .scoreboard-score-number-text {
   font-family: "DsDigi";
-  font-size: 110px;
+  font-size: 45px;
   color: #13fd2e !important;
   line-height: 1;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .scoreboard-score-separator {
   display: flex;
   color: white;
-  font-size: 40px;
+  font-size: 20px;
   font-weight: bold;
   justify-content: center;
   align-items: center;
+}
+
+.btn-actions {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
 }

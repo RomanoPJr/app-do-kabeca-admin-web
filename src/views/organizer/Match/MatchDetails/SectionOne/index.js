@@ -19,67 +19,29 @@ export default ({ matchDetails }) => {
   return (
     <div className="section-one-container">
       <Row style={{ justifyContent: "center" }}>
-        <Col md={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div className="btn-actions">
           <BtnActions />
-        </Col>
-        <Col md={5} style={{ marginTop: 30 }}>
-          <div className="container-scoreboard">
-            <Row className="scoreboard-timer-container">
-              <Col
-                md={3}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: 0
-                }}
-              >
-                <FaPlayCircle color="white" size={35} />
-              </Col>
-              <Col
-                md={6}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: 0
-                }}
-              >
-                <div className="scoreboard-timer-2">00:00</div>
-              </Col>
-              <Col
-                md={3}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  margin: 0
-                }}
-              >
-                <div className="scoreboard-timer-3">1T</div>
-              </Col>
-            </Row>
-            <Row className="scoreboard-score-container">
-              <Col md={5}>
-                <div className="scoreboard-score-number">
-                  <p className="scoreboard-score-number-text">
-                    {placar ? placar.team_a_goals : 0}
-                  </p>
-                </div>
-              </Col>
-              <Col md={2} className="scoreboard-score-separator">
-                X
-              </Col>
-              <Col md={5}>
-                <div className="scoreboard-score-number">
-                  <p className="scoreboard-score-number-text">
-                    {placar ? placar.team_b_goals : 0}
-                  </p>
-                </div>
-              </Col>
-            </Row>
+        </div>
+        <div className="container-scoreboard">
+          <Row className="scoreboard-timer-container">
+            <FaPlayCircle color="white" size={25} />
+            <div className="scoreboard-timer-2">00:00</div>
+            <div className="scoreboard-timer-3">1T</div>
+          </Row>
+          <div className="scoreboard-score-container">
+            <div className="scoreboard-score-number">
+              <p className="scoreboard-score-number-text">
+                {placar ? placar.team_a_goals : 0}
+              </p>
+            </div>
+            <div className="scoreboard-score-separator">X</div>
+            <div className="scoreboard-score-number">
+              <p className="scoreboard-score-number-text">
+                {placar ? placar.team_b_goals : 0}
+              </p>
+            </div>
           </div>
-        </Col>
+        </div>
       </Row>
     </div>
   );
