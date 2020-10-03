@@ -18,26 +18,29 @@ export default ({ matchDetails }) => {
 
   return (
     <div className="section-one-container">
-      <Row>
-        <Col md={12} style={{ display: "flex", justifyContent: "flex-end" }}>
+      <Row style={{ justifyContent: "center" }}>
+        <div className="btn-actions">
           <BtnActions />
-        </Col>
-      </Row>
-      <Row
-        style={{
-          marginTop: 25,
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <Col md={6} xs={12} style={{ margin: 0, padding: 0 }}>
-          <div className="team_a_container" />
-        </Col>
-        <Col md={6} xs={12} style={{ margin: 0, padding: 0 }}>
-          <div className="team_a_container" />
-        </Col>
-        <div className="vs_container">
-          <div className="vs-text">VS</div>
+        </div>
+        <div className="container-scoreboard">
+          <Row className="scoreboard-timer-container">
+            <FaPlayCircle color="white" size={25} />
+            <div className="scoreboard-timer-2">00:00</div>
+            <div className="scoreboard-timer-3">1T</div>
+          </Row>
+          <div className="scoreboard-score-container">
+            <div className="scoreboard-score-number">
+              <p className="scoreboard-score-number-text">
+                {placar ? placar.team_a_goals : 0}
+              </p>
+            </div>
+            <div className="scoreboard-score-separator">X</div>
+            <div className="scoreboard-score-number">
+              <p className="scoreboard-score-number-text">
+                {placar ? placar.team_b_goals : 0}
+              </p>
+            </div>
+          </div>
         </div>
       </Row>
     </div>
