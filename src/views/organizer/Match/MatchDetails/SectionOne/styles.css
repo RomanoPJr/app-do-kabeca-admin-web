@@ -1,6 +1,7 @@
 .section-one-container {
+  background-image: url("../../../../../assets/img/campo.jpg");
   background-repeat: no-repeat;
-  background-position: center -170px;
+  background-position: center -290px;
   background-size: cover;
   padding-top: 25px;
   padding-left: 15px;
@@ -10,6 +11,9 @@
 @media screen and (max-width: 600px) {
   .container-scoreboard {
     width: 300px;
+  }
+  .section-one-container {
+    background-position: center -10px;
   }
 }
 
@@ -22,7 +26,7 @@
   overflow: hidden;
   margin-top: 25px;
   margin-bottom: 25px;
-  width: 300px;
+  width: 250px;
 }
 
 .scoreboard-timer-container {
@@ -30,7 +34,7 @@
   padding: 15px;
   align-items: center;
   background-color: #27293d;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .scoreboard-score-container {
@@ -60,13 +64,13 @@
   border-style: solid;
   border-width: 2px;
   border-color: yellow;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .scoreboard-score-number-text {
   font-family: "DsDigi";
-  font-size: 45px;
+  font-size: 60px;
   color: #13fd2e !important;
   line-height: 1;
   margin-left: 15px;
@@ -76,7 +80,7 @@
 .scoreboard-score-separator {
   display: flex;
   color: white;
-  font-size: 20px;
+  font-size: 35px;
   font-weight: bold;
   justify-content: center;
   align-items: center;
@@ -87,4 +91,5 @@
   width: 100%;
   align-items: flex-end;
   justify-content: flex-end;
+  margin-right: 5px;
 }

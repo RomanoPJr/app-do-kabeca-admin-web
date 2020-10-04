@@ -7,7 +7,12 @@ import { FaPlayCircle } from "react-icons/fa";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default ({ matchDetails }) => {
+export default ({
+  matchDetails,
+  setModalCreateOpened,
+  setModalCloneOpened,
+  setModalDeleteMatchOpened
+}) => {
   const [placar, setPlacar] = useState();
 
   useEffect(() => {
@@ -20,13 +25,36 @@ export default ({ matchDetails }) => {
     <div className="section-one-container">
       <Row style={{ justifyContent: "center" }}>
         <div className="btn-actions">
-          <BtnActions />
+          <BtnActions
+            setModalCreateOpened={setModalCreateOpened}
+            setModalCloneOpened={setModalCloneOpened}
+            setModalDeleteMatchOpened={setModalDeleteMatchOpened}
+          />
         </div>
         <div className="container-scoreboard">
           <Row className="scoreboard-timer-container">
-            <FaPlayCircle color="white" size={25} />
-            <div className="scoreboard-timer-2">00:00</div>
-            <div className="scoreboard-timer-3">1T</div>
+            <Col
+              md={3}
+              xs={3}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: 0
+              }}
+            >
+              <FaPlayCircle color="white" size={25} />
+            </Col>
+            <Col
+              md={6}
+              xs={6}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <div className="scoreboard-timer-2">00:00</div>
+            </Col>
+            <Col md={3} xs={3}>
+              <div />
+            </Col>
           </Row>
           <div className="scoreboard-score-container">
             <div className="scoreboard-score-number">
