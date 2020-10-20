@@ -7,7 +7,8 @@ import {
   FaRunning,
   FaUserShield,
   FaDollarSign,
-  FaRegHandshake
+  FaRegHandshake,
+  FaNewspaper
 } from "react-icons/fa";
 
 import Club from "./views/organizer/Club";
@@ -17,6 +18,7 @@ import Player from "./views/organizer/Player";
 import Statute from "./views/organizer/Statute";
 import Sponsor from "./views/organizer/Sponsor";
 import Payment from "./views/organizer/Payment";
+import Report from "./views/organizer/Report";
 
 import Admins from "./views/admin/Admins";
 import Organizer from "./views/admin/Organizer";
@@ -110,6 +112,13 @@ var organizer = [
     name: "Financeiro",
     icon: <FaDollarSign size={18} />,
     component: Payment,
+    layout: "/organizer"
+  },
+  {
+    path: "/reports",
+    name: "Relatórios",
+    icon: <FaNewspaper size={18} />,
+    component: Report,
     layout: "/organizer"
   }
 ];
