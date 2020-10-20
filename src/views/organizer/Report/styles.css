@@ -1,0 +1,13 @@
+.event-value-badge {
+  min-width: 36px;
+}
+
+.event-value-badge.green {
+  background-color: #50b504;
+  color: white;
+}
+
+.event-value-badge.red {
+  background-color: #ff1919 !important;
+  color: white;
+}
