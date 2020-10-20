@@ -27,7 +27,7 @@ const pdfColumns = [
     id: "name",
     name: "name",
     prompt: "JOGADOR",
-    width: 200,
+    width: 245,
     align: "left"
   },
   {
@@ -60,9 +60,9 @@ const Relatorio = () => {
 
   const handlePDF = () => {
     console.log("handlePDF");
-    var doc = new jsPDF({ putOnlyUsedFonts: true });
-    doc.text(title, 105, 25, null, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns);
+    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+    doc.text(title, 155, 25, null, null, "center");
+    doc.table(4, 40, listagemExport, pdfColumns, { fontSize: 8, padding: 2 });
     doc.save(title);
   };
 
