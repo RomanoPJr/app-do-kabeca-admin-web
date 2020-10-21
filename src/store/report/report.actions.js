@@ -27,7 +27,7 @@ const jogadores = async payload => {
 };
 
 const financeiro = async payload => {
-  const { data } = await axios().get(`${endpoint}/financeiro`, {
+  const { data } = await axios().get(`${endpoint}/aniversario`, {
     params: {
       pageNumber: payload.pageNumber,
       pageSize: payload.pageSize,
@@ -38,8 +38,37 @@ const financeiro = async payload => {
 
   return data;
 };
+
+const aniversario = async payload => {
+  const { data } = await axios().get(`${endpoint}/aniversario`, {
+    params: {
+      pageNumber: payload.pageNumber,
+      pageSize: payload.pageSize,
+      dateStart: payload.dateStart,
+      dateEnd: payload.dateEnd
+    }
+  });
+
+  return data;
+};
+
+const pontuacaoGeral = async payload => {
+  const { data } = await axios().get(`${endpoint}/pontuacaoGeral`, {
+    params: {
+      pageNumber: payload.pageNumber,
+      pageSize: payload.pageSize,
+      dateStart: payload.dateStart,
+      dateEnd: payload.dateEnd
+    }
+  });
+
+  return data;
+};
+
 export default {
   artilharia,
   jogadores,
-  financeiro
+  financeiro,
+  aniversario,
+  pontuacaoGeral
 };

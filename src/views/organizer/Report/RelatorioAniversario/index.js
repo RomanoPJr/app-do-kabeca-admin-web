@@ -8,18 +8,22 @@ import ReportActions from "../../../../store/report/report.actions";
 import BtnAction from "../Components/BtnAction";
 import { jsPDF } from "jspdf";
 
-const title = "RELATÓRIO FINANCEIRO";
+const title = "RELATÓRIO DE ANIVERSARIANTES";
 
 const columns = [
   { name: "JOGADOR", attribute: "name" },
-  { name: "VALOR DEVIDO", attribute: "due_value" },
-  { name: "VALOR PAGO", attribute: "paid_value" }
+  { name: "DATA", attribute: "date" }
 ];
 
 const csvColumns = [
-  { displayName: "JOGADOR", id: "name" },
-  { displayName: "VALOR DEVIDO", id: "due_value" },
-  { displayName: "VALOR PAGO", id: "paid_value" }
+  {
+    id: "name",
+    displayName: "JOGADOR"
+  },
+  {
+    id: "date",
+    displayName: "DATA"
+  }
 ];
 
 const pdfColumns = [
@@ -27,20 +31,13 @@ const pdfColumns = [
     id: "name",
     name: "name",
     prompt: "JOGADOR",
-    width: 245,
+    width: 200,
     align: "left"
   },
   {
-    id: "due_value",
-    name: "due_value",
-    prompt: "VALOR DEVIDO",
-    width: 70,
-    align: "center"
-  },
-  {
-    id: "paid_value",
-    name: "paid_value",
-    prompt: "VALOR PAGO",
+    id: "date",
+    name: "date",
+    prompt: "DATA",
     width: 70,
     align: "center"
   }
@@ -59,10 +56,9 @@ const Relatorio = () => {
   );
 
   const handlePDF = () => {
-    console.log("handlePDF");
-    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
-    doc.text(title, 155, 25, null, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns, { fontSize: 8, padding: 2 });
+    var doc = new jsPDF({ putOnlyUsedFonts: true });
+    doc.text(title, 105, 25, null, null, "center");
+    doc.table(4, 40, listagemExport, pdfColumns);
     doc.save(title);
   };
 
@@ -74,7 +70,7 @@ const Relatorio = () => {
       dateEnd
     };
 
-    const data = await ReportActions.financeiro(params);
+    const data = await ReportActions.aniversario(params);
     if (data) {
       setListagem(data);
     }
@@ -84,7 +80,7 @@ const Relatorio = () => {
       dateEnd
     };
 
-    const dataExport = await ReportActions.financeiro(paramsExport);
+    const dataExport = await ReportActions.aniversario(paramsExport);
     if (dataExport) {
       setListagemExport(dataExport.data);
     }
@@ -166,9 +162,9 @@ const Relatorio = () => {
                 >
                   <BtnAction
                     title={title}
-                    handlePDF={handlePDF}
                     csvColumns={csvColumns}
                     listagemExport={listagemExport}
+                    handlePDF={handlePDF}
                   />
                 </Col>
               </Row>

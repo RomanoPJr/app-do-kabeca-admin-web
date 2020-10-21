@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Button, Collapse, Input, FormGroup } from "reactstrap";
-import moment from "moment";
+import { Row, Col, Card, Button, Collapse, FormGroup, Input } from "reactstrap";
 import "../styles.css";
 import Table from "../../../../components/Table";
 import CardHeader from "../../../../components/CardHeader";
 import ReportActions from "../../../../store/report/report.actions";
 import BtnAction from "../Components/BtnAction";
 import { jsPDF } from "jspdf";
+import moment from "moment";
 
-const title = "RELATÓRIO FINANCEIRO";
+const title = "RELATÓRIO DE PONTUAÇÃO GERAL";
 
 const columns = [
   { name: "JOGADOR", attribute: "name" },
-  { name: "VALOR DEVIDO", attribute: "due_value" },
-  { name: "VALOR PAGO", attribute: "paid_value" }
+  { name: "POSICAO", attribute: "position" },
+  { name: "QUANTIDADE DE JOGOS", attribute: "qtd_jogos" },
+  { name: "TOTAL DE PONTOS", attribute: "total_pontos" },
+  { name: "VITÓRIAS", attribute: "vitorias" },
+  { name: "EMPATES", attribute: "empates" },
+  { name: "DERROTAS", attribute: "derrotas" }
 ];
 
 const csvColumns = [
   { displayName: "JOGADOR", id: "name" },
-  { displayName: "VALOR DEVIDO", id: "due_value" },
-  { displayName: "VALOR PAGO", id: "paid_value" }
+  { displayName: "POSICAO", id: "position" },
+  { displayName: "QUANTIDADE DE JOGOS", id: "qtd_jogos" },
+  { displayName: "TOTAL DE PONTOS", id: "total_pontos" },
+  { displayName: "VITÓRIAS", id: "vitorias" },
+  { displayName: "EMPATES", id: "empates" },
+  { displayName: "DERROTAS", id: "derrotas" }
 ];
 
 const pdfColumns = [
@@ -27,21 +35,49 @@ const pdfColumns = [
     id: "name",
     name: "name",
     prompt: "JOGADOR",
-    width: 245,
+    width: 140,
     align: "left"
   },
   {
-    id: "due_value",
-    name: "due_value",
-    prompt: "VALOR DEVIDO",
-    width: 70,
+    id: "position",
+    name: "position",
+    prompt: "POSICÃO",
+    width: 40,
     align: "center"
   },
   {
-    id: "paid_value",
-    name: "paid_value",
-    prompt: "VALOR PAGO",
-    width: 70,
+    id: "qtd_jogos",
+    name: "qtd_jogos",
+    prompt: "QUANTIDADE DE JOGOS",
+    width: 40,
+    align: "center"
+  },
+  {
+    id: "total_pontos",
+    name: "total_pontos",
+    prompt: "PONTOS",
+    width: 40,
+    align: "center"
+  },
+  {
+    id: "vitorias",
+    name: "vitorias",
+    prompt: "VITÓRIAS",
+    width: 40,
+    align: "center"
+  },
+  {
+    id: "empates",
+    name: "empates",
+    prompt: "EMPATES",
+    width: 40,
+    align: "center"
+  },
+  {
+    id: "derrotas",
+    name: "derrotas",
+    prompt: "DERROTAS",
+    width: 40,
     align: "center"
   }
 ];
@@ -61,8 +97,11 @@ const Relatorio = () => {
   const handlePDF = () => {
     console.log("handlePDF");
     var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
-    doc.text(title, 155, 25, null, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns, { fontSize: 8, padding: 2 });
+    doc.text(title, 155, 25, { align: "center" }, null, "center");
+    doc.table(4, 40, listagemExport, pdfColumns, {
+      fontSize: 8,
+      padding: 2
+    });
     doc.save(title);
   };
 
@@ -74,17 +113,14 @@ const Relatorio = () => {
       dateEnd
     };
 
-    const data = await ReportActions.financeiro(params);
+    const data = await ReportActions.pontuacaoGeral(params);
     if (data) {
       setListagem(data);
     }
 
-    const paramsExport = {
-      dateStart,
-      dateEnd
-    };
+    const paramsExport = {};
 
-    const dataExport = await ReportActions.financeiro(paramsExport);
+    const dataExport = await ReportActions.pontuacaoGeral(paramsExport);
     if (dataExport) {
       setListagemExport(dataExport.data);
     }
