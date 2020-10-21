@@ -108,7 +108,7 @@ const Relatorio = () => {
   const handleListagem = async () => {
     const params = {
       pageNumber,
-      pageSize: 5,
+      pageSize: 10,
       dateStart,
       dateEnd
     };
