@@ -51,9 +51,24 @@ const aniversario = async payload => {
 
   return data;
 };
+
+const pontuacaoGeral = async payload => {
+  const { data } = await axios().get(`${endpoint}/pontuacaoGeral`, {
+    params: {
+      pageNumber: payload.pageNumber,
+      pageSize: payload.pageSize,
+      dateStart: payload.dateStart,
+      dateEnd: payload.dateEnd
+    }
+  });
+
+  return data;
+};
+
 export default {
   artilharia,
   jogadores,
   financeiro,
-  aniversario
+  aniversario,
+  pontuacaoGeral
 };

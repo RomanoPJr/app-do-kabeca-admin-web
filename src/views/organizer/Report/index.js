@@ -5,6 +5,7 @@ import RelatorioArtilharia from "./RelatorioArtilharia";
 import RelatorioJogadores from "./RelatorioJogadores";
 import RelatorioFinanceiro from "./RelatorioFinanceiro";
 import RelatorioAniversario from "./RelatorioAniversario";
+import RelatorioPontuacaoGeral from "./RelatorioPontuacaoGeral";
 
 const Report = () => {
   return (
@@ -13,6 +14,7 @@ const Report = () => {
       <RelatorioJogadores />
       <RelatorioFinanceiro />
       <RelatorioAniversario />
+      <RelatorioPontuacaoGeral />
     </div>
   );
 };
