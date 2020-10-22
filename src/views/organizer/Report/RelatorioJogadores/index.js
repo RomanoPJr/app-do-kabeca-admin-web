@@ -6,15 +6,20 @@ import CardHeader from "../../../../components/CardHeader";
 import ReportActions from "../../../../store/report/report.actions";
 import BtnAction from "../Components/BtnAction";
 import { jsPDF } from "jspdf";
+import { formatMoney } from "../../../../utils/Currency";
+import { formatPhone } from "../../../../utils/Phone";
 
 const title = "RELATÓRIO DE JOGADORES";
 
 const columns = [
   { name: "JOGADOR", attribute: "name" },
   { name: "POSICAO", attribute: "position" },
-  { name: "MENSALIDADE", attribute: "monthly_payment" },
+  {
+    name: "MENSALIDADE",
+    render: ({ data }) => formatMoney(data.monthly_payment)
+  },
   { name: "E-MAIL", attribute: "email" },
-  { name: "TELEFONE", attribute: "phone" },
+  { name: "TELEFONE", render: ({ data }) => formatPhone(data.phone) },
   { name: "DATA DE NASCIMENTO", attribute: "birth_date" },
   { name: "ENTROU EM", attribute: "created_at" }
 ];
@@ -34,35 +39,28 @@ const pdfColumns = [
     id: "name",
     name: "name",
     prompt: "JOGADOR",
-    width: 140,
+    width: 150,
     align: "left"
   },
   {
     id: "position",
     name: "position",
     prompt: "POSICAO",
-    width: 40,
+    width: 50,
     align: "center"
   },
   {
     id: "monthly_payment",
     name: "monthly_payment",
     prompt: "MENSALIDADE",
-    width: 40,
-    align: "center"
-  },
-  {
-    id: "email",
-    name: "email",
-    prompt: "E-MAIL",
-    width: 40,
+    width: 55,
     align: "center"
   },
   {
     id: "phone",
     name: "phone",
     prompt: "TELEFONE",
-    width: 40,
+    width: 50,
     align: "center"
   },
   {
@@ -88,14 +86,15 @@ const Relatorio = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handlePDF = () => {
-    console.log("handlePDF");
-    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
-    doc.text(title, 155, 25, { align: "center" }, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns, {
-      fontSize: 8,
-      padding: 2
-    });
-    doc.save(title);
+    if (listagemExport && listagemExport.length > 0) {
+      var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+      doc.text(title, 155, 25, { align: "center" }, null, "center");
+      doc.table(4, 40, listagemExport, pdfColumns, {
+        fontSize: 8,
+        padding: 2
+      });
+      doc.save(title);
+    }
   };
 
   const handleListagem = async () => {
@@ -113,7 +112,12 @@ const Relatorio = () => {
 
     const dataExport = await ReportActions.jogadores(paramsExport);
     if (dataExport) {
-      setListagemExport(dataExport.data);
+      const formatted = dataExport.data.map(i => {
+        i.monthly_payment = formatMoney(i.monthly_payment);
+        i.phone = formatPhone(i.phone);
+        return i;
+      });
+      setListagemExport(formatted);
     }
   };
 

@@ -7,86 +7,15 @@ import ReportActions from "../../../../store/report/report.actions";
 import BtnAction from "../Components/BtnAction";
 import { jsPDF } from "jspdf";
 import moment from "moment";
-
-const title = "RELATÓRIO DE PONTUAÇÃO GERAL";
-
-const columns = [
-  { name: "JOGADOR", attribute: "name" },
-  { name: "POSICAO", attribute: "position" },
-  { name: "QUANTIDADE DE JOGOS", attribute: "qtd_jogos" },
-  { name: "TOTAL DE PONTOS", attribute: "total_pontos" },
-  { name: "VITÓRIAS", attribute: "vitorias" },
-  { name: "EMPATES", attribute: "empates" },
-  { name: "DERROTAS", attribute: "derrotas" }
-];
-
-const csvColumns = [
-  { displayName: "JOGADOR", id: "name" },
-  { displayName: "POSICAO", id: "position" },
-  { displayName: "QUANTIDADE DE JOGOS", id: "qtd_jogos" },
-  { displayName: "TOTAL DE PONTOS", id: "total_pontos" },
-  { displayName: "VITÓRIAS", id: "vitorias" },
-  { displayName: "EMPATES", id: "empates" },
-  { displayName: "DERROTAS", id: "derrotas" }
-];
-
-const pdfColumns = [
-  {
-    id: "name",
-    name: "name",
-    prompt: "JOGADOR",
-    width: 140,
-    align: "left"
-  },
-  {
-    id: "position",
-    name: "position",
-    prompt: "POSICÃO",
-    width: 40,
-    align: "center"
-  },
-  {
-    id: "qtd_jogos",
-    name: "qtd_jogos",
-    prompt: "QUANTIDADE DE JOGOS",
-    width: 40,
-    align: "center"
-  },
-  {
-    id: "total_pontos",
-    name: "total_pontos",
-    prompt: "PONTOS",
-    width: 40,
-    align: "center"
-  },
-  {
-    id: "vitorias",
-    name: "vitorias",
-    prompt: "VITÓRIAS",
-    width: 40,
-    align: "center"
-  },
-  {
-    id: "empates",
-    name: "empates",
-    prompt: "EMPATES",
-    width: 40,
-    align: "center"
-  },
-  {
-    id: "derrotas",
-    name: "derrotas",
-    prompt: "DERROTAS",
-    width: 40,
-    align: "center"
-  }
-];
+import EventActions from "../../../../store/event/event.actions";
 
 const Relatorio = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [listagem, setListagem] = useState();
   const [listagemExport, setListagemExport] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [eventos, setEventos] = useState(false);
+  const [csvColumns, setCsvColumns] = useState(false);
   const [dateEnd, setDateEnd] = useState(moment().format("YYYY-MM-DD"));
   const [dateStart, setDateStart] = useState(
     moment()
@@ -94,15 +23,157 @@ const Relatorio = () => {
       .format("YYYY-MM-DD")
   );
 
+  const title = "RELATÓRIO DE PONTUAÇÃO GERAL";
+
+  const Cor = ({ cor }) => (
+    <div
+      style={{
+        width: 15,
+        height: 15,
+        borderRadius: 100,
+        backgroundColor: cor
+      }}
+    />
+  );
+
+  const getEventoNome = evento => {
+    if (eventos) {
+      const finded = eventos.find(i => {
+        switch (evento) {
+          case "evento_1":
+            return i.type === "EVENTO 1";
+          case "evento_2":
+            return i.type === "EVENTO 2";
+          case "evento_3":
+            return i.type === "EVENTO 3";
+          case "evento_4":
+            return i.type === "EVENTO 4";
+          case "evento_5":
+            return i.type === "EVENTO 5";
+          default:
+            return false;
+        }
+      });
+
+      if (finded) {
+        return finded.description;
+      } else {
+        return "Teste";
+      }
+    }
+  };
+  const columns = [
+    { name: "JOGADOR", attribute: "name" },
+    { name: "POSICAO", attribute: "position" },
+    { name: "QUANTIDADE DE JOGOS", attribute: "qtd_jogos" },
+    { name: "TOTAL DE PONTOS", attribute: "total_pontos" },
+    { name: "V", attribute: "vitorias" },
+    { name: "E", attribute: "empates" },
+    { name: "D", attribute: "derrotas" },
+    { name: <Cor cor="yellow" />, attribute: "evento_1" },
+    { name: <Cor cor="red" />, attribute: "evento_2" },
+    { name: <Cor cor="blue" />, attribute: "evento_3" },
+    { name: <Cor cor="green" />, attribute: "evento_4" },
+    { name: <Cor cor="orange" />, attribute: "evento_5" }
+  ];
+
+  const pdfColumns = [
+    {
+      id: "name",
+      name: "name",
+      prompt: "JOGADOR",
+      width: 100,
+      align: "left"
+    },
+    {
+      id: "position",
+      name: "position",
+      prompt: "POSICÃO",
+      width: 30,
+      align: "center"
+    },
+    {
+      id: "qtd_jogos",
+      name: "qtd_jogos",
+      prompt: "QUANTIDADE DE JOGOS",
+      width: 30,
+      align: "center"
+    },
+    {
+      id: "total_pontos",
+      name: "total_pontos",
+      prompt: "PONTOS",
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "vitorias",
+      name: "vitorias",
+      prompt: "VITÓRIAS",
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "empates",
+      name: "empates",
+      prompt: "EMPATES",
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "derrotas",
+      name: "derrotas",
+      prompt: "DERROTAS",
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "evento_1",
+      name: "evento_1",
+      prompt: getEventoNome("evento_1"),
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "evento_2",
+      name: "evento_2",
+      prompt: getEventoNome("evento_2"),
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "evento_3",
+      name: "evento_3",
+      prompt: getEventoNome("evento_3"),
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "evento_4",
+      name: "evento_4",
+      prompt: getEventoNome("evento_4"),
+      width: 25,
+      align: "center"
+    },
+    {
+      id: "evento_5",
+      name: "evento_5",
+      prompt: getEventoNome("evento_5"),
+      width: 25,
+      align: "center"
+    }
+  ];
+
   const handlePDF = () => {
-    console.log("handlePDF");
-    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
-    doc.text(title, 155, 25, { align: "center" }, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns, {
-      fontSize: 8,
-      padding: 2
-    });
-    doc.save(title);
+    if (listagemExport && listagemExport.length > 0) {
+      var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+      doc.text(title, 155, 25, { align: "center" }, null, "center");
+      doc.table(4, 40, listagemExport, pdfColumns, {
+        fontSize: 7,
+        padding: 2
+      });
+      doc.save(title);
+    }
   };
 
   const handleListagem = async () => {
@@ -118,13 +189,38 @@ const Relatorio = () => {
       setListagem(data);
     }
 
-    const paramsExport = {};
+    const paramsExport = {
+      dateStart,
+      dateEnd
+    };
 
     const dataExport = await ReportActions.pontuacaoGeral(paramsExport);
     if (dataExport) {
       setListagemExport(dataExport.data);
     }
+
+    const eventosResponse = await EventActions.fetch2();
+    setEventos(eventosResponse.data);
   };
+
+  useEffect(() => {
+    if (eventos) {
+      setCsvColumns([
+        { displayName: "JOGADOR", id: "name" },
+        { displayName: "POSICAO", id: "position" },
+        { displayName: "QUANTIDADE DE JOGOS", id: "qtd_jogos" },
+        { displayName: "TOTAL DE PONTOS", id: "total_pontos" },
+        { displayName: "V", id: "vitorias" },
+        { displayName: "E", id: "empates" },
+        { displayName: "D", id: "derrotas" },
+        { displayName: getEventoNome("evento_1"), id: "evento_1" },
+        { displayName: getEventoNome("evento_2"), id: "evento_2" },
+        { displayName: getEventoNome("evento_3"), id: "evento_3" },
+        { displayName: getEventoNome("evento_4"), id: "evento_4" },
+        { displayName: getEventoNome("evento_5"), id: "evento_5" }
+      ]);
+    }
+  }, [eventos]);
 
   useEffect(() => {
     if (isOpen) {
