@@ -20,6 +20,11 @@ const fetch = payload => {
   };
 };
 
+const fetch2 = async () => {
+  const { data } = await axios().get(`${endpoint}?pageNumber=1`);
+  return data;
+};
+
 const fetchAll = async payload => {
   store.dispatch({ type: types.FETCH_ALL_REQUEST });
   await axios()
@@ -87,6 +92,7 @@ const clear = () => {
 };
 
 export default {
+  fetch2,
   fetch,
   clear,
   create,

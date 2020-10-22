@@ -56,10 +56,12 @@ const Relatorio = () => {
   );
 
   const handlePDF = () => {
-    var doc = new jsPDF({ putOnlyUsedFonts: true });
-    doc.text(title, 105, 25, null, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns);
-    doc.save(title);
+    if (listagemExport && listagemExport.length > 0) {
+      var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+      doc.text(title, 105, 25, null, null, "center");
+      doc.table(4, 40, listagemExport, pdfColumns, { fontSize: 8, padding: 2 });
+      doc.save(title);
+    }
   };
 
   const handleListagem = async () => {

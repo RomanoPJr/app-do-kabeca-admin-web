@@ -6,14 +6,18 @@ import Table from "../../../../components/Table";
 import CardHeader from "../../../../components/CardHeader";
 import ReportActions from "../../../../store/report/report.actions";
 import BtnAction from "../Components/BtnAction";
+import { formatMoney } from "../../../../utils/Currency";
 import { jsPDF } from "jspdf";
 
 const title = "RELATÓRIO FINANCEIRO";
 
 const columns = [
   { name: "JOGADOR", attribute: "name" },
-  { name: "VALOR DEVIDO", attribute: "due_value" },
-  { name: "VALOR PAGO", attribute: "paid_value" }
+  {
+    name: "VALOR DEVIDO",
+    render: ({ data }) => formatMoney(data.monthly_payment)
+  },
+  { name: "VALOR PAGO", render: ({ data }) => formatMoney(data.paid_value) }
 ];
 
 const csvColumns = [
@@ -59,11 +63,12 @@ const Relatorio = () => {
   );
 
   const handlePDF = () => {
-    console.log("handlePDF");
-    var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
-    doc.text(title, 155, 25, null, null, "center");
-    doc.table(4, 40, listagemExport, pdfColumns, { fontSize: 8, padding: 2 });
-    doc.save(title);
+    if (listagemExport && listagemExport.length > 0) {
+      var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+      doc.text(title, 155, 25, null, null, "center");
+      doc.table(4, 40, listagemExport, pdfColumns, { fontSize: 8, padding: 2 });
+      doc.save(title);
+    }
   };
 
   const handleListagem = async () => {
@@ -86,7 +91,12 @@ const Relatorio = () => {
 
     const dataExport = await ReportActions.financeiro(paramsExport);
     if (dataExport) {
-      setListagemExport(dataExport.data);
+      const formatted = dataExport.data.map(i => {
+        i.due_value = formatMoney(i.due_value);
+        i.paid_value = formatMoney(i.paid_value);
+        return i;
+      });
+      setListagemExport(formatted);
     }
   };
 
