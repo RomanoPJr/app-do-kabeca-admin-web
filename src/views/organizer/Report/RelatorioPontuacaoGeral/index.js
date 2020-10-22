@@ -196,6 +196,9 @@ const Relatorio = () => {
 
     const dataExport = await ReportActions.pontuacaoGeral(paramsExport);
     if (dataExport) {
+      dataExport.data.map(i => {
+        i.total_pontos = i.total_pontos + "";
+      });
       setListagemExport(dataExport.data);
     }
 
