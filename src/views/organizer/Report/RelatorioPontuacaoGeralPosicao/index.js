@@ -17,13 +17,14 @@ const Relatorio = () => {
   const [eventos, setEventos] = useState(false);
   const [csvColumns, setCsvColumns] = useState(false);
   const [dateEnd, setDateEnd] = useState(moment().format("YYYY-MM-DD"));
+  const [position, setPosition] = useState("GOLEIRO");
   const [dateStart, setDateStart] = useState(
     moment()
       .subtract(6, "month")
       .format("YYYY-MM-DD")
   );
 
-  const title = "RELATÓRIO DE PONTUAÇÃO GERAL";
+  const title = "RELATÓRIO DE PONTUAÇÃO GERAL POR POSIÇÃO";
 
   const Cor = ({ cor }) => (
     <div
@@ -185,10 +186,11 @@ const Relatorio = () => {
       pageNumber,
       pageSize: 10,
       dateStart,
-      dateEnd
+      dateEnd,
+      position
     };
 
-    const data = await ReportActions.pontuacaoGeral(params);
+    const data = await ReportActions.pontuacaoGeralPosicao(params);
     if (data) {
       setListagem(data);
     }
@@ -198,7 +200,7 @@ const Relatorio = () => {
       dateEnd
     };
 
-    const dataExport = await ReportActions.pontuacaoGeral(paramsExport);
+    const dataExport = await ReportActions.pontuacaoGeralPosicao(paramsExport);
     if (dataExport) {
       dataExport.data.map(i => {
         i.total_pontos = i.total_pontos + "";
@@ -233,7 +235,7 @@ const Relatorio = () => {
     if (isOpen) {
       handleListagem();
     }
-  }, [dateEnd, dateStart, pageNumber, isOpen]);
+  }, [dateEnd, dateStart, position, pageNumber, isOpen]);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -270,7 +272,7 @@ const Relatorio = () => {
           <div>
             <Collapse isOpen={isOpen} style={{ padding: 25 }}>
               <Row>
-                <Col md="4">
+                <Col md={3}>
                   <FormGroup>
                     <label>DATA DE INÍCIO</label>
                     <Input
@@ -283,7 +285,7 @@ const Relatorio = () => {
                     />
                   </FormGroup>
                 </Col>
-                <Col md="4">
+                <Col md={3}>
                   <label>DATA DE FIM</label>
                   <Input
                     type="date"
@@ -294,8 +296,25 @@ const Relatorio = () => {
                     }
                   />
                 </Col>
+                <Col md={3}>
+                  <label>Posição</label>
+                  <select
+                    name="select"
+                    className="form-control"
+                    value={position || "GOLEIRO"}
+                    onChange={event =>
+                      setPosition(event.target.value.toUpperCase())
+                    }
+                  >
+                    <option value="GOLEIRO">GOLEIRO</option>
+                    <option value="DEFESA">DEFESA</option>
+                    <option value="MEIO">MEIO</option>
+                    <option value="ATAQUE">ATAQUE</option>
+                    <option value="COLABORADOR">COLABORADOR</option>
+                  </select>
+                </Col>
                 <Col
-                  md="4"
+                  md={3}
                   style={{
                     display: "flex",
                     alignItems: "center",

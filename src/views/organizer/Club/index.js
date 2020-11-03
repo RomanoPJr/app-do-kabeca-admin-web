@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { CardBody } from "reactstrap";
+import { CardBody, Col, Row } from "reactstrap";
 import { toast } from "react-toastify";
+import moment from "moment";
+
 import {
   FaPencilAlt,
   FaMoneyBillWave,
@@ -116,56 +118,74 @@ const Club = ({
       />
       <CardBody>
         {club.data ? (
-          <>
-            <div className="author">
-              <div className="block block-one"></div>
-              <div className="block block-two"></div>
-              <div className="block block-three"></div>
-              <div className="block block-four"></div>
-              <img className="avatar" src={club.data.logo_url} alt="..." />
-              <h2
-                className="description"
-                style={{ marginTop: 25, marginBottom: 25 }}
-              >
-                {club.data.name}
-              </h2>
-            </div>
-            <div className="card-description">
-              <h5>
-                <b>DIA:</b>
-                {` ${club.data.day}`}
-              </h5>
-              <h5>
-                <b>HORÁRIO:</b>
-                {` ${club.data.time
-                  .split(":")
-                  .slice(0, 2)
-                  .join(":")} HRS`}
-              </h5>
-              <h5>
-                <b>LOCAL:</b>
-                {` ${club.data.city}/${club.data.state}`}
-              </h5>
-            </div>
-            <div className="row">
-              {counters.map((item, i) => (
-                <div className="col-lg-4" key={`item` + i}>
-                  <div
-                    className="card-chart card card-counter"
-                    style={{ backgroundColor: item.color }}
-                  >
-                    <div className="card-header card-counter-header">
-                      <div>{item.icon}</div>
-                      <div>
-                        <h5 className="card-category">{item.name}</h5>
-                        <h3 className="card-title">{item.value}</h3>
-                      </div>
+          <Row>
+            <Col md={12}>
+              <div className="author">
+                <div className="block block-one"></div>
+                <div className="block block-two"></div>
+                <div className="block block-three"></div>
+                <div className="block block-four"></div>
+                <img className="avatar" src={club.data.logo_url} alt="..." />
+                <h2
+                  className="description"
+                  style={{ marginTop: 25, marginBottom: 25 }}
+                >
+                  {club.data.name}
+                </h2>
+              </div>
+            </Col>
+            <Col md={6}>
+              <div className="card-description">
+                <h5>
+                  <b>DIA:</b>
+                  {` ${club.data.day}`}
+                </h5>
+                <h5>
+                  <b>HORÁRIO:</b>
+                  {` ${club.data.time
+                    .split(":")
+                    .slice(0, 2)
+                    .join(":")} HRS`}
+                </h5>
+                <h5>
+                  <b>LOCAL:</b>
+                  {` ${club.data.city}/${club.data.state}`}
+                </h5>
+              </div>
+            </Col>
+            <Col md={6}>
+              <div className="card-description">
+                <h5>
+                  <b>INÍCIO DA TEMPORADA:</b>
+                  {` ${moment(club.data.session_start.split("T")[0]).format(
+                    "DD/MM/YYYY"
+                  )}`}
+                </h5>
+                <h5>
+                  <b>FIM DA TEMPORADA:</b>
+                  {` ${moment(club.data.session_end.split("T")[0]).format(
+                    "DD/MM/YYYY"
+                  )}`}
+                </h5>
+              </div>
+            </Col>
+            {counters.map((item, i) => (
+              <div className="col-lg-4" key={`item` + i}>
+                <div
+                  className="card-chart card card-counter"
+                  style={{ backgroundColor: item.color }}
+                >
+                  <div className="card-header card-counter-header">
+                    <div>{item.icon}</div>
+                    <div>
+                      <h5 className="card-category">{item.name}</h5>
+                      <h3 className="card-title">{item.value}</h3>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </>
+              </div>
+            ))}
+          </Row>
         ) : (
           <EmptyState setModalCreateOpened={setModalCreateOpened} />
         )}

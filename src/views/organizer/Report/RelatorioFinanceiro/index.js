@@ -55,10 +55,15 @@ const Relatorio = () => {
   const [listagem, setListagem] = useState();
   const [listagemExport, setListagemExport] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [dateEnd, setDateEnd] = useState(moment().format("YYYY-MM-DD"));
+
   const [dateStart, setDateStart] = useState(
     moment()
-      .subtract(6, "month")
+      .startOf("month")
+      .format("YYYY-MM-DD")
+  );
+  const [dateEnd, setDateEnd] = useState(
+    moment()
+      .endOf("month")
       .format("YYYY-MM-DD")
   );
 
