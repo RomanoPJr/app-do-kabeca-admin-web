@@ -41,8 +41,15 @@ const ModalCreate = ({
       setDay(data.day);
       setName(data.name);
       setCity(data.city);
-      setSessionStart(data.session_start.split("T")[0]);
-      setSessionEnd(data.session_end.split("T")[0]);
+
+      if (data.session_start) {
+        setSessionStart(data.session_start.split("T")[0]);
+      }
+
+      if (data.session_end) {
+        setSessionEnd(data.session_end.split("T")[0]);
+      }
+
       setTime(data.time);
       setState(data.state);
       setLogoUrl(data.logo_url);
