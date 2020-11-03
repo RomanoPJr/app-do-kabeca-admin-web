@@ -18,7 +18,6 @@ const columns = [
     name: "MENSALIDADE",
     render: ({ data }) => formatMoney(data.monthly_payment)
   },
-  { name: "E-MAIL", attribute: "email" },
   { name: "TELEFONE", render: ({ data }) => formatPhone(data.phone) },
   { name: "DATA DE NASCIMENTO", attribute: "birth_date" },
   { name: "ENTROU EM", attribute: "created_at" }
@@ -28,7 +27,6 @@ const csvColumns = [
   { displayName: "JOGADOR", id: "name" },
   { displayName: "POSICAO", id: "position" },
   { displayName: "MENSALIDADE", id: "monthly_payment" },
-  { displayName: "E-MAIL", id: "email" },
   { displayName: "TELEFONE", id: "phone" },
   { displayName: "DATA DE NASCIMENTO", id: "birth_date" },
   { displayName: "ENTROU EM", id: "created_at" }

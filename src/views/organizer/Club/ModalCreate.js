@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Button, Col, Form, Row, Input } from "reactstrap";
+import { Button, Col, Form, Row, Input, FormGroup } from "reactstrap";
 
 import Modal from "../../../components/Modal";
 import UploadInput from "../../../components/UploadInput";
@@ -27,6 +27,10 @@ const ModalCreate = ({
   const [day, setDay] = useState("SEGUNDA-FEIRA");
   const [payment_module_view_type, setPaymentModuleViewType] = useState("ALL");
 
+  const year = new Date().getFullYear();
+  const [session_start, setSessionStart] = useState(`${year}-01-01`);
+  const [session_end, setSessionEnd] = useState(`${year}-12-31`);
+
   useEffect(() => {
     fetchUFS();
   }, []);
@@ -37,6 +41,8 @@ const ModalCreate = ({
       setDay(data.day);
       setName(data.name);
       setCity(data.city);
+      setSessionStart(data.session_start.split("T")[0]);
+      setSessionEnd(data.session_end.split("T")[0]);
       setTime(data.time);
       setState(data.state);
       setLogoUrl(data.logo_url);
@@ -81,6 +87,8 @@ const ModalCreate = ({
                 time,
                 state,
                 logo_url,
+                session_end,
+                session_start,
                 payment_module_view_type
               })
             }
@@ -161,6 +169,28 @@ const ModalCreate = ({
                       </option>
                     ))}
                 </select>
+              </Col>
+              <Col md={6}>
+                <label>INÍCIO DA TEMPORADA</label>
+                <Input
+                  type="date"
+                  value={session_start}
+                  required={true}
+                  onChange={event =>
+                    setSessionStart(event.target.value.toUpperCase())
+                  }
+                />
+              </Col>
+              <Col md={6}>
+                <label>FIM DA TEMPORADA</label>
+                <Input
+                  type="date"
+                  value={session_end}
+                  required={true}
+                  onChange={event =>
+                    setSessionEnd(event.target.value.toUpperCase())
+                  }
+                />
               </Col>
               <Col md="12" style={{ display: "flex", flexDirection: "column" }}>
                 <label>
