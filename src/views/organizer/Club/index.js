@@ -157,15 +157,19 @@ const Club = ({
               <div className="card-description">
                 <h5>
                   <b>INÍCIO DA TEMPORADA:</b>
-                  {` ${moment(club.data.session_start.split("T")[0]).format(
-                    "DD/MM/YYYY"
-                  )}`}
+                  {club.data.session_start
+                    ? ` ${moment(club.data.session_start.split("T")[0]).format(
+                        "DD/MM/YYYY"
+                      )}`
+                    : ""}
                 </h5>
                 <h5>
                   <b>FIM DA TEMPORADA:</b>
-                  {` ${moment(club.data.session_end.split("T")[0]).format(
-                    "DD/MM/YYYY"
-                  )}`}
+                  {club.data.session_end
+                    ? ` ${moment(club.data.session_end.split("T")[0]).format(
+                        "DD/MM/YYYY"
+                      )}`
+                    : ""}
                 </h5>
               </div>
             </Col>
