@@ -10,7 +10,7 @@ import {
   Form,
   FormGroup,
   Input,
-  Row,
+  Row
 } from "reactstrap";
 
 import history from "../../history";
@@ -35,7 +35,7 @@ const Login = ({ session, createSession }) => {
     }
   }, [session]);
 
-  const handleSubmitForm = (evt) => {
+  const handleSubmitForm = evt => {
     createSession({ email, password });
     evt.preventDefault();
   };
@@ -59,7 +59,7 @@ const Login = ({ session, createSession }) => {
                       required={true}
                       placeholder="Qual seu E-mail?"
                       type="text"
-                      onChange={(event) => {
+                      onChange={event => {
                         setEmail(event.target.value.toUpperCase());
                       }}
                       value={email || ""}
@@ -74,7 +74,7 @@ const Login = ({ session, createSession }) => {
                         placeholder="Digite sua Senha..."
                         type="password"
                         value={password || ""}
-                        onChange={(event) => {
+                        onChange={event => {
                           setPassword(event.target.value.toUpperCase());
                         }}
                       />
@@ -99,11 +99,11 @@ const Login = ({ session, createSession }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  session: state.session,
+const mapStateToProps = state => ({
+  session: state.session
 });
-const mapDispatchToProps = (dispatch) => ({
-  createSession: (payload) => dispatch(SessionActions.create(payload)),
+const mapDispatchToProps = dispatch => ({
+  createSession: payload => dispatch(SessionActions.create(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
