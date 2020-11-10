@@ -3,8 +3,8 @@ import history from "./history";
 
 const axiosInstance = () =>
   axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    // baseURL: process.env.REACT_APP_API_URL_PROD,
+    // baseURL: process.env.REACT_APP_API_URL,
+    baseURL: process.env.REACT_APP_API_URL_PROD,
     timeout: 10000,
     headers: {
       Authorization: `Bearer ${localStorage.getItem("user-token")}`

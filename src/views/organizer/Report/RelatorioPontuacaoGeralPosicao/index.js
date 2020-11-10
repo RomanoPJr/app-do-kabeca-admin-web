@@ -197,7 +197,8 @@ const Relatorio = () => {
 
     const paramsExport = {
       dateStart,
-      dateEnd
+      dateEnd,
+      position
     };
 
     const dataExport = await ReportActions.pontuacaoGeralPosicao(paramsExport);
