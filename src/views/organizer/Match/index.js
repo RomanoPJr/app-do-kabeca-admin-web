@@ -23,7 +23,7 @@ const Match = ({ history, matchDetail, createMatch, fetchMatchList }) => {
 
   useEffect(() => {
     fetchMatchList({ pageNumber });
-  }, []);
+  }, [pageNumber]);
 
   const toggle = () => setTooltipOpen(!tooltipOpen);
   const toggleShare = () => setShareTooltipOpen(!tooltipShareOpen);
