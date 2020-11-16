@@ -15,7 +15,7 @@ const columns = [
   { name: "JOGADOR", attribute: "name" },
   {
     name: "VALOR DEVIDO",
-    render: ({ data }) => formatMoney(data.monthly_payment)
+    render: ({ data }) => formatMoney(data.due_value)
   },
   { name: "VALOR PAGO", render: ({ data }) => formatMoney(data.paid_value) }
 ];
@@ -97,9 +97,11 @@ const Relatorio = () => {
     const dataExport = await ReportActions.financeiro(paramsExport);
     if (dataExport) {
       const formatted = dataExport.data.map(i => {
-        i.due_value = formatMoney(i.due_value);
-        i.paid_value = formatMoney(i.paid_value);
-        return i;
+        return {
+          due_value: formatMoney(i.due_value),
+          paid_value: formatMoney(i.paid_value),
+          name: i.name
+        }
       });
       setListagemExport(formatted);
     }
