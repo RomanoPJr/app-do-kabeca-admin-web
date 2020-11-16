@@ -36,7 +36,10 @@ const rootReducer = combineReducers({
 var store;
 
 if (process.env.NODE_ENV === "development") {
-  store = createStore(rootReducer, applyMiddleware(thunk));
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  store = createStore(rootReducer, composeEnhancers(
+    applyMiddleware(thunk))
+  )
 } else {
   store = createStore(rootReducer, applyMiddleware(thunk));
 }

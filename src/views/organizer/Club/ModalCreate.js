@@ -28,8 +28,8 @@ const ModalCreate = ({
   const [payment_module_view_type, setPaymentModuleViewType] = useState("ALL");
 
   const year = new Date().getFullYear();
-  const [session_start, setSessionStart] = useState(`${year}-01-01`);
-  const [session_end, setSessionEnd] = useState(`${year}-12-31`);
+  const [session_start, setSessionStart] = useState();
+  const [session_end, setSessionEnd] = useState();
 
   useEffect(() => {
     fetchUFS();

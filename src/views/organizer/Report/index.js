@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from 'react-redux'
 
 import "./styles.css";
 import RelatorioArtilharia from "./RelatorioArtilharia";
@@ -8,11 +9,11 @@ import RelatorioAniversario from "./RelatorioAniversario";
 import RelatorioPontuacaoGeral from "./RelatorioPontuacaoGeral";
 import RelatorioPontuacaoGeralPosicao from "./RelatorioPontuacaoGeralPosicao";
 
-const Report = () => {
+const Report = ({ club }) => {
   return (
     <div className="content">
-      <RelatorioPontuacaoGeral />
-      <RelatorioPontuacaoGeralPosicao />
+      <RelatorioPontuacaoGeral club={club} />
+      <RelatorioPontuacaoGeralPosicao club={club} />
       <RelatorioArtilharia />
       <RelatorioJogadores />
       <RelatorioFinanceiro />
@@ -21,4 +22,10 @@ const Report = () => {
   );
 };
 
-export default Report;
+const mapStateToProps = state => ({
+  club: state.club.data
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Report);

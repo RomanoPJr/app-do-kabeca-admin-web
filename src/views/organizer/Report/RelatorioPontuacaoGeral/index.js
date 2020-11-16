@@ -9,7 +9,7 @@ import { jsPDF } from "jspdf";
 import moment from "moment";
 import EventActions from "../../../../store/event/event.actions";
 
-const Relatorio = () => {
+const Relatorio = ({ club }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [listagem, setListagem] = useState();
   const [listagemExport, setListagemExport] = useState();
@@ -269,6 +269,20 @@ const Relatorio = () => {
           </div>
           <div>
             <Collapse isOpen={isOpen} style={{ padding: 25 }}>
+              <Row style={{ marginBottom: 25 }}>
+                <Col md="6" style={{ display: 'flex', flexDirection: `column` }}>
+                  <b style={{ color: `white` }}>INÍCIO DA TEMPORADA</b>
+                  <label>{club ?
+                    moment(club.session_start).format('DD/MM/YYYY')
+                    : '--/--/----'}</label>
+                </Col>
+                <Col md="6" style={{ display: 'flex', flexDirection: `column` }}>
+                  <b style={{ color: `white` }}>FIM DA TEMPORADA</b>
+                  <label>{club ?
+                    moment(club.session_start).format('DD/MM/YYYY')
+                    : '--/--/----'}</label>
+                </Col>
+              </Row>
               <Row>
                 <Col md="4">
                   <FormGroup>
