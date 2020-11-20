@@ -4,6 +4,7 @@ import Fields from "./Fields";
 import TableEvents from "./TableEvents";
 export default ({
   round,
+  session,
   matchDetails,
   handlePlayerClick,
   onDeleteEventClick,
@@ -20,6 +21,7 @@ export default ({
         handleStartTime={handleStartTime}
       />
       <TableEvents
+        session={session}
         onDeleteEventClick={onDeleteEventClick}
         matchDetails={matchDetails}
       />

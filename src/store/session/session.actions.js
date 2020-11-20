@@ -21,6 +21,7 @@ const fetch = () => {
     axios()
       .get(endpoint)
       .then((response) => {
+        // dispatch({ type: FETCH_SUCCESS, payload: { ...response.data, type: 'PLAYER' } });
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })
       .catch((error) => {

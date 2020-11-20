@@ -26,6 +26,7 @@ const TabPaneContainainer = ({
   match,
   events,
   players,
+  session,
   fetchOne,
   fetchEvents,
   fetchPlayers,
@@ -64,6 +65,10 @@ const TabPaneContainainer = ({
   };
 
   const handlePlayerClick = useCallback(async data => {
+    if (session.type !== 'ORGANIZER') {
+      return;
+    }
+
     setCurrentPosition(data);
     if (!data.escalation) {
       await fetchPlayers({
@@ -159,6 +164,10 @@ const TabPaneContainainer = ({
   });
 
   const handleExternalGoal = useCallback(async () => {
+    if (session.type !== 'ORGANIZER') {
+      return
+    }
+
     await createMatchEvent({
       type: "GOL SOFRIDO",
       match_id: matchDetails.id
@@ -217,12 +226,14 @@ const TabPaneContainainer = ({
     <>
       <TabPane tabId={id}>
         <SectionOne
+          session={session}
           matchDetails={matchDetails}
           setModalCreateOpened={setModalCreateOpened}
           setModalCloneOpened={setModalCloneOpened}
           setModalDeleteMatchOpened={setModalDeleteMatchOpened}
         />
         <SectionTwo
+          session={session}
           activeTab={activeTab}
           matchDetails={matchDetails}
           setActiveTab={setActiveTab}
@@ -321,7 +332,8 @@ const mapStateToProps = state => ({
   matchLoading: state.match.loading,
   players: state.player.data,
   events: state.event.data,
-  matches: state.match.list
+  matches: state.match.list,
+  session: state.session.data
 });
 
 const mapDispatchToProps = dispatch => ({

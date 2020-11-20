@@ -16,6 +16,7 @@ import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const Event = ({
   event,
+  session,
   clearAction,
   fetchAction,
   createAction,
@@ -94,6 +95,152 @@ const Event = ({
     }
   }
 
+  const tableFixedColumns = [
+    { name: "Evento", attribute: "description" },
+    {
+      name: "Pontos",
+      render: ({ data }) => {
+        if (!data.id) {
+          return "";
+        } else if (data.value < 0) {
+          return (
+            <Badge className="event-value-badge red">
+              {data.value}
+            </Badge>
+          );
+        } else {
+          return (
+            <Badge className="event-value-badge green">
+              +{data.value}
+            </Badge>
+          );
+        }
+      }
+    },
+    {
+      name: "Atualizado Em:",
+      render: ({ data }) =>
+        data.id
+          ? moment(data.updatedAt).format("DD/MM/YYYY HH:mm")
+          : ""
+    },
+  ]
+
+  const tableEventsColumns = [
+    {
+      name: "",
+      render: ({ data }) => {
+        const size = {
+          width: 15,
+          height: 15,
+          borderRadius: 100
+        };
+        switch (data.type) {
+          case "EVENTO 1":
+            return (
+              <div
+                style={{
+                  ...size,
+                  backgroundColor: "yellow"
+                }}
+              />
+            );
+          case "EVENTO 2":
+            return (
+              <div
+                style={{
+                  ...size,
+                  backgroundColor: "red"
+                }}
+              />
+            );
+          case "EVENTO 3":
+            return (
+              <div
+                style={{
+                  ...size,
+                  backgroundColor: "blue"
+                }}
+              />
+            );
+          case "EVENTO 4":
+            return (
+              <div
+                style={{
+                  ...size,
+                  backgroundColor: "green"
+                }}
+              />
+            );
+          case "EVENTO 5":
+            return (
+              <div
+                style={{
+                  ...size,
+                  backgroundColor: "orange"
+                }}
+              />
+            );
+          default:
+            return <></>;
+        }
+        return data.value < 0 ? (
+          <Badge className="event-value-badge red">
+            {data.value}
+          </Badge>
+        ) : (
+            <Badge className="event-value-badge green">
+              +{data.value}
+            </Badge>
+          );
+      }
+    },
+    { name: "Evento", attribute: "description" },
+    {
+      name: "Pontos",
+      render: ({ data }) => {
+        return data.value < 0 ? (
+          <Badge className="event-value-badge red">
+            {data.value}
+          </Badge>
+        ) : (
+            <Badge className="event-value-badge green">
+              +{data.value}
+            </Badge>
+          );
+      }
+    },
+    {
+      name: "Atualizado Em:",
+      render: ({ data }) =>
+        moment(data.updatedAt).format("DD/MM/YYYY HH:mm")
+    },
+  ]
+
+  if (session && session.type === 'ORGANIZER') {
+    tableFixedColumns.push({
+      name: <b className="action-column">Acões</b>,
+      render: ({ data }) => (
+        <ActionColumn
+          data={data}
+          setCurrentData={setCurrentData}
+          setModalCreateOpened={setModalCreateOpened}
+        />
+      )
+    })
+    tableEventsColumns.push({
+      name: <b className="action-column">Acões</b>,
+      render: ({ data }) => (
+        <ActionColumn
+          data={data}
+          setCurrentData={setCurrentData}
+          setModalDeleteOpened={setModalDeleteOpened}
+          setModalCreateOpened={setModalCreateOpened}
+        />
+      )
+    })
+  }
+
   return (
     <>
       <div className="content">
@@ -105,46 +252,7 @@ const Event = ({
                 <Table
                   isLoading={event.loading}
                   data={fixedData}
-                  columns={[
-                    { name: "Evento", attribute: "description" },
-                    {
-                      name: "Pontos",
-                      render: ({ data }) => {
-                        if (!data.id) {
-                          return "";
-                        } else if (data.value < 0) {
-                          return (
-                            <Badge className="event-value-badge red">
-                              {data.value}
-                            </Badge>
-                          );
-                        } else {
-                          return (
-                            <Badge className="event-value-badge green">
-                              +{data.value}
-                            </Badge>
-                          );
-                        }
-                      }
-                    },
-                    {
-                      name: "Atualizado Em:",
-                      render: ({ data }) =>
-                        data.id
-                          ? moment(data.updatedAt).format("DD/MM/YYYY HH:mm")
-                          : ""
-                    },
-                    {
-                      name: <b className="action-column">Acões</b>,
-                      render: ({ data }) => (
-                        <ActionColumn
-                          data={data}
-                          setCurrentData={setCurrentData}
-                          setModalCreateOpened={setModalCreateOpened}
-                        />
-                      )
-                    }
-                  ]}
+                  columns={tableFixedColumns}
                 />
               </CardBody>
             </Card>
@@ -154,7 +262,8 @@ const Event = ({
           <Col md="12" style={{ marginBottom: 25 }}>
             <Card>
               <CardHeader
-                setModalCreateOpened={setModalCreateOpened}
+                {...session.type === 'ORGANIZER' ? { setModalCreateOpened: setModalCreateOpened } : {}}
+
                 title="CRITÉRIOS DE PONTUAÇÃO PERSONALIZADOS (CRIE ATÉ 5 EVENTOS)"
               />
               <CardBody>
@@ -162,107 +271,7 @@ const Event = ({
                   setPageNumber={setPageNumber}
                   isLoading={event.loading}
                   data={eventsData}
-                  columns={[
-                    {
-                      name: "",
-                      render: ({ data }) => {
-                        const size = {
-                          width: 15,
-                          height: 15,
-                          borderRadius: 100
-                        };
-                        switch (data.type) {
-                          case "EVENTO 1":
-                            return (
-                              <div
-                                style={{
-                                  ...size,
-                                  backgroundColor: "yellow"
-                                }}
-                              />
-                            );
-                          case "EVENTO 2":
-                            return (
-                              <div
-                                style={{
-                                  ...size,
-                                  backgroundColor: "red"
-                                }}
-                              />
-                            );
-                          case "EVENTO 3":
-                            return (
-                              <div
-                                style={{
-                                  ...size,
-                                  backgroundColor: "blue"
-                                }}
-                              />
-                            );
-                          case "EVENTO 4":
-                            return (
-                              <div
-                                style={{
-                                  ...size,
-                                  backgroundColor: "green"
-                                }}
-                              />
-                            );
-                          case "EVENTO 5":
-                            return (
-                              <div
-                                style={{
-                                  ...size,
-                                  backgroundColor: "orange"
-                                }}
-                              />
-                            );
-                          default:
-                            return <></>;
-                        }
-                        return data.value < 0 ? (
-                          <Badge className="event-value-badge red">
-                            {data.value}
-                          </Badge>
-                        ) : (
-                          <Badge className="event-value-badge green">
-                            +{data.value}
-                          </Badge>
-                        );
-                      }
-                    },
-                    { name: "Evento", attribute: "description" },
-                    {
-                      name: "Pontos",
-                      render: ({ data }) => {
-                        return data.value < 0 ? (
-                          <Badge className="event-value-badge red">
-                            {data.value}
-                          </Badge>
-                        ) : (
-                          <Badge className="event-value-badge green">
-                            +{data.value}
-                          </Badge>
-                        );
-                      }
-                    },
-                    {
-                      name: "Atualizado Em:",
-                      render: ({ data }) =>
-                        moment(data.updatedAt).format("DD/MM/YYYY HH:mm")
-                    },
-                    {
-                      name: <b className="action-column">Acões</b>,
-                      render: ({ data }) => (
-                        <ActionColumn
-                          data={data}
-                          setCurrentData={setCurrentData}
-                          setModalDeleteOpened={setModalDeleteOpened}
-                          setModalCreateOpened={setModalCreateOpened}
-                        />
-                      )
-                    }
-                  ]}
+                  columns={tableEventsColumns}
                 />
               </CardBody>
               {modalCreateOpened && (
@@ -295,26 +304,27 @@ const ActionColumn = ({
   setModalDeleteOpened,
   setModalCreateOpened
 }) => (
-  <div className="action-column">
-    <EditButton
-      onClick={() => {
-        setCurrentData(data);
-        setModalCreateOpened(true);
-      }}
-    />
-    {setModalDeleteOpened && (
-      <DeleteButton
+    <div className="action-column">
+      <EditButton
         onClick={() => {
           setCurrentData(data);
-          setModalDeleteOpened(true);
+          setModalCreateOpened(true);
         }}
       />
-    )}
-  </div>
-);
+      {setModalDeleteOpened && (
+        <DeleteButton
+          onClick={() => {
+            setCurrentData(data);
+            setModalDeleteOpened(true);
+          }}
+        />
+      )}
+    </div>
+  );
 
 const mapStateToProps = state => ({
   event: state.event,
+  session: state.session.data,
   suggestion_event: state.suggestion_event
 });
 

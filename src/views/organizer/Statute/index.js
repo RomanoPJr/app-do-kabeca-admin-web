@@ -15,6 +15,7 @@ import StatuteActions from "../../../store/statute/statute.actions";
 import SuggestionStatuteActions from "../../../store/suggestion_statute/suggestion_statute.actions";
 
 const Statute = ({
+  session,
   statute,
   fetchAction,
   createAction,
@@ -68,14 +69,14 @@ const Statute = ({
         btnText="Editar"
         btnIcon={<FaRegEdit />}
         data={statute.data}
-        setModalCreateOpened={statute.data ? setModalCreateOpened : null}
+        setModalCreateOpened={statute.data && session.type === 'ORGANIZER' ? setModalCreateOpened : null}
       />
       <CardBody>
         {statute.data ? (
           <Content data={currentData} />
         ) : (
-          <EmptyState setModalCreateOpened={setModalCreateOpened} />
-        )}
+            <EmptyState setModalCreateOpened={setModalCreateOpened} />
+          )}
       </CardBody>
       {modalCreateOpened && (
         <ModalCreate
@@ -97,6 +98,7 @@ const Statute = ({
 
 const mapStateToProps = (state) => ({
   statute: state.statute,
+  session: state.session.data,
   suggestion_statute: state.suggestion_statute,
 });
 

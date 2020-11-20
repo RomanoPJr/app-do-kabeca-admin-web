@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 export default ({
+  session,
   matchDetails,
   setModalCreateOpened,
   setModalCloneOpened,
@@ -24,13 +25,15 @@ export default ({
   return (
     <div className="section-one-container">
       <Row style={{ justifyContent: "center" }}>
-        <div className="btn-actions">
-          <BtnActions
-            setModalCreateOpened={setModalCreateOpened}
-            setModalCloneOpened={setModalCloneOpened}
-            setModalDeleteMatchOpened={setModalDeleteMatchOpened}
-          />
-        </div>
+        {session.type === 'ORGANIZER' &&
+          <div className="btn-actions">
+            <BtnActions
+              setModalCreateOpened={setModalCreateOpened}
+              setModalCloneOpened={setModalCloneOpened}
+              setModalDeleteMatchOpened={setModalDeleteMatchOpened}
+            />
+          </div>
+        }
         <div className="container-scoreboard">
           <Row className="scoreboard-timer-container">
             <Col

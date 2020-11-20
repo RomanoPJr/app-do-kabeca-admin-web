@@ -123,4 +123,57 @@ var organizer = [
   }
 ];
 
-export { admin, organizer };
+var players = [
+  {
+    path: "/club",
+    name: "Clube",
+    icon: <FaUsers size={18} />,
+    component: Club,
+    layout: "/organizer"
+  },
+  {
+    path: "/matches",
+    name: "Peladas",
+    icon: <FaFutbol size={18} />,
+    component: Match,
+    layout: "/organizer"
+  },
+  {
+    path: "/matches/:date",
+    name: "Partida",
+    icon: <FaFutbol size={18} />,
+    component: MatchDetails,
+    layout: "/organizer",
+    showOnMenu: false
+  },
+  {
+    path: "/events",
+    name: "CRITÉRIOS DE PONTUAÇÃO",
+    icon: <FaRegFlag size={18} />,
+    component: Event,
+    layout: "/organizer"
+  },
+  {
+    path: "/statute",
+    name: "Estatuto",
+    icon: <FaBook size={18} />,
+    component: Statute,
+    layout: "/organizer"
+  },
+  {
+    path: "/payments",
+    name: "Financeiro",
+    icon: <FaDollarSign size={18} />,
+    component: Payment,
+    layout: "/organizer"
+  },
+  {
+    path: "/reports",
+    name: "Relatórios",
+    icon: <FaNewspaper size={18} />,
+    component: Report,
+    layout: "/organizer"
+  }
+];
+
+export { admin, organizer, players };

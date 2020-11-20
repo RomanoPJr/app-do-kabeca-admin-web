@@ -27,6 +27,7 @@ import PaymentActions from "../../../store/payment/payment.actions";
 const Payment = ({
   club,
   payment,
+  session,
   updateClub,
   clearAction,
   fetchAction,
@@ -169,12 +170,13 @@ const Payment = ({
         <Col md="12">
           <Card>
             <CardHeader
+              session={session}
               switchValue={switchValue}
               handleSwicthChange={handleSwicthChange}
             />
             <CardBody>
               <Counters totalizers={totalizers} />
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              {session.type === 'ORGANIZER' && <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button
                   onClick={() => {
                     createAllNonPayingAction(
@@ -203,8 +205,9 @@ const Payment = ({
                 >
                   REGISTRAR NÃO PAGANTES
                 </Button>
-              </div>
+              </div>}
               <Tabs
+                session={session}
                 filterYear={filterYear}
                 filterMonth={filterMonth}
                 payment={payment}
@@ -237,6 +240,7 @@ const Payment = ({
 const Tabs = ({
   toggle,
   payment,
+  session,
   activeTab,
   filterYear,
   filterMonth,
@@ -277,6 +281,7 @@ const Tabs = ({
             <Col sm="12">
               {activeTab === "1" && (
                 <TablePayments
+                  session={session}
                   payment={payment || {}}
                   removeAction={handleRemovePayment}
                   setPageNumber={setPageNumberPayments}
@@ -292,6 +297,7 @@ const Tabs = ({
             <Col sm="12">
               {activeTab === "2" && (
                 <TableDebits
+                  session={session}
                   filterYear={filterYear}
                   filterMonth={filterMonth}
                   payment={payment || {}}
@@ -311,7 +317,8 @@ const Tabs = ({
 const mapStateToProps = state => ({
   club: state.club,
   player: state.player,
-  payment: state.payment
+  payment: state.payment,
+  session: state.session.data,
 });
 
 const mapDispatchToProps = dispatch => ({

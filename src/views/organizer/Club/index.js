@@ -32,7 +32,8 @@ const Club = ({
   clearAction,
   createAction,
   updateAction,
-  ufs_loading
+  ufs_loading,
+  session
 }) => {
   const [modalCreateOpened, setModalCreateOpened] = useState();
   const [counters, setCounters] = useState([]);
@@ -110,12 +111,12 @@ const Club = ({
 
   return (
     <Container loading={club.loading} className="card-user">
-      <CardHeader
+      {session.type === 'ORGANIZER' && <CardHeader
         setModalCreateOpened={club.data ? setModalCreateOpened : null}
         title="Clube"
         btnText="Editar"
         btnIcon={<FaPencilAlt />}
-      />
+      />}
       <CardBody>
         {club.data ? (
           <Row>
@@ -159,16 +160,16 @@ const Club = ({
                   <b>INÍCIO DA TEMPORADA:</b>
                   {club.data.session_start
                     ? ` ${moment(club.data.session_start.split("T")[0]).format(
-                        "DD/MM/YYYY"
-                      )}`
+                      "DD/MM/YYYY"
+                    )}`
                     : ""}
                 </h5>
                 <h5>
                   <b>FIM DA TEMPORADA:</b>
                   {club.data.session_end
                     ? ` ${moment(club.data.session_end.split("T")[0]).format(
-                        "DD/MM/YYYY"
-                      )}`
+                      "DD/MM/YYYY"
+                    )}`
                     : ""}
                 </h5>
               </div>
@@ -191,8 +192,8 @@ const Club = ({
             ))}
           </Row>
         ) : (
-          <EmptyState setModalCreateOpened={setModalCreateOpened} />
-        )}
+            <EmptyState setModalCreateOpened={setModalCreateOpened} />
+          )}
       </CardBody>
       {modalCreateOpened && (
         <ModalCreate
@@ -216,7 +217,8 @@ const mapStateToProps = state => ({
   club: state.club,
   ufs: state.location.data.ufs,
   ufs_loading: state.location.loading,
-  cities: state.location.data.cities
+  cities: state.location.data.cities,
+  session: state.session.data
 });
 
 const mapDispatchToProps = dispatch => ({

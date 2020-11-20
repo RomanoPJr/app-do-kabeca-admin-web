@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 import history from "../../history";
-import { admin, organizer } from "../../routes";
+import { admin, organizer, players } from "../../routes";
 import ClubActions from "../../store/club/club.actions";
 import Sidebar from "../../components/Sidebar/Sidebar.js";
 import SessionActions from "../../store/session/session.actions";
@@ -14,11 +14,23 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
   const [sidebarOpened, setSidebarOpened] = useState();
 
   useEffect(() => {
-    if (session.data && session.data.type === "ADMIN") {
-      setRoutes(admin);
-    } else if (session.data && session.data.type === "ORGANIZER") {
-      setRoutes(organizer);
+    if (session.data) {
+      switch (session.data.type) {
+        case "ADMIN":
+          setRoutes(admin);
+          break;
+        case "ORGANIZER":
+          setRoutes(organizer);
+          break;
+        case "PLAYER":
+          setRoutes(players);
+          break;
+        default:
+          setRoutes(players);
+          break;
+      }
       fetchClub();
+
     }
   }, [session.data]);
 

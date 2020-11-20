@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { connect } from "react-redux";
 import { CardBody, Tooltip, Button } from "reactstrap";
-import { FaListOl, FaPaperPlane } from "react-icons/fa";
+import { FaListOl, FaPaperPlane, FaEye } from "react-icons/fa";
 
 import "./styles.css";
 import ModalCreate from "./ModalCreate.js";
@@ -13,7 +13,7 @@ import CardHeader from "../../../components/CardHeader/index.js";
 import ModalConfirmatedPlayers from "./ModalConfirmatedPlayers.js";
 import EditButton from "../../../components/ActionButtons/EditButton.js";
 
-const Match = ({ history, matchDetail, createMatch, fetchMatchList }) => {
+const Match = ({ history, session, matchDetail, createMatch, fetchMatchList }) => {
   const [currentData, setCurrentData] = useState();
   const [pageNumber, setPageNumber] = useState(1);
   const [modalCreateOpened, setModalCreateOpened] = useState();
@@ -52,6 +52,7 @@ const Match = ({ history, matchDetail, createMatch, fetchMatchList }) => {
                   data={data}
                   toggle={toggle}
                   history={history}
+                  session={session}
                   toggleShare={toggleShare}
                   tooltipOpen={tooltipOpen}
                   setCurrentData={setCurrentData}
@@ -87,6 +88,7 @@ const ActionColumn = ({
   data,
   toggle,
   history,
+  session,
   tooltipOpen,
   toggleShare,
   setCurrentData,
@@ -94,46 +96,57 @@ const ActionColumn = ({
   setModalDeleteOpened,
   setModalConfirmatedOpened
 }) => (
-  <div className="action-column">
-    <Tooltip
-      placement="top"
-      target="btn-confirmated"
-      toggle={toggleShare}
-      isOpen={tooltipShareOpen}
-    >
-      LISTA DE CONFIRMAÇÕES
-    </Tooltip>
-    <Button
-      id="btn-confirmated"
-      className="btn-icon btn-confirmated"
-      onClick={() => {
-        setCurrentData(data);
-        setModalConfirmatedOpened(true);
-      }}
-    >
-      <FaListOl />
-    </Button>
-    <Tooltip
-      placement="top"
-      target="btn-invite"
-      toggle={toggle}
-      isOpen={tooltipOpen}
-    >
-      CONVIDAR JOGADORES
-    </Tooltip>
-    <Button id="btn-invite" className="btn-icon btn-invite" onClick={() => {}}>
-      <FaPaperPlane />
-    </Button>
-    <EditButton
-      onClick={() => {
-        history.push(`/organizer/matches/${data.date}`);
-      }}
-    />
-  </div>
-);
+    <div className="action-column">
+      {session.type === 'ORGANIZER' ?
+        (<>
+          <Tooltip
+            placement="top"
+            target="btn-confirmated"
+            toggle={toggleShare}
+            isOpen={tooltipShareOpen}
+          >
+            LISTA DE CONFIRMAÇÕES
+          </Tooltip>
+          <Button
+            id="btn-confirmated"
+            className="btn-icon btn-confirmated"
+            onClick={() => {
+              setCurrentData(data);
+              setModalConfirmatedOpened(true);
+            }}
+          >
+            <FaListOl />
+          </Button>
+          <Tooltip
+            placement="top"
+            target="btn-invite"
+            toggle={toggle}
+            isOpen={tooltipOpen}
+          >
+            CONVIDAR JOGADORES
+          </Tooltip>
+          <Button id="btn-invite" className="btn-icon btn-invite" onClick={() => { }}>
+            <FaPaperPlane />
+          </Button>
+          <EditButton
+            onClick={() => {
+              history.push(`/organizer/matches/${data.date}`);
+            }}
+          />
+        </>) : (
+          <Button id="btn-confirmated" className="btn-icon btn-confirmated" onClick={() => {
+            history.push(`/organizer/matches/${data.date}`);
+          }}>
+            <FaEye />
+          </Button>
+        )
+      }
+    </div>
+  );
 
 const mapStateToProps = state => ({
-  matchDetail: state.match
+  matchDetail: state.match,
+  session: state.session.data
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -13,6 +13,7 @@ import TabHeader from "./Tab/TabHeader";
 import TabPane from "./Tab/TabPane";
 
 export default ({
+  session,
   activeTab,
   setActiveTab,
   matchDetails,
@@ -45,6 +46,7 @@ export default ({
         </Nav>
         <TabContent activeTab={activeTab}>
           <TabPane
+            session={session}
             round={rounds.round_1}
             matchDetails={matchDetails}
             handlePlayerClick={handlePlayerClick}
@@ -55,6 +57,7 @@ export default ({
           />
           {matchDetails.modality === "2 TEMPOS" && (
             <TabPane
+              session={session}
               round={rounds.round_2}
               playerQuantity={matchDetails.players_quantity}
               matchDetails={matchDetails}

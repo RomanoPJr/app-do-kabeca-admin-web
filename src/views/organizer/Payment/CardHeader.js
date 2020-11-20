@@ -2,11 +2,11 @@ import React from "react";
 import { CardHeader, CardTitle } from "reactstrap";
 import Switch from "react-switch";
 
-function CustomCardHeader({ switchValue, handleSwicthChange }) {
+function CustomCardHeader({ session, switchValue, handleSwicthChange }) {
   return (
     <CardHeader className="card-header-with-button">
       <CardTitle tag="h4">Financeiro</CardTitle>
-      <div className="payment-switch-container">
+      {session.type === 'ORGANIZER' && <div className="payment-switch-container">
         {switchValue
           ? "Jogadores visualizam os pagamentos de todos"
           : "Jogadores visualizam somente os próprios pagamentos"}
@@ -27,7 +27,7 @@ function CustomCardHeader({ switchValue, handleSwicthChange }) {
           width={48}
           id="material-switch"
         />
-      </div>
+      </div>}
     </CardHeader>
   );
 }

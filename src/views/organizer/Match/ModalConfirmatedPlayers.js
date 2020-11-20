@@ -23,7 +23,7 @@ const ModalConfirmatedPlayers = ({ data, opened, setOpened }) => {
           setOpened={setOpened}
         >
           <div style={{ overflowY: "scroll", height: 400, paddingRight: 8 }}>
-            {data.players.map(player => (
+            {data.players && data.players.map(player => (
               <Card player={player} />
             ))}
           </div>
@@ -51,15 +51,14 @@ const Card = ({ player }) => {
       <div className="user-card-container1">
         <div className="user-card-container2">
           <div
-            className={`user-card-avatar ${
-              player.matchConfimation ? "confirmated" : "pendent"
-            }`}
+            className={`user-card-avatar ${player.matchConfimation ? "confirmated" : "pendent"
+              }`}
           >
             {player.matchConfimation ? (
               <FaUserCheck color="#FFFFFF" size={35} />
             ) : (
-              <FaUserClock color="#FFFFFF" size={35} />
-            )}
+                <FaUserClock color="#FFFFFF" size={35} />
+              )}
           </div>
           <h4 className="user-card-name">{player.name}</h4>
         </div>
@@ -78,16 +77,16 @@ const Card = ({ player }) => {
             </button>
           </div>
         ) : (
-          <div className="user-card-container3">
-            <div className="user-card-container4">
-              <i className="confirmated-status">Pendente</i>
-            </div>
+            <div className="user-card-container3">
+              <div className="user-card-container4">
+                <i className="confirmated-status">Pendente</i>
+              </div>
 
-            <button className="btn btn-icon confirm-button">
-              <FaUserCheck />
-            </button>
-          </div>
-        )}
+              <button className="btn btn-icon confirm-button">
+                <FaUserCheck />
+              </button>
+            </div>
+          )}
       </div>
     </div>
   );
