@@ -111,7 +111,7 @@ const Club = ({
 
   return (
     <Container loading={club.loading} className="card-user">
-      {session.type === 'ORGANIZER' && <CardHeader
+      {session && session.type === 'ORGANIZER' && <CardHeader
         setModalCreateOpened={club.data ? setModalCreateOpened : null}
         title="Clube"
         btnText="Editar"

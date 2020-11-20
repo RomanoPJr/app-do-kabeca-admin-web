@@ -29,7 +29,9 @@ const Login = ({ session, createSession }) => {
     ) {
       if (session.data.type === "ORGANIZER") {
         history.push(`/${session.data.type.toLowerCase()}/club`);
-      } else if (session.data.type === "ADMIN") {
+      } else if (session.data.type === "PLAYER") {
+        history.push(`/${session.data.type.toLowerCase()}/club`);
+      }else if (session.data.type === "ADMIN") {
         history.push(`/${session.data.type.toLowerCase()}/admins`);
       }
     }

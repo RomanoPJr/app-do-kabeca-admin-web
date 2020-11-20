@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 import history from "../../history";
-import { admin, organizer, players } from "../../routes";
+import { admin, organizer, player } from "../../routes";
 import ClubActions from "../../store/club/club.actions";
 import Sidebar from "../../components/Sidebar/Sidebar.js";
 import SessionActions from "../../store/session/session.actions";
@@ -23,14 +23,13 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
           setRoutes(organizer);
           break;
         case "PLAYER":
-          setRoutes(players);
+          setRoutes(player);
           break;
         default:
-          setRoutes(players);
+          setRoutes(player);
           break;
       }
       fetchClub();
-
     }
   }, [session.data]);
 

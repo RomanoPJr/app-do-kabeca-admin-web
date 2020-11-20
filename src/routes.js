@@ -122,8 +122,7 @@ var organizer = [
     layout: "/organizer"
   }
 ];
-
-var players = [
+var player = [
   {
     path: "/club",
     name: "Clube",
@@ -176,4 +175,4 @@ var players = [
   }
 ];
 
-export { admin, organizer, players };
+export { admin, organizer, player };

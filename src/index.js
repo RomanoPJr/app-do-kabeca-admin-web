@@ -41,6 +41,7 @@ ReactDOM.render(
         <Route exact path="/sign-in" render={() => <SignIn />} />
         <Route path="/admin" render={props => <AdminLayout {...props} />} />
         <Route path="/organizer" render={props => <AdminLayout {...props} />} />
+        <Route path="/player" render={props => <AdminLayout {...props} />} />
       </Switch>
     </Router>
   </Provider>,
