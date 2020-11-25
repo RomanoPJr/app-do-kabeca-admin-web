@@ -263,7 +263,6 @@ const Event = ({
             <Card>
               <CardHeader
                 {...session.type === 'ORGANIZER' ? { setModalCreateOpened: setModalCreateOpened } : {}}
-
                 title="CRITÉRIOS DE PONTUAÇÃO PERSONALIZADOS (CRIE ATÉ 5 EVENTOS)"
               />
               <CardBody>

@@ -1,12 +1,13 @@
 import axios from "axios";
 import history from "./history";
 
-const axiosInstance = () => { 
-  
+const axiosInstance = () => {
+
   const player_club_id = localStorage.getItem("@APPDOKABECA:club_id");
+  const user_type = localStorage.getItem("@APPDOKABECA:user_type");
   let requestHeader = {}
-  
-  if(player_club_id){
+
+  if (user_type === 'PLAYER' && player_club_id) {
     requestHeader = {
       club_id: player_club_id
     }

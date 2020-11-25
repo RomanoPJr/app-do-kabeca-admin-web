@@ -5,6 +5,7 @@ import {
   CREATE_REQUEST,
   CREATE_SUCCESS,
   CREATE_FAILURE,
+  CHANGE_USER_TYPE,
   FETCH_ORGANIZER_TOKEN_REQUEST,
   FETCH_ORGANIZER_TOKEN_SUCCESS,
   FETCH_ORGANIZER_TOKEN_FAILURE
@@ -31,6 +32,13 @@ function reducer(state = INITIAL_STATE, action) {
         ...state,
         loading: false,
         data: action.payload,
+        error: ""
+      };
+    case CHANGE_USER_TYPE:
+      return {
+        ...state,
+        loading: false,
+        data: { ...state.data, type: action.payload },
         error: ""
       };
     case FETCH_FAILURE:

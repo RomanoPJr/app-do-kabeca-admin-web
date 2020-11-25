@@ -34,7 +34,10 @@ const Match = ({ history, session, matchDetail, createMatch, fetchMatchList }) =
 
   return (
     <Container>
-      <CardHeader setModalCreateOpened={setModalCreateOpened} title="PELADAS" />
+      <CardHeader
+        {...session.type === 'ORGANIZER' ? { setModalCreateOpened: setModalCreateOpened } : {}}
+        title="PELADAS"
+      />
       <CardBody>
         <Table
           setPageNumber={setPageNumber}

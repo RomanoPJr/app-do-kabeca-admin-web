@@ -13,7 +13,7 @@ import {
   DropdownToggle,
   UncontrolledDropdown
 } from "reactstrap";
-
+import SessionActions from '../../store/session/session.actions'
 import history from "../../history";
 
 class AdminNavbar extends React.Component {
@@ -124,6 +124,16 @@ class AdminNavbar extends React.Component {
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <NavLink tag="li">
+                      {this.props.session && this.props.session.type === 'ORGANIZER' && (
+                        <DropdownItem
+                          className="nav-item"
+                          onClick={() => {
+                            this.props.setUserType('PLAYER')
+                          }}
+                        >
+                          VISUALIZAR COMO JOGADOR
+                        </DropdownItem>
+                      )}
                       <DropdownItem
                         className="nav-item"
                         onClick={() => {
@@ -133,7 +143,7 @@ class AdminNavbar extends React.Component {
                           history.push("/login");
                         }}
                       >
-                        Sair
+                        SAIR
                       </DropdownItem>
                     </NavLink>
                   </DropdownMenu>
@@ -148,7 +158,9 @@ class AdminNavbar extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  setUserType: (type) => dispatch(SessionActions.setUserType(type))
+});
 
 const mapStateToProps = state => ({
   session: state.session.data
