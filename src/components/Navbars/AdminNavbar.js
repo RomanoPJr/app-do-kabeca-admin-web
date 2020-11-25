@@ -127,8 +127,10 @@ class AdminNavbar extends React.Component {
                       <DropdownItem
                         className="nav-item"
                         onClick={() => {
-                          localStorage.removeItem("user-token");
-                          history.push("/");
+                          localStorage.removeItem("@APPDOKABECA:user_token");
+                          localStorage.removeItem("@APPDOKABECA:club_id");
+                          localStorage.removeItem("@APPDOKABECA:user_type");
+                          history.push("/login");
                         }}
                       >
                         Sair

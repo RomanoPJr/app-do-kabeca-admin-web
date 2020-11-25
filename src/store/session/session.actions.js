@@ -20,9 +20,14 @@ const fetch = () => {
     dispatch({ type: FETCH_REQUEST });
     axios()
       .get(endpoint)
-      .then((response) => {
-        // dispatch({ type: FETCH_SUCCESS, payload: { ...response.data, type: 'PLAYER' } });
-        dispatch({ type: FETCH_SUCCESS, payload: response.data });
+      .then(({data}) => {
+        let userData = {...data};
+
+        if(userData.clubs && userData.clubs.length > 0){
+          userData = {...userData, current_club_id: userData.clubs[0].club_id}
+        }
+
+        dispatch({ type: FETCH_SUCCESS, payload: userData });
       })
       .catch((error) => {
         dispatch({ type: FETCH_FAILURE, payload: getError(error) });
@@ -36,7 +41,7 @@ const fetchOrganizer = (payload) => {
     axios()
       .post(`${endpoint}/external`, payload)
       .then((response) => {
-        localStorage.setItem('user-token', response.data.token);
+        localStorage.setItem('@APPDOKABECA:user_token', response.data.token);
         localStorage.setItem('is-redirect', true);
         dispatch({ type: FETCH_ORGANIZER_TOKEN_SUCCESS, payload: response.data.token });
       })
@@ -52,10 +57,14 @@ const create = (payload) => {
     axios()
       .post(endpoint, payload)
       .then(({ data }) => {
-        if (data) {
-          localStorage.setItem("user-token", data.token);
+        if (data && data.token) {
+          localStorage.setItem("@APPDOKABECA:user_token", data.token);
+          localStorage.setItem("@APPDOKABECA:user_type", data.user.type);
         }
-        dispatch({ type: CREATE_SUCCESS, payload: data.user });
+        if(data.user.type === 'PLAYER' && data.user && data.user.clubs && data.user.clubs.length > 0){
+          localStorage.setItem("@APPDOKABECA:club_id", data.user.clubs[0].club_id);
+        }
+        dispatch({ type: CREATE_SUCCESS });
       })
       .catch((error) => {
         dispatch({ type: CREATE_FAILURE, payload: getError(error) });

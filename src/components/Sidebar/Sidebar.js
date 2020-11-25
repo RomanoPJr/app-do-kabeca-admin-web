@@ -54,7 +54,7 @@ class Sidebar extends React.Component {
                 prop.showOnMenu !== false && (
                   <li className={this.activeRoute(prop.path)} key={key}>
                     <NavLink
-                      to={prop.layout + prop.path}
+                      to={prop.path}
                       className="nav-link"
                       activeClassName="active"
                       onClick={this.props.toggleSidebar}

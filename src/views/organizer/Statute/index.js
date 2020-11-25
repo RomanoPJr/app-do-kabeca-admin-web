@@ -75,8 +75,8 @@ const Statute = ({
         {statute.data ? (
           <Content data={currentData} />
         ) : (
-            <EmptyState setModalCreateOpened={setModalCreateOpened} />
-          )}
+          <EmptyState setModalCreateOpened={setModalCreateOpened} session={session}/>
+        )}
       </CardBody>
       {modalCreateOpened && (
         <ModalCreate

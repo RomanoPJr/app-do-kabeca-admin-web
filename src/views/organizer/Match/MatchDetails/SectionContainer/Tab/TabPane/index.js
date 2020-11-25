@@ -60,7 +60,7 @@ const TabPaneContainainer = ({
     if (match.id) {
       await fetchOne(match.id);
     } else {
-      history.replace("/organizer/matches");
+      history.replace("/matches");
     }
   };
 
@@ -188,13 +188,13 @@ const TabPaneContainainer = ({
   const handleDeleteMatch = async () => {
     await removeMatch(match.id);
     setModalDeleteMatchOpened(false);
-    history.replace("/organizer/matches");
+    history.replace("/matches");
   };
 
   const handleSubmitForm = async form => {
     await updateMatch(form);
     setModalCreateOpened(false);
-    history.replace("/organizer/matches");
+    history.replace("/matches");
     await loadMatchDetails();
   };
 

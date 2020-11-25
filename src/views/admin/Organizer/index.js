@@ -33,7 +33,7 @@ const Organizer = ({
 
   useEffect(() => {
     if (session.external) {
-      window.location = '/organizer/club'
+      window.location = '/club'
     }
   }, [session.external])
 

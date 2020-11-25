@@ -29,7 +29,6 @@ const Club = ({
   fetchUFS,
   fetchAction,
   fetchCities,
-  clearAction,
   createAction,
   updateAction,
   ufs_loading,

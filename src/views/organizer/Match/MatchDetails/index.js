@@ -20,7 +20,7 @@ const MatchDetails = ({ match, matches, history, fetchByDate }) => {
     if (match.params && match.params.date) {
       await fetchByDate(match.params.date);
     } else {
-      history.replace("/organizer/matches");
+      history.replace("/matches");
     }
   };
 

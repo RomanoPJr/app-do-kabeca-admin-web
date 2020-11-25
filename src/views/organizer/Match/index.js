@@ -130,12 +130,12 @@ const ActionColumn = ({
           </Button>
           <EditButton
             onClick={() => {
-              history.push(`/organizer/matches/${data.date}`);
+              history.push(`/matches/${data.date}`);
             }}
           />
         </>) : (
           <Button id="btn-confirmated" className="btn-icon btn-confirmated" onClick={() => {
-            history.push(`/organizer/matches/${data.date}`);
+            history.push(`/matches/${data.date}`);
           }}>
             <FaEye />
           </Button>

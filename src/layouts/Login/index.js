@@ -22,20 +22,15 @@ const Login = ({ session, createSession }) => {
   const [password, setPassword] = useState();
 
   useEffect(() => {
-    if (
-      session.data &&
-      session.data.type &&
-      localStorage.getItem("user-token")
-    ) {
-      if (session.data.type === "ORGANIZER") {
-        history.push(`/${session.data.type.toLowerCase()}/club`);
-      } else if (session.data.type === "PLAYER") {
-        history.push(`/${session.data.type.toLowerCase()}/club`);
-      }else if (session.data.type === "ADMIN") {
-        history.push(`/${session.data.type.toLowerCase()}/admins`);
+    const userType = localStorage.getItem("@APPDOKABECA:user_type");
+    if (userType) {
+      if (userType === "ADMIN") {
+        history.push(`/admins`);
+      }else{
+        history.push(`/club`);
       }
     }
-  }, [session]);
+  }, [localStorage.getItem("@APPDOKABECA:user_type")]);
 
   const handleSubmitForm = evt => {
     createSession({ email, password });

@@ -34,7 +34,7 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
   }, [session.data]);
 
   useEffect(() => {
-    const token = localStorage.getItem("user-token");
+    const token = localStorage.getItem("@APPDOKABECA:user_token");
 
     if (!token) {
       return history.replace("/login");
@@ -53,7 +53,7 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
       return (
         <Route
           exact
-          path={prop.layout + prop.path}
+          path={prop.path}
           component={prop.component}
           key={key}
         />
@@ -64,7 +64,7 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
   function getBrandText(path) {
     for (let i = 0; i < routes.length; i++) {
       if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
+        props.location.pathname.indexOf(routes[i].path) !==
         -1
       ) {
         return routes[i].name;

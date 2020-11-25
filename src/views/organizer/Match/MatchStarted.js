@@ -15,7 +15,7 @@ const MatchStarted = ({ data, events, handleSelectEvent }) => {
   useEffect(() => {
     if (data && data !== undefined && data.escalation) {
     } else {
-      history.replace("/organizer/matches");
+      history.replace("/matches");
     }
   }, []);
 

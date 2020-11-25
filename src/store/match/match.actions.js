@@ -72,7 +72,7 @@ const create = async payload => {
         type: typesMatch.CREATE_SUCCESS,
         payload: response.data.data
       });
-      history.push(`/organizer/matches/${response.data.data.date}`);
+      history.push(`/matches/${response.data.data.date}`);
       toast.success(response.data.message);
     })
     .catch(error => {

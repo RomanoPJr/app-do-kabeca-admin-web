@@ -32,28 +32,24 @@ var admin = [
     name: "Administradores",
     icon: <FaUserShield size={18} />,
     component: Admins,
-    layout: "/admin"
   },
   {
     path: "/organizers",
     name: "Organizadores",
     icon: <FaUsers size={18} />,
     component: Organizer,
-    layout: "/admin"
   },
   {
     path: "/statute_suggestion",
     name: "Sugestão de Estatuto",
     icon: <FaBook size={18} />,
     component: SuggestionStatute,
-    layout: "/admin"
   },
   {
     path: "/event_suggestions",
     name: "Sugestões de Eventos",
     icon: <FaRegFlag size={18} />,
     component: SuggestionEvent,
-    layout: "/admin"
   }
 ];
 var organizer = [
@@ -62,21 +58,18 @@ var organizer = [
     name: "Clube",
     icon: <FaUsers size={18} />,
     component: Club,
-    layout: "/organizer"
   },
   {
     path: "/matches",
     name: "Peladas",
     icon: <FaFutbol size={18} />,
     component: Match,
-    layout: "/organizer"
   },
   {
     path: "/matches/:date",
     name: "Partida",
     icon: <FaFutbol size={18} />,
     component: MatchDetails,
-    layout: "/organizer",
     showOnMenu: false
   },
   {
@@ -84,42 +77,36 @@ var organizer = [
     name: "Jogadores",
     icon: <FaRunning size={18} />,
     component: Player,
-    layout: "/organizer"
   },
   {
     path: "/sponsors",
     name: "Patrocinadores",
     icon: <FaRegHandshake size={22} />,
     component: Sponsor,
-    layout: "/organizer"
   },
   {
     path: "/events",
     name: "CRITÉRIOS DE PONTUAÇÃO",
     icon: <FaRegFlag size={18} />,
     component: Event,
-    layout: "/organizer"
   },
   {
     path: "/statute",
     name: "Estatuto",
     icon: <FaBook size={18} />,
     component: Statute,
-    layout: "/organizer"
   },
   {
     path: "/payments",
     name: "Financeiro",
     icon: <FaDollarSign size={18} />,
     component: Payment,
-    layout: "/organizer"
   },
   {
     path: "/reports",
     name: "Relatórios",
     icon: <FaNewspaper size={18} />,
     component: Report,
-    layout: "/organizer"
   }
 ];
 var player = [
@@ -128,21 +115,18 @@ var player = [
     name: "Clube",
     icon: <FaUsers size={18} />,
     component: Club,
-    layout: "/organizer"
   },
   {
     path: "/matches",
     name: "Peladas",
     icon: <FaFutbol size={18} />,
     component: Match,
-    layout: "/organizer"
   },
   {
     path: "/matches/:date",
     name: "Partida",
     icon: <FaFutbol size={18} />,
     component: MatchDetails,
-    layout: "/organizer",
     showOnMenu: false
   },
   {
@@ -150,28 +134,24 @@ var player = [
     name: "CRITÉRIOS DE PONTUAÇÃO",
     icon: <FaRegFlag size={18} />,
     component: Event,
-    layout: "/organizer"
   },
   {
     path: "/statute",
     name: "Estatuto",
     icon: <FaBook size={18} />,
     component: Statute,
-    layout: "/organizer"
   },
   {
     path: "/payments",
     name: "Financeiro",
     icon: <FaDollarSign size={18} />,
     component: Payment,
-    layout: "/organizer"
   },
   {
     path: "/reports",
     name: "Relatórios",
     icon: <FaNewspaper size={18} />,
     component: Report,
-    layout: "/organizer"
   }
 ];
 
