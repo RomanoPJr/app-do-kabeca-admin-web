@@ -16,7 +16,7 @@ import {
   UPDATE_FAILURE,
 } from "./admin.types";
 
-const endpoint = "/admin";
+const endpoint = "/admin/admin";
 
 const fetch = ({ pageNumber }) => {
   return function(dispatch) {

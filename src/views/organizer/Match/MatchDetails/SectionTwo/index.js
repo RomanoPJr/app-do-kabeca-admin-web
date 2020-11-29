@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Nav,
-  TabContent,
-  Col,
-  Row
-} from "reactstrap";
+import { Nav, TabContent } from "reactstrap";
 
 import TabHeader from "./Tab/TabHeader";
 import TabPane from "./Tab/TabPane";

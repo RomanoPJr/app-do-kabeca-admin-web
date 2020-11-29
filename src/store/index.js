@@ -13,7 +13,6 @@ import sponsor from "../store/sponsor/sponsor.reducers";
 import statute from "../store/statute/statute.reducers";
 import location from "../store/location/location.reducers";
 import organizer from "../store/organizer/organizer.reducers";
-import suggestion_event from "../store/suggestion_event/suggestion_event.reducers";
 import suggestion_statute from "../store/suggestion_statute/suggestion_statute.reducers";
 
 const rootReducer = combineReducers({
@@ -29,7 +28,6 @@ const rootReducer = combineReducers({
   statute,
   location,
   organizer,
-  suggestion_event,
   suggestion_statute
 });
 

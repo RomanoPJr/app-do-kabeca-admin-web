@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 import history from "../../history";
@@ -21,15 +21,16 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
           break;
         case "ORGANIZER":
           setRoutes(organizer);
+          fetchClub();
           break;
-        case "PLAYER":
+          case "PLAYER":
           setRoutes(player);
+          fetchClub();
           break;
         default:
           setRoutes(player);
           break;
       }
-      fetchClub();
     }
   }, [session.data]);
 
@@ -83,6 +84,9 @@ const Admin = ({ fetchSession, fetchClub, session, ...props }) => {
           toggleSidebar={toggleSidebar}
           sidebarOpened={sidebarOpened}
         />
+        <Switch>
+          <Redirect exact from="/" to="/login" />
+        </Switch>
         <Switch>{getRoutes(routes)}</Switch>
       </div>
     </div>

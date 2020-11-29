@@ -16,7 +16,7 @@ import {
   UPDATE_FAILURE,
 } from "./organizer.types";
 
-const endpoint = "/organizer";
+const endpoint = "/admin/organizer";
 
 const fetch = () => {
   return function(dispatch) {

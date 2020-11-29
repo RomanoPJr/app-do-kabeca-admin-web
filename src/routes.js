@@ -22,7 +22,6 @@ import Report from "./views/organizer/Report";
 
 import Admins from "./views/admin/Admins";
 import Organizer from "./views/admin/Organizer";
-import SuggestionEvent from "./views/admin/SuggestionEvent";
 import SuggestionStatute from "./views/admin/SuggestionStatute";
 import MatchDetails from "./views/organizer/Match/MatchDetails/index";
 
@@ -45,12 +44,6 @@ var admin = [
     icon: <FaBook size={18} />,
     component: SuggestionStatute,
   },
-  {
-    path: "/event_suggestions",
-    name: "Sugestões de Eventos",
-    icon: <FaRegFlag size={18} />,
-    component: SuggestionEvent,
-  }
 ];
 var organizer = [
   {

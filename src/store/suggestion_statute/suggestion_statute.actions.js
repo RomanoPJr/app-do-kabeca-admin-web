@@ -15,13 +15,13 @@ import {
   UPDATE_FAILURE,
 } from "./suggestion_statute.types";
 
-const endpoint = "/suggestion_statute";
+const endpoint = "/admin/suggestion_statute";
 
 const fetch = () => {
   return function(dispatch) {
     dispatch({ type: FETCH_REQUEST });
     axios()
-      .get(endpoint)
+      .get('/suggestion_statute')
       .then((response) => {
         dispatch({ type: FETCH_SUCCESS, payload: response.data });
       })

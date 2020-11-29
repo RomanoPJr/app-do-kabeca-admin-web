@@ -324,7 +324,6 @@ const ActionColumn = ({
 const mapStateToProps = state => ({
   event: state.event,
   session: state.session.data,
-  suggestion_event: state.suggestion_event
 });
 
 const mapDispatchToProps = dispatch => ({
