@@ -1,19 +1,17 @@
 import React from "react";
 import moment from "moment";
-import { FaEdit, FaTimes } from "react-icons/fa";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
 import EditButton from "../../../components/ActionButtons/EditButton";
-import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const PaymentsTable = ({
+  loading,
   session,
   payment,
   setPageNumber,
   setCurrentData,
   setModalCreateOpened,
-  removeAction
 }) => {
 
   const tableColumns = [
@@ -57,18 +55,18 @@ const PaymentsTable = ({
       render: ({ data }) => (
         <ActionColumn
           data={data}
-          removeAction={removeAction}
           setCurrentData={setCurrentData}
           setModalCreateOpened={setModalCreateOpened}
         />
       )
     })
   }
+
   return (
     <Table
       setPageNumber={setPageNumber}
-      isLoading={payment.loading}
-      data={payment.data}
+      isLoading={loading}
+      data={payment}
       columns={tableColumns}
     />
   );
@@ -78,18 +76,12 @@ const ActionColumn = ({
   data,
   setCurrentData,
   setModalCreateOpened,
-  removeAction
 }) => (
     <div className="action-column">
       <EditButton
         onClick={() => {
           setCurrentData(data);
           setModalCreateOpened(true);
-        }}
-      />
-      <DeleteButton
-        onClick={() => {
-          removeAction(data.id);
         }}
       />
     </div>

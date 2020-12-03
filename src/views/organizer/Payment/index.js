@@ -26,17 +26,11 @@ import PaymentActions from "../../../store/payment/payment.actions";
 
 const Payment = ({
   club,
-  payment,
   session,
   updateClub,
   clearAction,
-  fetchAction,
-  createAction,
-  updateAction,
-  removeAction,
   createAllNonPayingAction
 }) => {
-  const [totalizers, setTotalizers] = useState();
   const [filterYear, setFilterYear] = useState();
   const [pageNumberDebits, setPageNumberDebits] = useState();
   const [pageNumberPayments, setPageNumberPayments] = useState();
@@ -46,6 +40,8 @@ const Payment = ({
   const [currentData, setCurrentData] = useState({});
   const [switchValue, setSwitchValue] = useState(false);
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [payment, setPayment] = useState(false);
 
   const toggleTab = tab => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -55,10 +51,10 @@ const Payment = ({
     handleFetch();
   }, [
     activeTab,
+    filterYear,
+    filterMonth,
     pageNumberDebits,
     pageNumberPayments,
-    filterMonth,
-    filterYear
   ]);
 
   useEffect(() => {
@@ -79,31 +75,12 @@ const Payment = ({
   }, [club]);
 
   useEffect(() => {
-    if (payment.data) {
-      setTotalizers(payment.data.totalizers);
-    }
-  }, [payment]);
-
-  useEffect(() => {
     if (!modalCreateOpened) {
       setCurrentData({});
     }
   }, [modalCreateOpened]);
 
-  useEffect(() => {
-    if (!payment.loading && crudSent) {
-      setCrudSent(false);
-      if (payment.error === "") {
-        setModalCreateOpened(false);
-        toast.success("Registro salvo com sucesso!");
-        handleFetch();
-      } else if (!payment.loading && payment.error !== "") {
-        toast.error(payment.error);
-      }
-    }
-  }, [payment.loading]);
-
-  function handleFetch() {
+  const handleFetch = async() => {
     if (filterMonth && filterYear && filterYear.toString().length === 4) {
       var type = "";
       var currentPageNumber = 0;
@@ -112,25 +89,41 @@ const Payment = ({
         currentPageNumber =
           activeTab === "1" ? pageNumberPayments : pageNumberDebits;
       }
-      fetchAction({
+
+      setLoading(true)
+
+      const data = await PaymentActions.fetch({
         pageNumber: currentPageNumber,
         year: filterYear,
         month: filterMonth,
         type
-      });
+      })
+
+      if(data){
+        setPayment(data)
+      }
+
+      setLoading(false)
     }
   }
 
-  function handleSubmitForm(evt, data) {
-    if (activeTab === "1") {
-      updateAction(data);
-    } else if (activeTab === "2") {
-      createAction(data);
-    }
+  const handleSubmitForm = async (evt, data) => {
     if (evt) {
       evt.preventDefault();
     }
-    setCrudSent(true);
+
+    setLoading(true)
+    const response = await PaymentActions.update(data)
+
+    if (response) {
+      setModalCreateOpened(false);
+      toast.success("Pagamento atualizado com sucesso!");
+      handleFetch();
+    } else {
+      toast.error("Erro ao processar pagamento");
+    }
+
+    setLoading(false)
   }
 
   function handleSwicthChange(value) {
@@ -140,23 +133,13 @@ const Payment = ({
     });
   }
 
-  const handleRemovePayment = payload => {
-    var type = "";
-    var currentPageNumber = 0;
-    if (activeTab) {
-      type = activeTab === "1" ? "paid" : "debit";
-      currentPageNumber =
-        activeTab === "1" ? pageNumberPayments : pageNumberDebits;
-    }
+  const handleCreateAll = async () => {
 
-    const fetchPayload = {
-      pageNumber: currentPageNumber,
-      year: filterYear,
-      month: filterMonth,
-      type
-    };
-    removeAction(payload, fetchPayload);
-  };
+    setLoading(true)
+    await PaymentActions.createAll({month: filterMonth, year: filterYear})
+    handleFetch()
+    setLoading(false)
+  }
 
   return (
     <div className="content">
@@ -175,7 +158,7 @@ const Payment = ({
               handleSwicthChange={handleSwicthChange}
             />
             <CardBody>
-              <Counters totalizers={totalizers} />
+              <Counters totalizers={payment.totalizers} />
               {session.type === 'ORGANIZER' && <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button
                   onClick={() => {
@@ -207,18 +190,19 @@ const Payment = ({
                 </Button>
               </div>}
               <Tabs
+                loading={loading}
                 session={session}
+                payment={payment}
+                toggle={toggleTab}
+                activeTab={activeTab}
                 filterYear={filterYear}
                 filterMonth={filterMonth}
-                payment={payment}
-                activeTab={activeTab}
-                toggle={toggleTab}
-                confirmAction={handleSubmitForm}
-                setPageNumberPayments={setPageNumberPayments}
-                setPageNumberDebits={setPageNumberDebits}
                 setCurrentData={setCurrentData}
+                confirmAction={handleSubmitForm}
+                handleCreateAll={handleCreateAll}
+                setPageNumberDebits={setPageNumberDebits}
                 setModalCreateOpened={setModalCreateOpened}
-                handleRemovePayment={handleRemovePayment}
+                setPageNumberPayments={setPageNumberPayments}
               />
             </CardBody>
           </Card>
@@ -241,12 +225,13 @@ const Tabs = ({
   toggle,
   payment,
   session,
+  loading,
   activeTab,
   filterYear,
   filterMonth,
   confirmAction,
   setCurrentData,
-  handleRemovePayment,
+  handleCreateAll,
   setPageNumberDebits,
   setModalCreateOpened,
   setPageNumberPayments
@@ -281,9 +266,9 @@ const Tabs = ({
             <Col sm="12">
               {activeTab === "1" && (
                 <TablePayments
+                  loading={loading}
                   session={session}
                   payment={payment || {}}
-                  removeAction={handleRemovePayment}
                   setPageNumber={setPageNumberPayments}
                   setCurrentData={setCurrentData}
                   setModalCreateOpened={setModalCreateOpened}
@@ -297,13 +282,15 @@ const Tabs = ({
             <Col sm="12">
               {activeTab === "2" && (
                 <TableDebits
+                  loading={loading}
                   session={session}
                   filterYear={filterYear}
-                  filterMonth={filterMonth}
                   payment={payment || {}}
-                  setPageNumber={setPageNumberDebits}
-                  setCurrentData={setCurrentData}
+                  filterMonth={filterMonth}
                   confirmAction={confirmAction}
+                  setCurrentData={setCurrentData}
+                  handleCreateAll={handleCreateAll}
+                  setPageNumber={setPageNumberDebits}
                   setModalCreateOpened={setModalCreateOpened}
                 />
               )}
@@ -317,18 +304,14 @@ const Tabs = ({
 const mapStateToProps = state => ({
   club: state.club,
   player: state.player,
-  payment: state.payment,
   session: state.session.data,
 });
 
 const mapDispatchToProps = dispatch => ({
   clearAction: () => dispatch(PaymentActions.clear()),
   updateClub: payload => dispatch(ClubActions.update(payload)),
-  fetchAction: payload => dispatch(PaymentActions.fetch(payload)),
-  createAction: payload => dispatch(PaymentActions.create(payload)),
   createAllNonPayingAction: (payload, page) =>
     dispatch(PaymentActions.createAllNonPaying(payload, page)),
-  updateAction: payload => dispatch(PaymentActions.update(payload)),
   removeAction: (payload, fetchPayload) =>
     dispatch(PaymentActions.remove(payload, fetchPayload))
 });

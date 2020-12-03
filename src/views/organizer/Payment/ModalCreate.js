@@ -53,7 +53,9 @@ const ModalUpdatePayment = ({
                   .replace("R$ ", "")
                   .replace(".", "")
                   .replace(",", "."),
-                club_player_id
+                player_id: data.player_id,
+                year: data.year,
+                month: data.month,
               });
               evt.preventDefault();
             }}

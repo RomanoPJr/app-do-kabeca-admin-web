@@ -1,44 +1,44 @@
 import React from "react";
-import { FaEdit, FaCheck } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
+import { Button } from "reactstrap";
 
 import Table from "../../../components/Table";
 import { formatMoney } from "../../../utils/Currency";
 import EditButton from "../../../components/ActionButtons/EditButton";
-import DeleteButton from "../../../components/ActionButtons/DeleteButton";
 
 const TableDebits = ({
-  filterYear,
-  filterMonth,
   payment,
   session,
+  loading,
+  filterYear,
+  filterMonth,
   confirmAction,
   setPageNumber,
   setCurrentData,
+  handleCreateAll,
   setModalCreateOpened
 }) => {
 
   const tableColumns = [
-    { name: "Nome", attribute: "name" },
+    { name: "Nome", attribute: "ClubPlayer.User.name" },
     {
       name: "Valor a Receber",
       render: ({ data }) => {
-        if (data.ClubPlayers) {
-          return data.ClubPlayers[0].position === "COLABORADOR"
-            ? formatMoney()
-            : formatMoney(data.ClubPlayers[0].monthly_payment);
-        }
+        return data.ClubPlayer.position === "COLABORADOR"
+          ? formatMoney()
+          : formatMoney(data.due_value);
       }
     },
     {
       name: "",
       render: ({ data }) => {
         if (
-          data.ClubPlayers &&
-          data.ClubPlayers[0].position === "COLABORADOR"
+          data.ClubPlayer &&
+          data.ClubPlayer.position === "COLABORADOR"
         ) {
           return (
             <div className="positionTag">
-              {data.ClubPlayers[0].position}
+              {data.ClubPlayer.position}
             </div>
           );
         }
@@ -62,13 +62,22 @@ const TableDebits = ({
     })
   }
 
-  return (
+  return payment.data.length > 0 || loading ? (
     <Table
       setPageNumber={setPageNumber}
-      isLoading={payment.loading}
-      data={payment.data}
+      isLoading={loading}
+      data={payment}
       columns={tableColumns}
     />
+  ):(
+    <div style={{height: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+        <h4>A folha de recebimento deste mês ainda não foi gerada, deseja gerar agora?</h4>
+        <Button className="btn-edit" onClick={() => {
+          handleCreateAll()
+        }}>
+          Gerar folha do mês
+        </Button>
+      </div>
   );
 };
 
@@ -84,12 +93,15 @@ const ActionColumn = ({
       <EditButton
         onClick={() => {
           setCurrentData({
-            club_player_id: data.ClubPlayers[0].id,
-            name: data.name,
-            phone: data.phone,
-            due_value: data.ClubPlayers[0].monthly_payment,
-            position: data.ClubPlayers[0].position,
-            paid_value: 0
+            id: data.id,
+            paid_value: 0,
+            year: filterYear,
+            month: filterMonth,
+            due_value: data.due_value,
+            player_id: data.ClubPlayer.id,
+            name: data.ClubPlayer.User.name,
+            phone: data.ClubPlayer.User.phone,
+            position: data.ClubPlayer.position,
           });
           setModalCreateOpened(true);
         }}
@@ -98,17 +110,18 @@ const ActionColumn = ({
         className="btn btn-icon btn-green"
         onClick={() => {
           confirmAction(null, {
+            id: data.id,
             year: filterYear,
             month: filterMonth,
-            club_player_id: data.ClubPlayers[0].id,
+            player_id: data.ClubPlayer.id,
             due_value:
-              data.ClubPlayers[0].position === "COLABORADOR"
+              data.ClubPlayer.position === "COLABORADOR"
                 ? 0
-                : data.ClubPlayers[0].monthly_payment,
+                : data.due_value,
             paid_value:
-              data.ClubPlayers[0].position === "COLABORADOR"
+              data.ClubPlayer.position === "COLABORADOR"
                 ? 0
-                : data.ClubPlayers[0].monthly_payment
+                : data.due_value
           });
         }}
       >

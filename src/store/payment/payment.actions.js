@@ -1,6 +1,6 @@
+import { useDispatch } from "react-redux";
 import axios from "../../axios";
 import { getError } from "../../utils/ErrorResponse";
-import { upload } from "../../utils/Upload";
 import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -22,9 +22,9 @@ import {
 
 const endpoint = "/payment";
 
-const fetch = payload => {
-  return function(dispatch) {
-    const { month, year, type, pageNumber, pageSize } = payload;
+const fetch = async payload => {
+
+  const { month, year, type, pageNumber, pageSize } = payload;
     var queryString = "";
     queryString += `${pageNumber ? `pageNumber=${pageNumber}&` : ""}`;
     queryString += `${pageSize ? `pageSize=${pageSize}&` : ""}`;
@@ -32,53 +32,28 @@ const fetch = payload => {
     queryString += `${month ? `month=${month}&` : ""}`;
 
     const paymentType = type || "paid";
-    dispatch({ type: FETCH_REQUEST });
-    axios()
-      .get(`${endpoint}/${paymentType}?${queryString}`)
-      .then(response => {
-        dispatch({ type: FETCH_SUCCESS, payload: response.data });
-      })
-      .catch(error => {
-        dispatch({ type: FETCH_FAILURE, payload: getError(error) });
-      });
-  };
-};
 
-const create = payload => {
-  return async function(dispatch) {
-    dispatch({ type: CREATE_REQUEST });
-    axios()
-      .post(endpoint, payload)
-      .then(response => {
-        dispatch({ type: CREATE_SUCCESS });
-      })
-      .catch(error => {
-        dispatch({ type: CREATE_FAILURE, payload: getError(error) });
-      });
-  };
-};
-
-const update = payload => {
-  return async function(dispatch) {
-    dispatch({ type: UPDATE_REQUEST });
-    if (
-      payload.banner_url &&
-      payload.banner_url !== "" &&
-      payload.banner_url.search("res.cloudinary.com") === -1
-    ) {
-      const dataUpload = await upload(payload.banner_url);
-      payload.banner_url = dataUpload.url;
+    try{
+      const {data} = await axios().get(`${endpoint}/${paymentType}?${queryString}`)
+      return data
+    }catch(e){
+      return false;
     }
+};
 
-    axios()
-      .put(endpoint, payload)
-      .then(response => {
-        dispatch({ type: UPDATE_SUCCESS, payload: response.data });
-      })
-      .catch(error => {
-        dispatch({ type: UPDATE_FAILURE, payload: getError(error) });
-      });
-  };
+const createAll = payload => {
+  return axios().post(`${endpoint}/all`, payload,{
+    params: payload
+  })
+};
+
+const update = async payload => {
+  try{
+    const {data} = await axios().put(endpoint, payload)
+    return data;
+  }catch(e){
+    return false
+  }
 };
 
 const createAllNonPaying = (payload, page) => {
@@ -96,21 +71,6 @@ const createAllNonPaying = (payload, page) => {
   };
 };
 
-const remove = (payload, fetchPayload) => {
-  return function(dispatch) {
-    dispatch({ type: DELETE_REQUEST });
-    axios()
-      .delete(`${endpoint}/${payload}`)
-      .then(() => {
-        dispatch({ type: DELETE_SUCCESS });
-        dispatch(fetch(fetchPayload));
-      })
-      .catch(error => {
-        dispatch({ type: DELETE_FAILURE, payload: getError(error) });
-      });
-  };
-};
-
 const clear = payload => {
   return function(dispatch) {
     dispatch({ type: CLEAR_STORE });
@@ -119,9 +79,8 @@ const clear = payload => {
 
 export default {
   fetch,
-  create,
-  remove,
-  update,
   clear,
+  update,
+  createAll,
   createAllNonPaying
 };

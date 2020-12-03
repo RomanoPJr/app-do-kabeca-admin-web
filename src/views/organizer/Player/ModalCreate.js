@@ -52,12 +52,12 @@ const ModalCreate = ({
 
   useEffect(() => {
     if (!data.id) {
-      if (phone && phone.length >= 14) {
+      if (phone && phone.length >= 13) {
         handleFetchOneUser({
           field: "phone",
           value: phone.replace(/\D/g, "")
         });
-      } else if (phone && phone.length < 14) {
+      } else if (phone && phone.length < 13) {
         setName();
       }
     }
