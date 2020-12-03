@@ -23,6 +23,7 @@ const fetch = () => {
       .get(endpoint)
       .then(({ data }) => {
         let userData = { ...data };
+        localStorage.setItem('@APPDOKABECA:user_type', data.type);
 
         if (userData.clubs && userData.clubs.length > 0) {
           userData = { ...userData, current_club_id: userData.clubs[0].club_id }

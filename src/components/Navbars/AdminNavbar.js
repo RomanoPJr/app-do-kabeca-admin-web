@@ -129,6 +129,7 @@ class AdminNavbar extends React.Component {
                           className="nav-item"
                           onClick={() => {
                             this.props.setUserType('PLAYER')
+                            localStorage.setItem("@APPDOKABECA:user_type", "PLAYER")
                           }}
                         >
                           VISUALIZAR COMO JOGADOR

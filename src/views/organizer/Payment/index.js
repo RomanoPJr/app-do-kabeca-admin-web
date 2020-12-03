@@ -35,7 +35,6 @@ const Payment = ({
   const [pageNumberDebits, setPageNumberDebits] = useState();
   const [pageNumberPayments, setPageNumberPayments] = useState();
   const [activeTab, setActiveTab] = useState("1");
-  const [crudSent, setCrudSent] = useState(false);
   const [filterMonth, setFilterMonth] = useState();
   const [currentData, setCurrentData] = useState({});
   const [switchValue, setSwitchValue] = useState(false);
