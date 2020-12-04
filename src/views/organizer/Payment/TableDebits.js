@@ -62,7 +62,7 @@ const TableDebits = ({
     })
   }
 
-  return payment.data.length > 0 || loading || session.type === 'PLAYER' ? (
+  return payment.data.length > 0 || loading || session.type === 'PLAYER' || payment.data === false ? (
     <Table
       setPageNumber={setPageNumber}
       isLoading={loading}
