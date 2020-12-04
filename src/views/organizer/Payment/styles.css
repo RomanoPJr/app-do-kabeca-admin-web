@@ -54,3 +54,8 @@
   background-color: #ac971e;
   display: inherit !important;
 }
+
+
+.dropdown-toggle {
+  margin-right: 10px !important
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import moment from 'moment';
 import { ToastContainer, toast } from "react-toastify";
 import {
   Nav,
@@ -23,6 +24,7 @@ import ModalCreate from "./ModalCreate";
 import TablePayments from "./TablePayments";
 import ClubActions from "../../../store/club/club.actions";
 import PaymentActions from "../../../store/payment/payment.actions";
+import Relatorio from "../Report/RelatorioFinanceiro";
 
 const Payment = ({
   club,
@@ -41,6 +43,7 @@ const Payment = ({
   const [modalCreateOpened, setModalCreateOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [payment, setPayment] = useState(false);
+  const [change, setChange] = useState(false);
 
   const toggleTab = tab => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -80,6 +83,9 @@ const Payment = ({
   }, [modalCreateOpened]);
 
   const handleFetch = async() => {
+    
+    setChange(!change)
+    
     if (filterMonth && filterYear && filterYear.toString().length === 4) {
       var type = "";
       var currentPageNumber = 0;
@@ -158,7 +164,14 @@ const Payment = ({
             />
             <CardBody>
               <Counters totalizers={payment.totalizers} />
-              {session.type === 'ORGANIZER' && <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", alignItems: 'baseline' }}>
+              <Relatorio 
+                change={change}  
+                dateStart={moment(new Date(filterYear, parseInt(filterMonth) -1, 1)).format('YYYY-MM-DD')} 
+                dateEnd={moment(new Date(filterYear, parseInt(filterMonth) -1, 1)).endOf('month').format('YYYY-MM-DD')} 
+                
+              />
+              {session.type === 'ORGANIZER' && 
                 <Button
                   onClick={() => {
                     createAllNonPayingAction(
@@ -187,7 +200,8 @@ const Payment = ({
                 >
                   REGISTRAR NÃO PAGANTES
                 </Button>
-              </div>}
+              }
+              </div>
               <Tabs
                 loading={loading}
                 session={session}

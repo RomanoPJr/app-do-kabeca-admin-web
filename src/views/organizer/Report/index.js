@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import "./styles.css";
 import RelatorioArtilharia from "./RelatorioArtilharia";
 import RelatorioJogadores from "./RelatorioJogadores";
-import RelatorioFinanceiro from "./RelatorioFinanceiro";
 import RelatorioAniversario from "./RelatorioAniversario";
 import RelatorioPontuacaoGeral from "./RelatorioPontuacaoGeral";
 import RelatorioPontuacaoGeralPosicao from "./RelatorioPontuacaoGeralPosicao";
@@ -16,7 +15,6 @@ const Report = ({ club }) => {
       <RelatorioPontuacaoGeralPosicao club={club} />
       <RelatorioArtilharia />
       <RelatorioJogadores />
-      <RelatorioFinanceiro />
       <RelatorioAniversario />
     </div>
   );
