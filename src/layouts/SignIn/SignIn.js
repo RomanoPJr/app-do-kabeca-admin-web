@@ -139,10 +139,26 @@ const SignIn = ({ organizer, createOrganizer }) => {
                   color="primary"
                   type="submit"
                 >
-                  Login
+                  Cadastrar
                 </Button>
               </CardFooter>
             </Form>
+            <div 
+              style={{
+                display: 'flex', 
+                justifyContent: 'space-around', 
+                alignItems: 'center',
+                marginTop: 10, 
+                marginBottom: 10, 
+                height: 25
+              }}
+            >
+              <a href="/login">
+                <h5 className="criar-senha-link" >
+                  Login
+                </h5>
+              </a>
+            </div>
           </Card>
         </Col>
       </Row>

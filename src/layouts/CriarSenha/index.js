@@ -15,13 +15,14 @@ import {
 
 import history from "../../history";
 import Alert from "../../components/Alert";
+import { formatPhone } from "../../utils/Phone";
 import SessionActions from "../../store/session/session.actions.js";
-import { FaRunning, FaUserShield } from "react-icons/fa";
-import './styles.css'
+import { toast, ToastContainer } from "react-toastify";
 
-const Login = ({ session, createSession }) => {
-  const [email, setEmail] = useState();
+const Login = ({ session, createPassword }) => {
+  const [phone, setPhone] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
   useEffect(() => {
     const userType = localStorage.getItem("@APPDOKABECA:user_type");
@@ -34,9 +35,22 @@ const Login = ({ session, createSession }) => {
     }
   }, [localStorage.getItem("@APPDOKABECA:user_type")]);
 
-  const handleSubmitForm = evt => {
-    createSession({ email, password });
+  const handleSubmitForm = async evt => {
     evt.preventDefault();
+    
+    const {data, success, error} = await SessionActions.createPassword({ 
+      phone: phone.replace(/\D/g, ""), 
+      password, 
+      confirmPassword 
+    });
+
+
+    if(success === false){
+      return toast.error(error);
+    }else{
+      toast.success('Senha criada com sucesso, faça o login.');
+      window.location.href = '/login'
+    }
   };
 
   return (
@@ -46,21 +60,22 @@ const Login = ({ session, createSession }) => {
         <Col md="4">
           <Card>
             <CardHeader>
-              <h2>Login</h2>
+              <h2>Criar senha</h2>
             </CardHeader>
             <Form onSubmit={handleSubmitForm}>
               <CardBody>
                 <Row>
                   <Col md="12">
-                    <label>Email ou Telefone</label>
+                    <label>Telefone</label>
                     <Input
-                      required={true}
-                      placeholder="Informe seu email ou telefone"
                       type="text"
+                      value={phone || ""}
+                      maxLength="15"
+                      required={true}
+                      placeholder="Informe o telefone"
                       onChange={event => {
-                        setEmail(event.target.value.toUpperCase());
+                        setPhone(formatPhone(event));
                       }}
-                      value={email || ""}
                     />
                   </Col>
                   <Col md="12">
@@ -68,7 +83,7 @@ const Login = ({ session, createSession }) => {
                       <label>Senha</label>
                       <Input
                         required
-                        placeholder="Digite sua Senha..."
+                        placeholder="Digite sua senha..."
                         type="password"
                         value={password || ""}
                         onChange={event => {
@@ -77,24 +92,21 @@ const Login = ({ session, createSession }) => {
                       />
                     </FormGroup>
                   </Col>
+                  <Col md="12">
+                    <FormGroup>
+                      <label>Confirmar Senha</label>
+                      <Input
+                        required
+                        placeholder="Confirme sua senha..."
+                        type="password"
+                        value={confirmPassword || ""}
+                        onChange={event => {
+                          setConfirmPassword(event.target.value.toUpperCase());
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
                 </Row>
-                <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-                <h5>Não possui senha?</h5>
-                </div>
-                <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginTop: 25, height: 25}}>
-                <a href="/criar-senha">
-                  <h5 className="criar-senha-link" >
-                    <FaRunning size={18} style={{marginRight: 6}}/>
-                    sou JOGADOR
-                  </h5>
-                </a>
-                <a href="/sign-in">
-                  <h5 className="criar-senha-link" >
-                    <FaUserShield size={18} style={{marginRight: 6}}/>
-                    sou ORGANIZADOR
-                  </h5>
-                </a>
-                </div>
               </CardBody>
               <CardFooter>
                 <Button
@@ -102,13 +114,30 @@ const Login = ({ session, createSession }) => {
                   color="primary"
                   type="submit"
                 >
-                  Login
+                  Criar senha 
                 </Button>
               </CardFooter>
             </Form>
+            <div 
+              style={{
+                display: 'flex', 
+                justifyContent: 'space-around', 
+                alignItems: 'center',
+                marginTop: 10, 
+                marginBottom: 10, 
+                height: 25
+              }}
+            >
+              <a href="/login">
+                <h5 className="criar-senha-link" >
+                  Login
+                </h5>
+              </a>
+            </div>
           </Card>
         </Col>
       </Row>
+      <ToastContainer />
     </div>
   );
 };
@@ -116,8 +145,4 @@ const Login = ({ session, createSession }) => {
 const mapStateToProps = state => ({
   session: state.session
 });
-const mapDispatchToProps = dispatch => ({
-  createSession: payload => dispatch(SessionActions.create(payload))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, null)(Login);

@@ -73,6 +73,21 @@ const create = (payload) => {
   };
 };
 
+const createPassword = async (payload) => {
+  try{
+    const { data } = await axios().post(`${endpoint}/criar-senha`, payload)
+    return data
+  }catch(e){
+    if(e.response){
+      return {
+        data: null,
+        success: false,
+        ...e.response.data
+      }
+    }
+  }
+};
+
 const setUserType = (payload) => {
   return function (dispatch) {
     dispatch({ type: CHANGE_USER_TYPE, payload });
@@ -84,4 +99,5 @@ export default {
   setUserType,
   fetchOrganizer,
   create,
+  createPassword,
 };

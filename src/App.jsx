@@ -1,5 +1,6 @@
 import React from 'react'
 import Login from "./layouts/Login/index";
+import CriarSenha from "./layouts/CriarSenha/index";
 import SignIn from "./layouts/SignIn/SignIn.js";
 import AdminLayout from "./layouts/Admin/Admin";
 
@@ -15,6 +16,7 @@ const App = () => {
     <Provider store={store}>
       <Router history={history}>
         <Switch>
+          <Route exact path="/criar-senha" render={() => <CriarSenha />} />
           <Route exact path="/login" render={() => <Login />} />
           <Route exact path="/sign-in" render={() => <SignIn />} />
           <Route path="/" render={props => <AdminLayout {...props} />} />
