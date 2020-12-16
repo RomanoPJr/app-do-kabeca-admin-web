@@ -17,6 +17,7 @@ import Match from "./views/organizer/Match";
 import Player from "./views/organizer/Player";
 import Statute from "./views/organizer/Statute";
 import Sponsor from "./views/organizer/Sponsor";
+import Seasons from "./views/organizer/Seasons";
 import Payment from "./views/organizer/Payment";
 import Report from "./views/organizer/Report";
 
@@ -51,6 +52,12 @@ var organizer = [
     name: "Clube",
     icon: <FaUsers size={18} />,
     component: Club,
+  },
+  {
+    path: "/seasons",
+    name: "Temporadas",
+    icon: <FaFutbol size={18} />,
+    component: Seasons,
   },
   {
     path: "/matches",

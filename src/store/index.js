@@ -7,6 +7,7 @@ import event from "../store/event/event.reducers";
 import admin from "../store/admin/admin.reducers";
 import match from "../store/match/match.reducers";
 import player from "../store/player/player.reducers";
+import season from "../store/season/season.reducers";
 import session from "../store/session/session.reducers";
 import payment from "../store/payment/payment.reducers";
 import sponsor from "../store/sponsor/sponsor.reducers";
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   admin,
   event,
   match,
+  season,
   player,
   session,
   payment,
