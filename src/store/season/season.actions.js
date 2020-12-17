@@ -5,10 +5,10 @@ import { getError } from "../../utils/ErrorResponse";
 const endpoint = "/season";
 
 const fetch = payload => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: types.FETCH_REQUEST });
     axios()
-      .get(`${endpoint}?pageNumber=${payload.pageNumber}`)
+      .get(`${endpoint}?pageNumber=${payload ? payload.pageNumber : 1}`)
       .then(response => {
         const data = response.data;
         dispatch({ type: types.FETCH_SUCCESS, payload: data });
@@ -20,7 +20,7 @@ const fetch = payload => {
 };
 
 const create = payload => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: types.CREATE_REQUEST });
     axios()
       .post(endpoint, payload)
@@ -37,7 +37,7 @@ const create = payload => {
 
 
 const remove = payload => {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: types.DELETE_REQUEST });
     axios()
       .delete(`${endpoint}/${payload}`)

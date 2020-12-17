@@ -9,20 +9,15 @@ import { jsPDF } from "jspdf";
 import moment from "moment";
 import EventActions from "../../../../store/event/event.actions";
 
-const Relatorio = ({ club }) => {
+const Relatorio = ({ club, season }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [listagem, setListagem] = useState();
   const [listagemExport, setListagemExport] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [eventos, setEventos] = useState(false);
   const [csvColumns, setCsvColumns] = useState(false);
-  const [dateEnd, setDateEnd] = useState(moment().format("YYYY-MM-DD"));
   const [position, setPosition] = useState("GOLEIRO");
-  const [dateStart, setDateStart] = useState(
-    moment()
-      .subtract(6, "month")
-      .format("YYYY-MM-DD")
-  );
+  const [selectedSeason, setSelectedSeason] = useState();
 
   const title = "RELATÓRIO DE PONTUAÇÃO GERAL POR POSIÇÃO";
 
@@ -185,9 +180,9 @@ const Relatorio = ({ club }) => {
     const params = {
       pageNumber,
       pageSize: 10,
-      dateStart,
-      dateEnd,
-      position
+      position,
+      dateStart: moment(selectedSeason.split('|')[0]),
+      dateEnd: moment(selectedSeason.split('|')[1])
     };
 
     const data = await ReportActions.pontuacaoGeralPosicao(params);
@@ -196,8 +191,8 @@ const Relatorio = ({ club }) => {
     }
 
     const paramsExport = {
-      dateStart,
-      dateEnd,
+      dateStart: moment(selectedSeason.split('|')[0]),
+      dateEnd: moment(selectedSeason.split('|')[1]),
       position
     };
 
@@ -233,10 +228,18 @@ const Relatorio = ({ club }) => {
   }, [eventos]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (selectedSeason && isOpen) {
+      console.log(selectedSeason)
       handleListagem();
     }
-  }, [dateEnd, dateStart, position, pageNumber, isOpen]);
+  }, [selectedSeason, position, pageNumber, isOpen]);
+
+  useEffect(() => {
+    if (season && season.length) {
+      const firstSeason = season[0];
+      setSelectedSeason(`${firstSeason.date_start}|${firstSeason.date_end}`)
+    }
+  }, [season])
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -272,44 +275,28 @@ const Relatorio = ({ club }) => {
           </div>
           <div>
             <Collapse isOpen={isOpen} style={{ padding: 25 }}>
-              <Row style={{ marginBottom: 25 }}>
-                <Col md="6" style={{ display: 'flex', flexDirection: `column` }}>
-                  <b style={{ color: `white` }}>INÍCIO DA TEMPORADA</b>
-                  <label>{club ?
-                    moment(club.session_start).format('DD/MM/YYYY')
-                    : '--/--/----'}</label>
-                </Col>
-                <Col md="6" style={{ display: 'flex', flexDirection: `column` }}>
-                  <b style={{ color: `white` }}>FIM DA TEMPORADA</b>
-                  <label>{club ?
-                    moment(club.session_start).format('DD/MM/YYYY')
-                    : '--/--/----'}</label>
-                </Col>
-              </Row>
               <Row>
-                <Col md={3}>
+                <Col md="4">
                   <FormGroup>
-                    <label>DATA DE INÍCIO</label>
-                    <Input
-                      type="date"
-                      value={dateStart}
-                      required={true}
+                    <label>TEMPORADA</label>
+                    <select
+                      name="select"
+                      className="form-control"
                       onChange={event =>
-                        setDateStart(event.target.value.toUpperCase())
+                        setSelectedSeason(event.target.value)
                       }
-                    />
+                      value={selectedSeason || "30"}
+                    >
+                      {season && season.map(i => (
+                        <option
+                          value={`${i.date_start}|${i.date_end}`}
+                        >
+                          {`${i.name}: ${moment(i.date_start).format('DD/MM/YYYY')} - ${moment(i.date_end).format('DD/MM/YYYY')}`}
+                        </option>
+
+                      ))}
+                    </select>
                   </FormGroup>
-                </Col>
-                <Col md={3}>
-                  <label>DATA DE FIM</label>
-                  <Input
-                    type="date"
-                    value={dateEnd}
-                    required={true}
-                    onChange={event =>
-                      setDateEnd(event.target.value.toUpperCase())
-                    }
-                  />
                 </Col>
                 <Col md={3}>
                   <label>Posição</label>
