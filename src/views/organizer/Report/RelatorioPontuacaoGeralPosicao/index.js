@@ -181,8 +181,8 @@ const Relatorio = ({ club, season }) => {
       pageNumber,
       pageSize: 10,
       position,
-      dateStart: moment(selectedSeason.split('|')[0]),
-      dateEnd: moment(selectedSeason.split('|')[1])
+      dateStart: selectedSeason.split('|')[0],
+      dateEnd: selectedSeason.split('|')[1],
     };
 
     const data = await ReportActions.pontuacaoGeralPosicao(params);
@@ -191,8 +191,8 @@ const Relatorio = ({ club, season }) => {
     }
 
     const paramsExport = {
-      dateStart: moment(selectedSeason.split('|')[0]),
-      dateEnd: moment(selectedSeason.split('|')[1]),
+      dateStart: selectedSeason.split('|')[0],
+      dateEnd: selectedSeason.split('|')[1],
       position
     };
 
@@ -229,7 +229,6 @@ const Relatorio = ({ club, season }) => {
 
   useEffect(() => {
     if (selectedSeason && isOpen) {
-      console.log(selectedSeason)
       handleListagem();
     }
   }, [selectedSeason, position, pageNumber, isOpen]);

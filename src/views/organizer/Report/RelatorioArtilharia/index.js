@@ -43,17 +43,12 @@ const pdfColumns = [
   }
 ];
 
-const Relatorio = () => {
+const Relatorio = ({ season }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [listagem, setListagem] = useState();
   const [listagemExport, setListagemExport] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [dateEnd, setDateEnd] = useState(moment().format("YYYY-MM-DD"));
-  const [dateStart, setDateStart] = useState(
-    moment()
-      .subtract(6, "month")
-      .format("YYYY-MM-DD")
-  );
+  const [selectedSeason, setSelectedSeason] = useState();
 
   const handlePDF = () => {
     if (listagemExport && listagemExport.length > 0) {
@@ -65,11 +60,12 @@ const Relatorio = () => {
   };
 
   const handleListagem = async () => {
+    console.log(selectedSeason)
     const params = {
       pageNumber,
       pageSize: 10,
-      dateStart,
-      dateEnd
+      dateStart: selectedSeason.split('|')[0],
+      dateEnd: selectedSeason.split('|')[1]
     };
 
     const data = await ReportActions.artilharia(params);
@@ -78,8 +74,8 @@ const Relatorio = () => {
     }
 
     const paramsExport = {
-      dateStart,
-      dateEnd
+      dateStart: selectedSeason.split('|')[0],
+      dateEnd: selectedSeason.split('|')[1],
     };
 
     const dataExport = await ReportActions.artilharia(paramsExport);
@@ -89,10 +85,18 @@ const Relatorio = () => {
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (selectedSeason && isOpen) {
       handleListagem();
     }
-  }, [dateEnd, dateStart, pageNumber, isOpen]);
+  }, [selectedSeason, pageNumber, isOpen]);
+
+  useEffect(() => {
+    if (season && season.length) {
+      const firstSeason = season[0];
+      setSelectedSeason(`${firstSeason.date_start}|${firstSeason.date_end}`)
+    }
+
+  }, [season])
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -131,28 +135,27 @@ const Relatorio = () => {
               <Row>
                 <Col md="4">
                   <FormGroup>
-                    <label>DATA DE INÍCIO</label>
-                    <Input
-                      type="date"
-                      value={dateStart}
-                      required={true}
+                    <label>TEMPORADA</label>
+                    <select
+                      name="select"
+                      className="form-control"
                       onChange={event =>
-                        setDateStart(event.target.value.toUpperCase())
+                        setSelectedSeason(event.target.value)
                       }
-                    />
+                      value={selectedSeason || "30"}
+                    >
+                      {season && season.map(i => (
+                        <option
+                          value={`${i.date_start}|${i.date_end}`}
+                        >
+                          {`${i.name}: ${moment(i.date_start).format('DD/MM/YYYY')} - ${moment(i.date_end).format('DD/MM/YYYY')}`}
+                        </option>
+
+                      ))}
+                    </select>
                   </FormGroup>
                 </Col>
-                <Col md="4">
-                  <label>DATA DE FIM</label>
-                  <Input
-                    type="date"
-                    value={dateEnd}
-                    required={true}
-                    onChange={event =>
-                      setDateEnd(event.target.value.toUpperCase())
-                    }
-                  />
-                </Col>
+                <Col md="4" />
                 <Col
                   md="4"
                   style={{

@@ -179,8 +179,8 @@ const Relatorio = ({ club, season }) => {
     const params = {
       pageNumber,
       pageSize: 10,
-      dateStart: moment(selectedSeason.split('|')[0]),
-      dateEnd: moment(selectedSeason.split('|')[1])
+      dateStart: selectedSeason.split('|')[0],
+      dateEnd: selectedSeason.split('|')[1],
     };
 
     const data = await ReportActions.pontuacaoGeral(params);
@@ -189,8 +189,8 @@ const Relatorio = ({ club, season }) => {
     }
 
     const paramsExport = {
-      dateStart: moment(selectedSeason.split('|')[0]),
-      dateEnd: moment(selectedSeason.split('|')[1])
+      dateStart: selectedSeason.split('|')[0],
+      dateEnd: selectedSeason.split('|')[1],
     };
 
     const dataExport = await ReportActions.pontuacaoGeral(paramsExport);
@@ -237,6 +237,7 @@ const Relatorio = ({ club, season }) => {
     }
 
   }, [season])
+
   const toggle = () => setIsOpen(!isOpen);
 
   return (
