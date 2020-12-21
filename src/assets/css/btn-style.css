@@ -19,10 +19,22 @@
 .btn-confirmated:hover,
 .btn-confirmated:active,
 .btn-confirmated:focus,
+.btn-confirmated:disabled,
 .btn-confirmated:active:hover {
   margin-right: 10px !important;
   background-image: none !important;
+  color: white !important;
   background-color: rgb(201, 118, 28) !important;
+}
+
+.btn-confirm,
+.btn-confirm:hover,
+.btn-confirm:active,
+.btn-confirm:focus,
+.btn-confirm:active:hover {
+  margin-right: 10px !important;
+  background-image: none !important;
+  background-color: #e0c422 !important;
 }
 
 .btn-invite,

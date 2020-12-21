@@ -14,7 +14,9 @@ import sponsor from "../store/sponsor/sponsor.reducers";
 import statute from "../store/statute/statute.reducers";
 import location from "../store/location/location.reducers";
 import organizer from "../store/organizer/organizer.reducers";
+import match_invite from "../store/match_invite/match_invite.reducers";
 import suggestion_statute from "../store/suggestion_statute/suggestion_statute.reducers";
+import match_invite_confirmation from "../store/match_invite_confirmation/match_invite_confirmation.reducers";
 
 const rootReducer = combineReducers({
   user,
@@ -30,7 +32,9 @@ const rootReducer = combineReducers({
   statute,
   location,
   organizer,
-  suggestion_statute
+  match_invite,
+  suggestion_statute,
+  match_invite_confirmation,
 });
 
 var store;
