@@ -22,6 +22,7 @@ import { toast, ToastContainer } from "react-toastify";
 const Login = ({ session, createPassword }) => {
   const [phone, setPhone] = useState();
   const [password, setPassword] = useState();
+  const [birthDate, setBirthDate] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const Login = ({ session, createPassword }) => {
     
     const {data, success, error} = await SessionActions.createPassword({ 
       phone: phone.replace(/\D/g, ""), 
+      birthDate,
       password, 
       confirmPassword 
     });
@@ -77,6 +79,17 @@ const Login = ({ session, createPassword }) => {
                         setPhone(formatPhone(event));
                       }}
                     />
+                  </Col>
+                  <Col md="12">
+                    <label>Data de Nascimento</label>
+                    <Input
+                        type="date"
+                        required={true}
+                        placeholder="Qual sua data de Nascimento?"
+                        onChange={(event) =>
+                          setBirthDate(event.target.value.toUpperCase())
+                        }
+                      />
                   </Col>
                   <Col md="12">
                     <FormGroup>
